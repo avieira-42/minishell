@@ -11,10 +11,12 @@ TOOLS:
 Videos:
 
 1. Clean code(https://www.youtube.com/watch?v=443UNeGrFoM&t=2387s)
-2.
+2. 
 
 Books:
 1. AnsiC(books/ANSIC)
 =======
 - Tou aqui com uma ideia que e tratar do tokenizer primeiro e so depois perceber como sera a estrutura da arvore binaria.
->>>>>>> 998ac443e12606662cedcc765ae3aa9025da5bbc
+
+Others:
+1. https://pubs.opengroup.org/onlinepubs/007908799/xcu/chap2.html

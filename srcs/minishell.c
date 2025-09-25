@@ -1,20 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/25 03:19:42 by avieira-          #+#    #+#             */
-/*   Updated: 2025/09/25 17:50:28 by avieira-         ###   ########.fr       */
+/*   Created: 2025/09/25 14:28:42 by avieira-          #+#    #+#             */
+/*   Updated: 2025/09/25 18:56:57 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "minishell.h"
 
-#include "../libs/libft/include/libft.h"
-# include "binary_tree/binary_tree.h"
-# include "tokenizer/tokenizer.h"
+int main(int argc, char **argv, char **envp)
+{
+    char    *command;
+    (void)  argc;
+    (void)  argv;
+    (void)  envp;
 
-#endif
+    command = NULL;
+    while (1)
+    {
+        ft_printf("%s", "minishell ");
+        command = get_next_line(STDIN_FILENO);
+        if (command == NULL)
+            break;
+        ft_printf("%s", command);
+        free(command);
+    }
+}

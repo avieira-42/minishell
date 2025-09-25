@@ -4,6 +4,7 @@ Sempre que deres push, escreve uma mensagem bem clara do que fizeste para poderm
 
 Eu vou comecar a tentar fazer uma arvore binaria pra ja no ficheiro -> binary tree.
 
+<<<<<<< HEAD
 
 TOOLS:
 
@@ -14,3 +15,6 @@ Videos:
 
 Books:
 1. AnsiC(books/ANSIC)
+=======
+- Tou aqui com uma ideia que e tratar do tokenizer primeiro e so depois perceber como sera a estrutura da arvore binaria.
+>>>>>>> 998ac443e12606662cedcc765ae3aa9025da5bbc

@@ -6,7 +6,7 @@
 #    By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/21 12:18:39 by avieira-          #+#    #+#              #
-#    Updated: 2025/09/25 18:31:10 by avieira-         ###   ########.fr        #
+#    Updated: 2025/09/25 23:32:03 by avieira-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,18 +34,38 @@ SRCS += srcs/ft_dblylst_size.c srcs/ft_is_int.c srcs/ft_bool_strcmp.c
 SRCS += srcs/get_next_line.c srcs/get_next_line_utils.c
 OBJS = $(SRCS:.c=.o)
 
+.PHONY: all clean fclean re
+
+# Default target
 all: $(NAME)
 
-$(NAME): $(OBJS)
-		ar rcs $(NAME) $(OBJS)
+# Build library with live progress bar
+$(NAME):
+	@total=$(words $(SRCS)); \
+	current=0; \
+	bar_length=30; \
+	for f in $(SRCS); do \
+		current=$$((current+1)); \
+		percent=$$((current*100/total)); \
+		filled=$$((bar_length*current/total)); \
+		empty=$$((bar_length-filled)); \
+		bar="$$(printf '%0.s#' $$(seq 1 $$filled))$$(printf '%0.s-' $$(seq 1 $$empty))"; \
+		printf "compiling libft binaries [%s] %3d%% \r" "$$bar" $$percent; \
+		cc $(CFLAGS) -c $$f -o $${f%.c}.o; \
+	done; \
+	echo ""; \
+	ar rcs $(NAME) $(OBJS); \
+	echo "building executable: $(NAME)"
 
-%.o: %.c 
-		cc $(CFLAGS) -c $^ -o $@
+# Clean object files
+clean:
+	@echo "removing libft binaries"
+	@rm -f $(OBJS)
 
-clean: 
-		rm -f $(OBJS)
-
+# Clean objects and library
 fclean: clean
-		rm -f $(NAME)
+	@echo "removing libft executable"
+	@rm -f $(NAME)
 
+# Rebuild everything
 re: fclean all

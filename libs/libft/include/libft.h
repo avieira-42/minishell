@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:40:52 by avieira-          #+#    #+#             */
-/*   Updated: 2025/09/25 00:36:31 by avieira-         ###   ########.fr       */
+/*   Updated: 2025/09/26 14:10:14 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <limits.h>
 # include <stdint.h>
 # include <stdarg.h>
+# include <fcntl.h>
 
 # define TRUE 1
 # define FALSE 0

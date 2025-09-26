@@ -1,21 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/25 03:19:42 by avieira-          #+#    #+#             */
-/*   Updated: 2025/09/26 16:17:09 by avieira-         ###   ########.fr       */
+/*   Created: 2025/09/26 15:07:37 by avieira-          #+#    #+#             */
+/*   Updated: 2025/09/26 16:05:32 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#ifndef PARSING_H
+# define PARSING_H
 
-# include "binary_tree/binary_tree.h"
-# include "tokenizer/tokenizer.h"
-# include "parsing/parsing.h"
-# include "tty_drawing/tty_drawing.h"
+# include "../../libs/libft/include/libft.h"
+
+void    parse_start(int argc, char *argv1);
 
 #endif

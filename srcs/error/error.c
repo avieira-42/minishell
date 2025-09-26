@@ -1,0 +1,31 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   error.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/26 14:17:51 by avieira-          #+#    #+#             */
+/*   Updated: 2025/09/26 18:03:56 by avieira-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "error.h"
+
+static void error_code_get(char *argv1, int *error_code)
+{
+    (void) argv1;
+    // need to find a way to get the right exit_code
+    *error_code = 127;
+}
+
+void error_exit(char *argv1)
+{
+    int     error_code;
+    char    *error_message;
+
+    error_code_get(argv1, &error_code);
+    error_message_get(error_code, &error_message);
+    error_message_put_1(error_message, argv1);
+    exit (error_code);
+}

@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 03:43:59 by avieira-          #+#    #+#             */
-/*   Updated: 2025/09/25 04:29:19 by avieira-         ###   ########.fr       */
+/*   Updated: 2025/09/26 15:54:56 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define TOKENIZER_H
 
 // COMMAND
-# define CMD "cmd"
+# define CMD "command"
 
 // OPERATOR
 # define PIPE "|"

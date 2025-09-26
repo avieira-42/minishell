@@ -6,7 +6,7 @@
 #    By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/21 12:18:39 by avieira-          #+#    #+#              #
-#    Updated: 2025/09/25 23:32:03 by avieira-         ###   ########.fr        #
+#    Updated: 2025/09/26 13:39:33 by avieira-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,22 +50,23 @@ $(NAME):
 		filled=$$((bar_length*current/total)); \
 		empty=$$((bar_length-filled)); \
 		bar="$$(printf '%0.s#' $$(seq 1 $$filled))$$(printf '%0.s-' $$(seq 1 $$empty))"; \
-		printf "compiling libft binaries [%s] %3d%% \r" "$$bar" $$percent; \
+		printf "Compiling libft binaries [%s] %3d%% \r" "$$bar" $$percent; \
 		cc $(CFLAGS) -c $$f -o $${f%.c}.o; \
 	done; \
 	echo ""; \
 	ar rcs $(NAME) $(OBJS); \
-	echo "building executable: $(NAME)"
 
 # Clean object files
 clean:
-	@echo "removing libft binaries"
+	@printf "Removing libft binaries... "
 	@rm -f $(OBJS)
+	@echo "Done"
 
 # Clean objects and library
 fclean: clean
-	@echo "removing libft executable"
+	@printf "Removing libft executable... "
 	@rm -f $(NAME)
+	@echo "Done"
 
 # Rebuild everything
 re: fclean all

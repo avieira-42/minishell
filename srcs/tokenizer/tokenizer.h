@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 03:43:59 by avieira-          #+#    #+#             */
-/*   Updated: 2025/09/26 15:54:56 by avieira-         ###   ########.fr       */
+/*   Updated: 2025/09/26 20:38:27 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,12 @@
 # define CMD "command"
 
 // OPERATOR
-# define PIPE "|"
-# define AND "&&"
-# define OR "||"
-# define READ "<"
-# define APPEND ">"
-# define HERE_DOC "<<"
-# define REDIRECT ">>"
+# define PIPE '|'
+# define AND '&'
+# define LESSER '<'
+# define GREATER '>'
+# define SINGLE_QUOTE '\''
+# define DOUBLE_QUOTE '"'
 
 // STRING_LITERAL
 # define STRING "string"

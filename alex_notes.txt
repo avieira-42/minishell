@@ -1,0 +1,27 @@
+#BASH BEHAVIOR
+
+DEFINITIONS:
+
+    1. Blank -> space or tab ('\s', '\t')
+
+    2. Word/Token -> a sequence of characters as a single unit
+
+    3. Name/identifier -> a word/token of only alphanumeric chars and
+        underscores and beginning with either one
+
+    4. Metacharacter -> char that separates words when unquoted:
+        | & ; ( ) < > \s \t \n
+
+    5. Control operator -> a word/token that performs a control function:
+        || & && ; ;; ;& ;;& () | |& <newline>
+
+
+DICTIONARY:
+
+    1. Quoted -> between '' or ""
+
+
+CONTROL OPERATOR PRIORITY ORDER:
+    
+    1. from right to left
+    2. 

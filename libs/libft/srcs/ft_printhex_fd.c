@@ -6,13 +6,13 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 12:25:50 by avieira-          #+#    #+#             */
-/*   Updated: 2025/10/02 15:23:53 by avieira-         ###   ########.fr       */
+/*   Updated: 2025/10/02 14:52:05 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/libft.h"
 
-int	ft_printhex(unsigned long nbr, char c)
+int	ft_printhex_fd(unsigned long nbr, char c, int fd)
 {
 	int		count;
 	int		index;
@@ -21,12 +21,12 @@ int	ft_printhex(unsigned long nbr, char c)
 	count = 0;
 	hex = "0123456789abcdef";
 	if (nbr > 15)
-		count += ft_printhex(nbr / 16, c);
+		count += ft_printhex_fd(nbr / 16, c, fd);
 	index = (nbr % 16);
 	if (c == 'x')
-		return (count += ft_printchar(hex[index]));
+		return (count += ft_printchar_fd(hex[index], fd));
 	else
-		return (count += ft_printchar(ft_toupper(hex[index])));
+		return (count += ft_printchar_fd(ft_toupper(hex[index]), fd));
 }
 /*
 #include <stdio.h>

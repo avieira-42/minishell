@@ -1,19 +1,8 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/09/25 17:55:52 by avieira-          #+#    #+#              #
-#    Updated: 2025/10/02 19:26:20 by avieira-         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 NAME = minishell
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -g -Wall -Wextra -Werror
+FLAG_READLINE = -lreadline
 
 LIBFT_DIR = libs/libft
 LIBFT = $(LIBFT_DIR)/libft.a
@@ -53,7 +42,7 @@ $(NAME): $(LIBFT)
 	done; \
 	echo ""; \
 	echo "Building $(NAME) executable"; \
-	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME); \
+	$(CC) $(CFLAGS) $(FLAG_READLINE) $(OBJS) $(LIBFT) -o $(NAME); \
 
 $(LIBFT):
 	@make -C $(LIBFT_DIR)

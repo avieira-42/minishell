@@ -1,23 +1,19 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   tokenizer.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/26 20:15:33 by avieira-          #+#    #+#             */
-/*   Updated: 2025/09/26 20:54:55 by avieira-         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "tokenizer.h"
 
-void    tokenize_double_quoted_text(char **token, char *input, int *i)
+void    tokenize_double_quoted_text(t_list *tokens, char *token_new, int *i)
 {
-    while (input[*i] != '\0'
+    int     token_len;
+
+    (*i)++;
+    token_len = 0;
+    while (token_new[*i] != '\0' && token_new[*i] != '\"')
+    {
+        (*i)++;
+        token_len++;
+    }
 }
 
-void    tokenize_input(char **tokens, char *input)
+void    tokenize_input(t_list *tokens, char *input)
 {
     int i;
     int j;
@@ -26,7 +22,7 @@ void    tokenize_input(char **tokens, char *input)
     j = 0;
     while(input[i] != '\0')
     {
-        if (input[i] == '"')
+        if (input[i] == '\"')
             tokenize_double_quoted_text(tokens, &input[i], &i);
     }
 }

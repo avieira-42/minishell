@@ -1,17 +1,7 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   tokenizer.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/25 03:43:59 by avieira-          #+#    #+#             */
-/*   Updated: 2025/09/26 20:38:27 by avieira-         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef TOKENIZER_H
 # define TOKENIZER_H
+
+#include "../../libs/libft/include/libft.h"
 
 // COMMAND
 # define CMD "command"

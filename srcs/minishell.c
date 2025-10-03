@@ -12,23 +12,28 @@
 
 #include "minishell.h"
 
+void    minishell_loop(void)
+{
+    char    *user_input;
+
+    user_input = NULL;
+    while (TRUE)
+    {
+        user_input = readline(PROMPT_MINISHELL);
+        if (user_input == NULL)
+            break;
+        special_user_input_check(user_input);
+        free(user_input);
+    }
+}
+
 int main(int argc, char **argv, char **envp)
 {
-    char    *command;
     (void)  argv;
     (void)  envp;
 
     parse_start(argc, argv[1]);
     draw_from_file(FILE_LOGO);
-    command = NULL;
-    while (TRUE)
-    {
-        ft_printf("%s", "minishell ");
-        command = get_next_line(STDIN_FILENO);
-        if (command == NULL)
-            break;
-        ft_printf("%s", command);
-        special_command_check(command);
-        free(command);
-    }
+    minishell_loop();
+
 }

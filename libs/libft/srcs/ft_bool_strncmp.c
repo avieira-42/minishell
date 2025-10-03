@@ -1,26 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_dblylst_new.c                                   :+:      :+:    :+:   */
+/*   ft_bool_strncmp.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: a-soeiro <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/18 14:36:36 by avieira-          #+#    #+#             */
-/*   Updated: 2025/10/03 22:11:21 by avieira-         ###   ########.fr       */
+/*   Created: 2025/09/11 18:31:53 by a-soeiro          #+#    #+#             */
+/*   Updated: 2025/10/03 18:29:37 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/libft.h"
 
-t_dblylst	*ft_dblylst_new(void *content)
+bool	ft_bool_strncmp(char *string_1, char *string_2, int n)
 {
-	t_dblylst	*new_node;
-
-	new_node = (t_dblylst *) malloc(sizeof(t_dblylst));
-	if (!new_node)
-		return (NULL);
-	new_node->content = content;
-	new_node->prev = NULL;
-	new_node->next = NULL;
-	return (new_node);
+	if (ft_strncmp(string_1, string_2, n) == 0)
+		return (true);
+	return (false);
 }

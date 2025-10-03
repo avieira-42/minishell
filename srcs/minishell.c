@@ -1,15 +1,3 @@
-/* ****************************************************************************/
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/25 14:28:42 by avieira-          #+#    #+#             */
-/*   Updated: 2025/09/26 14:03:56 by avieira-         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 void    minishell_loop(void)
@@ -20,10 +8,10 @@ void    minishell_loop(void)
     while (TRUE)
     {
         user_input = readline(PROMPT_MINISHELL);
-        if (user_input == NULL)
-            break;
-        special_user_input_check(user_input);
+        // user_input_expand
+        // tokenize command
         free(user_input);
+        // >> alongside builtins >> (special_user_input_check(user_input)); <<
     }
 }
 

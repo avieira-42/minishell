@@ -10,10 +10,10 @@ DEFINITIONS:
         underscores and beginning with either one
 
     4. Metacharacter -> char that separates words when unquoted:
-        | & ; ( ) < > \s \t \n
+        | < > ( ) > \s \t \n
 
     5. Control operator -> a word/token that performs a control function:
-        || & && ; ;; ;& ;;& () | |& <newline>
+        ( ) | || && <newline>
 
 
 DICTIONARY:

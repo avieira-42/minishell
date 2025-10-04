@@ -6,7 +6,7 @@
 // COMMAND
 # define CMD "command"
 
-// OPERATORS
+// OPERATORS AND SPECIAL CHARACTERS
 # define SPACE ' '
 # define REDIRECT_IN '>'
 # define REDIRECT_OUT '<'
@@ -22,8 +22,12 @@
 # define OPEN_PAREN '('
 # define CLOSE_PAREN ')'
 
-typedef enum e_token
+// TOKENS
+typedef enum e_token_type
 {
+    TOKEN_SPACE,
+    TOKEN_COMMAND,
+    TOKEN_ARGUMENT,
     TOKEN_REDIRECT_IN,
     TOKEN_REDIRECT_OUT,
     TOKEN_HEREDOC,
@@ -37,9 +41,16 @@ typedef enum e_token
     TOKEN_EXPANSION_EXIT,
     TOKEN_OPEN_PAREN,
     TOKEN_CLOSE_PAREN,
-}   t_token;
+}   t_token_type;
 
-
+typedef struct s_token_list
+{
+    t_token_type        token_type;
+    char                *token_string;
+    bool                is_quoted;
+    bool                is_open_quoted;
+    struct s_token_list *next;
+}   t_token_list;
 
 // STRING_LITERAL
 # define STRING "string"
@@ -63,5 +74,7 @@ typedef enum e_token
  * ".h" = string
  * | = operator
  * vim = cmd */
+
+t_token_type    token_identify(char *token);
 
 #endif

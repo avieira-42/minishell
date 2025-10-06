@@ -3,6 +3,7 @@ NAME = minishell
 CC = cc
 CFLAGS = -g -Wall -Wextra -Werror
 FLAG_READLINE = -lreadline
+LDFLAGS = -I/usr/local/opt/readline/include -L/usr/local/op/readline/lib
 
 LIBFT_DIR = libs/libft
 LIBFT = $(LIBFT_DIR)/libft.a
@@ -11,15 +12,21 @@ MINISHELL_SRCS = srcs/minishell.c
 
 TTY_DRAWING_SRCS = srcs/tty_drawing/tty_drawing.c
 
+TOKENIZE_SRCS = srcs/tokenizer/tokenizer.c \
+				srcs/tokenizer/token_list.c
+
 PARSING_SRCS = srcs/parsing/parsing.c
 
 ERROR_SRCS = srcs/error/error.c \
-srcs/error/error_message.c
+			 srcs/error/error_message.c
+				
 
 SRCS = $(MINISHELL_SRCS) \
-$(TTY_DRAWING_SRCS) \
-$(PARSING_SRCS) \
-$(ERROR_SRCS)
+		$(TTY_DRAWING_SRCS) \
+		$(PARSING_SRCS) \
+		$(ERROR_SRCS) \
+		$(TOKENIZE_SRCS)
+
 
 OBJS = $(SRCS:.c=.o)
 
@@ -42,7 +49,7 @@ $(NAME): $(LIBFT)
 	done; \
 	echo ""; \
 	echo "Building $(NAME) executable"; \
-	$(CC) $(CFLAGS) $(FLAG_READLINE) $(OBJS) $(LIBFT) -o $(NAME); \
+	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJS) $(LIBFT) -o $(NAME) $(FLAG_READLINE); \
 
 $(LIBFT):
 	@make -C $(LIBFT_DIR)

@@ -47,8 +47,9 @@ t_token_list	*ft_token_lst_new(char *token)
 	if (!new_node)
 		return (NULL);
     new_node->token_type = -1;
-	new_node->token_string = NULL;
+	new_node->token_string = token;
     new_node->is_quoted = false;
-	new_node->next = false;
+    new_node->is_open_quoted = false;
+	new_node->next = NULL;
 	return (new_node);
 }

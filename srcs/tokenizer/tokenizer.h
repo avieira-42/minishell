@@ -8,11 +8,15 @@
 
 // OPERATORS AND SPECIAL CHARACTERS
 # define SPACE ' '
+# define STRING_SPACE " "
 # define REDIRECT_IN '>'
+# define STRING_REDIRECT_IN ">"
 # define REDIRECT_OUT '<'
+# define STRING_REDIRECT_OUT "<"
 # define HEREDOC "<<"
 # define APPEND ">>"
 # define PIPE '|'
+# define STRING_PIPE "|"
 # define LOGICAL_OR "||"
 # define LOGICAL_AND "&&"
 # define DQUOTE_LITERAL '\"'
@@ -75,6 +79,15 @@ typedef struct s_token_list
  * | = operator
  * vim = cmd */
 
-t_token_type    token_identify(char *token);
+// TOKEN_LIST
+void	        ft_token_lst_clear(t_token_list **lst);
+void	        ft_token_lst_add_back(t_token_list **lst, t_token_list *new_node);
+t_token_list	*ft_token_lst_new(char *token);
+t_token_list	*ft_token_lst_last(t_token_list *lst);
+
+// TOKENIZE
+void    tokenize_user_input(t_token_list **tokens, char *user_input);
+void    tokenize_squoted_text(t_token_list **tokens, char *user_input, int *i);
+
 
 #endif

@@ -1,5 +1,6 @@
 #include "minishell.h"
 
+// TESTING AREA START
 void    tokens_check(t_token_list *tokens)
 {
     while (tokens != NULL)
@@ -9,6 +10,7 @@ void    tokens_check(t_token_list *tokens)
     }
     printf("\n");
 }
+// TESTING ARE END
 
 void    minishell_loop(void)
 {

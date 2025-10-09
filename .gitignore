@@ -1,0 +1,3 @@
+srcs/*/*.o
+srcs/*.o
+libs/libft/srcs/*.o

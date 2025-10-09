@@ -1,18 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printchar.c                                     :+:      :+:    :+:   */
+/*   ft_printunsign_nbr.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/28 09:03:54 by avieira-          #+#    #+#             */
-/*   Updated: 2025/10/02 15:08:13 by avieira-         ###   ########.fr       */
+/*   Created: 2025/04/29 13:18:10 by avieira-          #+#    #+#             */
+/*   Updated: 2025/10/02 14:52:53 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/libft.h"
 
-int	ft_printchar(char c)
+int	ft_printunsign_nbr_fd(unsigned int nbr, int fd)
 {
-	return (write(1, &c, 1));
+	int	count;
+
+	count = 0;
+	if (nbr > 9)
+		count += ft_printunsign_nbr_fd(nbr / 10, fd);
+	nbr = nbr % 10;
+	return (count += ft_printchar_fd('0' + nbr, fd));
 }
+/*
+#include <stdio.h>
+int	main(int argc, char **argv)
+{
+unsigned int	i;
+
+while (1)
+{
+scanf("%u", &i);
+printf(", %i", printf("%u", i));
+printf("\n");
+printf(", %i", ft_printunsign_nbr(i));
+printf("\n");
+}
+}*/

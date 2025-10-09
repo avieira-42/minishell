@@ -1,39 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printunsign_nbr.c                               :+:      :+:    :+:   */
+/*   ft_printadd_fd.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/29 13:18:10 by avieira-          #+#    #+#             */
-/*   Updated: 2025/10/02 17:38:25 by avieira-         ###   ########.fr       */
+/*   Created: 2025/04/24 19:47:36 by avieira-          #+#    #+#             */
+/*   Updated: 2025/10/02 14:51:02 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/libft.h"
 
-int	ft_printunsign_nbr(unsigned int nbr)
+int	ft_printadd_fd(void *ptr, int fd)
 {
-	int	count;
+	unsigned long int	add;
 
-	count = 0;
-	if (nbr > 9)
-		count += ft_printunsign_nbr(nbr / 10);
-	nbr = nbr % 10;
-	return (count += ft_printchar('0' + nbr));
+	if (!ptr)
+		return (ft_printstr_fd("(nil)", fd));
+	add = (unsigned long int) ptr;
+	return (ft_printstr_fd("0x", fd) + ft_printhex_fd(add, 'x', fd));
 }
 /*
 #include <stdio.h>
-int	main(int argc, char **argv)
+int	main(void)
 {
-unsigned int	i;
+	int		a;
+	int		*ptr1;
+	char	*ptr2;
 
-while (1)
-{
-scanf("%u", &i);
-printf(", %i", printf("%u", i));
-printf("\n");
-printf(", %i", ft_printunsign_nbr(i));
-printf("\n");
-}
+	a = 1;
+	ptr1 = &a;
+	ptr2 = "ola";
+	printf("%i, %i\n", printf("%p", ptr1), printf("%p", ptr2));
+	printf("%i, %i", ft_printadd(ptr1), ft_printadd(ptr2));
 }*/

@@ -1,18 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printchar.c                                     :+:      :+:    :+:   */
+/*   ft_bool_strncmp.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: a-soeiro <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/28 09:03:54 by avieira-          #+#    #+#             */
-/*   Updated: 2025/10/02 15:08:13 by avieira-         ###   ########.fr       */
+/*   Created: 2025/09/11 18:31:53 by a-soeiro          #+#    #+#             */
+/*   Updated: 2025/10/03 18:29:37 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/libft.h"
 
-int	ft_printchar(char c)
+bool	ft_bool_strncmp(char *string_1, char *string_2, int n)
 {
-	return (write(1, &c, 1));
+	if (ft_strncmp(string_1, string_2, n) == 0)
+		return (true);
+	return (false);
 }

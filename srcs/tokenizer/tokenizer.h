@@ -1,28 +1,60 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   tokenizer.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/25 03:43:59 by avieira-          #+#    #+#             */
-/*   Updated: 2025/09/26 20:38:27 by avieira-         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef TOKENIZER_H
 # define TOKENIZER_H
+
+#include "../../libs/libft/include/libft.h"
 
 // COMMAND
 # define CMD "command"
 
-// OPERATOR
+// OPERATORS AND SPECIAL CHARACTERS
+# define SPACE ' '
+# define STRING_SPACE " "
+# define REDIRECT_IN '>'
+# define STRING_REDIRECT_IN ">"
+# define REDIRECT_OUT '<'
+# define STRING_REDIRECT_OUT "<"
+# define HEREDOC "<<"
+# define APPEND ">>"
 # define PIPE '|'
-# define AND '&'
-# define LESSER '<'
-# define GREATER '>'
-# define SINGLE_QUOTE '\''
-# define DOUBLE_QUOTE '"'
+# define STRING_PIPE "|"
+# define LOGICAL_OR "||"
+# define LOGICAL_AND "&&"
+# define DQUOTE_LITERAL '\"'
+# define SQUOTE_LITERAL '\''
+# define EXPANSION_VARS '$'
+# define EXPANSION_EXIT "?"
+# define OPEN_PAREN '('
+# define CLOSE_PAREN ')'
+
+// TOKENS
+typedef enum e_token_type
+{
+    TOKEN_SPACE,
+    TOKEN_COMMAND,
+    TOKEN_ARGUMENT,
+    TOKEN_REDIRECT_IN,
+    TOKEN_REDIRECT_OUT,
+    TOKEN_HEREDOC,
+    TOKEN_APPEND,
+    TOKEN_PIPE,
+    TOKEN_LOGICAL_OR,
+    TOKEN_LOGICAL_AND,
+    TOKEN_DQUOTE_LITERAL,
+    TOKEN_SQUOTE_LITERAL,
+    TOKEN_EXPANSION_VARS,
+    TOKEN_EXPANSION_EXIT,
+    TOKEN_OPEN_PAREN,
+    TOKEN_CLOSE_PAREN,
+}   t_token_type;
+
+typedef struct s_token_list
+{
+    t_token_type        token_type;
+    char                *token_string;
+    bool                is_quoted;
+    bool                is_open_quoted;
+    struct s_token_list *next;
+}   t_token_list;
 
 // STRING_LITERAL
 # define STRING "string"
@@ -46,5 +78,16 @@
  * ".h" = string
  * | = operator
  * vim = cmd */
+
+// TOKEN_LIST
+void	        ft_token_lst_clear(t_token_list **lst);
+void	        ft_token_lst_add_back(t_token_list **lst, t_token_list *new_node);
+t_token_list	*ft_token_lst_new(char *token);
+t_token_list	*ft_token_lst_last(t_token_list *lst);
+
+// TOKENIZE
+void    tokenize_user_input(t_token_list **tokens, char *user_input);
+void    tokenize_squoted_text(t_token_list **tokens, char *user_input, int *i);
+
 
 #endif

@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   tty_drawing.c                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/26 13:45:19 by avieira-          #+#    #+#             */
-/*   Updated: 2025/09/26 16:53:57 by avieira-         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "tty_drawing.h"
 
 void    draw_from_file(char *file_name)
@@ -30,7 +18,7 @@ void    draw_from_file(char *file_name)
     close(fd);
 }
 
-void    special_command_check(char *command)
+void    special_user_input_check(char *command)
 {
     if (ft_bool_strcmp(command, CMD_AUTHORS) == TRUE)
         draw_from_file(FILE_AUTHORS);

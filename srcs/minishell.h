@@ -15,4 +15,27 @@
 
 # define PROMPT_MINISHELL "minishell$> "
 
+// ERROR_H
+void    error_exit(char *argv1);
+void    error_message_get(int error_code, char **error_message);
+void    error_message_put_1(char *error_message, char *argv1);
+
+// PARSE_H
+void    parse_start(int argc, char *argv1);
+
+//TOKENIZER_H
+// token list
+void	        ft_token_lst_clear(t_token_list **lst);
+void	        ft_token_lst_add_back(t_token_list **lst, t_token_list *new_node);
+t_token_list	*ft_token_lst_new(char *token);
+t_token_list	*ft_token_lst_last(t_token_list *lst);
+
+// tokenize
+void    tokenize_user_input(t_token_list **tokens, char *user_input);
+void    tokenize_squoted_text(t_token_list **tokens, char *user_input, int *i);
+
+//TTY_DRAWING_H
+void    draw_from_file(char *file_name);
+void    special_user_input_check(char *command);
+
 #endif

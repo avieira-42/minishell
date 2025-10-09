@@ -10,7 +10,7 @@ void    tokens_check(t_token_list *tokens)
     }
     printf("\n");
 }
-// TESTING ARE END
+// TESTING AREA END
 
 void    minishell_loop(void)
 {

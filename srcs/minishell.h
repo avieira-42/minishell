@@ -9,7 +9,7 @@
 # include "tokenizer/tokenizer.h"
 # include "parsing/parsing.h"
 # include "tty_drawing/tty_drawing.h"
-# include "error/error.c"
+# include "error/error.h"
 # include "environment_variables/environment_variables.h"
 # include "expand/expand.h"
 

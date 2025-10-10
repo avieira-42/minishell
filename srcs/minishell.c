@@ -6,6 +6,12 @@ void    tokens_check(t_token_list *tokens)
     while (tokens != NULL)
     {
         printf("[%s] ", tokens->token_string);
+        if (tokens->is_open_quoted == true)
+            printf("open_quoted\n");
+        else if (tokens->is_quoted == true)
+            printf("quoted\n");
+        else
+            printf("unquoted\n");
         tokens = tokens->next;
     }
     printf("\n");

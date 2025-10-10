@@ -13,7 +13,8 @@ MINISHELL_SRCS = srcs/minishell.c
 TTY_DRAWING_SRCS = srcs/tty_drawing/tty_drawing.c
 
 TOKENIZE_SRCS = srcs/tokenizer/tokenizer.c \
-				srcs/tokenizer/token_list.c
+				srcs/tokenizer/token_list.c \
+				srcs/tokenizer/quotation.c
 
 PARSING_SRCS = srcs/parsing/parsing.c
 

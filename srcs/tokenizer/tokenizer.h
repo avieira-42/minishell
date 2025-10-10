@@ -89,5 +89,6 @@ t_token_list	*ft_token_lst_last(t_token_list *lst);
 void    tokenize_user_input(t_token_list **tokens, char *user_input);
 void    tokenize_squoted_text(t_token_list **tokens, char *user_input, int *i);
 
+void    quote_type_identify(t_token_list *tokens);
 
 #endif

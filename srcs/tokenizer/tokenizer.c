@@ -43,9 +43,6 @@ void    tokenize_squoted_text(t_token_list **tokens, char *user_input, int *i)
 
 void    tokenize_quoted_text(t_token_list **tokens, char *user_input, int *i/*, int j*/)
 {
-    /*char            *token_new;
-    t_token_list    *token_node_new;*/
- 
     if ((user_input[*i] != DQUOTE_LITERAL && user_input[*i] != SQUOTE_LITERAL)
         || user_input[*i] == '\0')
         return ;
@@ -53,19 +50,6 @@ void    tokenize_quoted_text(t_token_list **tokens, char *user_input, int *i/*, 
         tokenize_dquoted_text(tokens, user_input, i);
     else if (user_input[*i] == SQUOTE_LITERAL)
         tokenize_squoted_text(tokens, user_input, i);
-    /*while (user_input[*i] != '\0' && is_operator(&user_input[*i]) == false)
-    {
-        tokenize_quoted_text(tokens, user_input, i, j);
-        (*i)++;
-    }*/
-    /*token_new = ft_substr(user_input, j, *i - j);
-    token_node_new = ft_token_lst_new(token_new);
-    if (user_input[(*i) - 1] != DQUOTE_LITERAL
-        && user_input[(*i) - 1] != SQUOTE_LITERAL) 
-        token_node_new->is_open_quoted = true;
-    else
-        token_node_new->is_quoted = true;
-    ft_token_lst_add_back(tokens, token_node_new);*/
 }
 
 void    tokenize_operator(char *c, t_token_list **tokens, int *i)
@@ -121,22 +105,18 @@ void    tokenize_user_input(t_token_list **tokens, char *user_input)
     j = 0;
     while(user_input[i] != '\0')
     {
-        if (user_input[i] == SQUOTE_LITERAL || user_input[i] ==DQUOTE_LITERAL)
-        {
-            tokenize_quoted_text(tokens, user_input, &i/*, j*/);
-            //j = i;
-        }
-        else if (is_operator(&user_input[i]) == true)
+        tokenize_quoted_text(tokens, user_input, &i);
+        if (is_operator(&user_input[i]) == true)
         {
             tokenize_word(tokens, user_input, i, j);
             tokenize_operator(&user_input[i], tokens, &i);
             j = i;
-            tokenize_quoted_text(tokens, user_input, &i/*, i*/);
-            //j = i;
+            tokenize_quoted_text(tokens, user_input, &i);
         }
         else
             i++;
     }
     if (i > j)
         tokenize_word(tokens, user_input, i, j);
+    quote_type_identify(*tokens);
 }

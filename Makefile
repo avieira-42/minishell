@@ -32,9 +32,7 @@ OBJS = $(SRCS:.c=.o)
 
 .PHONY: all clean fclean re
 
-all: $(LIBFT) $(NAME)
-
-$(NAME): $(LIBFT)
+%.o: %.c
 	@total=$(words $(SRCS)); \
 	current=0; \
 	bar_length=30; \
@@ -48,20 +46,24 @@ $(NAME): $(LIBFT)
 		$(CC) $(CFLAGS) -c $$f -o $${f%.c}.o; \
 	done; \
 	echo ""; \
-	echo "Building $(NAME) executable"; \
+
+all: $(LIBFT) $(NAME)
+
+$(NAME): $(LIBFT) $(OBJS)
+	@echo "Building $(NAME) executable"; \
 	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJS) $(LIBFT) -o $(NAME) $(FLAG_READLINE); \
 
 $(LIBFT):
-	@make -C $(LIBFT_DIR)
+	@make -C $(LIBFT_DIR) --no-print-directory
 
 clean:
-	@make clean -C $(LIBFT_DIR)
+	@make clean -C $(LIBFT_DIR) --no-print-directory
 	@printf "Removing $(NAME) binaries... "
 	@rm -rf $(OBJS)
 	@echo "Done"
 
 fclean: clean
-	@make fclean -C $(LIBFT_DIR)
+	@make fclean -C $(LIBFT_DIR) --no-print-directory
 	@printf "Removing executable... "
 	@rm -rf $(NAME)
 	@echo "Done"

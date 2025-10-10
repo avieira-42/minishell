@@ -22,6 +22,9 @@ void    minishell_loop(void)
     while (TRUE)
     {
         user_input = readline(PROMPT_MINISHELL);
+        if (user_input == NULL)
+            break ;
+        add_history(user_input);
         special_user_input_check(user_input);
         tokenize_user_input(&tokens, user_input);
         if (tokens != NULL)
@@ -43,4 +46,5 @@ int main(int argc, char **argv, char **envp)
     parse_start(argc, argv[1]);
     draw_from_file(FILE_LOGO);
     minishell_loop();
+    clear_history();
 }

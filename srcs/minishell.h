@@ -3,6 +3,7 @@
 
 # include <stdio.h>
 # include <readline/readline.h>
+# include <readline/history.h>
 # include "/usr/include/readline/readline.h"
 # include "/usr/include/readline/history.h"
 # include "binary_tree/binary_tree.h"

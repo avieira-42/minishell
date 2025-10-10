@@ -46,4 +46,5 @@ int main(int argc, char **argv, char **envp)
     parse_start(argc, argv[1]);
     draw_from_file(FILE_LOGO);
     minishell_loop();
+    clear_history();
 }

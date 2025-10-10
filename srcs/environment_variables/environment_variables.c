@@ -1,44 +1,19 @@
 #include "environment_variables.h"
 
-char	*join_command(char *dir, char *cmd)
+int     environment_variable_len(char *variable_name)
 {
-	char	*path;
-	char	*tmp;
+    int i;
 
-	path = ft_strjoin(dir, "/");
-	if (!path)
-		return (NULL);
-	tmp = path;
-	path = ft_strjoin(path, cmd);
-	free(tmp);
-	return (path);
-}
+    i = 0;
+    while (variable_name[i] != '\0' && !ft_isspace(variable_name[1]))
+        i++;
+    return (1);
+} 
 
-void	get_path(char **dirs, char **path, char *cmd)
+char	**enviroment_variable_expand(char **envp, char *variable_name)
 {
 	int		i;
-	char	*tmp;
-
-	*path = NULL;
-	tmp = NULL;
-	i = 0;
-	while (dirs[i])
-	{
-		tmp = join_command(dirs[i++], cmd);
-		if (!tmp)
-			break ;
-		if (access(tmp, F_OK) == 0)
-		{
-			*path = tmp;
-			break ;
-		}
-		free(tmp);
-	}
-}
-
-char	**get_dirs(char **envp)
-{
-	int		i;
+    int     variable_len;
 	char	*path;
 	char	**dirs;
 
@@ -47,8 +22,9 @@ char	**get_dirs(char **envp)
 	dirs = NULL;
 	while (envp[i])
 	{
-		if (ft_bool_strncmp(envp[i], "PATH", 4) == 0)
-			path = envp[i] + 5;
+        variable_len = environment_variable_len(variable_name);
+		if (ft_bool_strncmp(envp[i], variable_name, variable_len) == true)
+			path = envp[i] + variable_len;
 		i++;
 	}
 	dirs = ft_split(path, ':');

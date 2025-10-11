@@ -20,13 +20,16 @@ PARSING_SRCS = srcs/parsing/parsing.c
 
 ERROR_SRCS = srcs/error/error.c \
 			 srcs/error/error_message.c
+
+BUILTINS_SRCS = srcs/builtins/echo.c
 				
 
 SRCS = $(MINISHELL_SRCS) \
 		$(TTY_DRAWING_SRCS) \
 		$(PARSING_SRCS) \
 		$(ERROR_SRCS) \
-		$(TOKENIZE_SRCS)
+		$(TOKENIZE_SRCS) \
+		$(BUILTINS_SRCS)
 
 
 OBJS = $(SRCS:.c=.o)

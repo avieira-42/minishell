@@ -2,6 +2,7 @@
 # define TOKENIZER_H
 
 #include "../../libs/libft/include/libft.h"
+#include "../environment_variables/environment_variables.h"
 
 // COMMAND
 # define CMD "command"
@@ -65,7 +66,6 @@ typedef struct s_token_list
 // CHARACTER
 # define BACK_SLASH '\\'
 
-
 /* where the functions regarding the seperation of tokens (categories of a string) will be 
  *
  * lets look at :
@@ -89,6 +89,10 @@ t_token_list	*ft_token_lst_last(t_token_list *lst);
 void    tokenize_user_input(t_token_list **tokens, char *user_input);
 void    tokenize_squoted_text(t_token_list **tokens, char *user_input, int *i);
 
+// QUOTATION
 void    quote_type_identify(t_token_list *tokens);
+
+// EXPANSION
+void    token_expand(t_token_list *tokens, char **envp);
 
 #endif

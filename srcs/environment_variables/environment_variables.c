@@ -1,34 +1,38 @@
 #include "environment_variables.h"
+#include "../tokenizer/tokenizer.h"
 
 int     environment_variable_len(char *variable_name)
 {
     int i;
 
     i = 0;
-    while (variable_name[i] != '\0' && !ft_isspace(variable_name[1]))
+    while (!ft_isspace(variable_name[i])
+        && variable_name[i] != '\0' && variable_name[i] != DQUOTE_LITERAL)
         i++;
-    return (1);
+    return (i);
 } 
 
-char	**enviroment_variable_expand(char **envp, char *variable_name)
+char	*environment_variable_get(char **envp, char *variable_name, int *j)
 {
 	int		i;
     int     variable_len;
-	char	*path;
-	char	**dirs;
+	char	*expansion;
 
+    (*j)++;
+    variable_name++;
 	i = 0;
-	path = NULL;
-	dirs = NULL;
+	expansion = "";
 	while (envp[i])
 	{
         variable_len = environment_variable_len(variable_name);
-		if (ft_bool_strncmp(envp[i], variable_name, variable_len) == true)
-			path = envp[i] + variable_len;
+		if (ft_bool_strncmp(envp[i], variable_name, variable_len) == true
+            && envp[i][variable_len] == '=')
+        {
+			expansion = envp[i] + variable_len + 1;
+            break;
+        }
 		i++;
 	}
-	dirs = ft_split(path, ':');
-	if (dirs == NULL)
-		error_exit("Failed to get path directories");
-	return (dirs);
+    (*j) += variable_len;
+	return (expansion);
 }

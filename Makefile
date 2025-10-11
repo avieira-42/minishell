@@ -14,7 +14,10 @@ TTY_DRAWING_SRCS = srcs/tty_drawing/tty_drawing.c
 
 TOKENIZE_SRCS = srcs/tokenizer/tokenizer.c \
 				srcs/tokenizer/token_list.c \
-				srcs/tokenizer/quotation.c
+				srcs/tokenizer/quotation.c \
+				srcs/tokenizer/expand.c
+
+ENVIRONMENT_VARIABLES_SRCS = srcs/environment_variables/environment_variables.c
 
 PARSING_SRCS = srcs/parsing/parsing.c
 
@@ -26,7 +29,8 @@ SRCS = $(MINISHELL_SRCS) \
 		$(TTY_DRAWING_SRCS) \
 		$(PARSING_SRCS) \
 		$(ERROR_SRCS) \
-		$(TOKENIZE_SRCS)
+		$(TOKENIZE_SRCS) \
+		$(ENVIRONMENT_VARIABLES_SRCS)
 
 
 OBJS = $(SRCS:.c=.o)

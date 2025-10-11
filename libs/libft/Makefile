@@ -6,7 +6,7 @@
 #    By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/21 12:18:39 by avieira-          #+#    #+#              #
-#    Updated: 2025/10/03 18:30:12 by avieira-         ###   ########.fr        #
+#    Updated: 2025/10/10 18:56:00 by avieira-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ SRCS += srcs/ft_dblylst_size.c srcs/ft_is_int.c srcs/ft_bool_strcmp.c
 SRCS += srcs/get_next_line.c srcs/get_next_line_utils.c
 SRCS += srcs/ft_printadd_fd.c srcs/ft_printf_fd.c srcs/ft_printchar_fd.c
 SRCS += srcs/ft_printstr_fd.c srcs/ft_printnbr_fd.c srcs/ft_printunsign_nbr_fd.c
-SRCS += srcs/ft_printhex_fd.c srcs/ft_bool_strncmp.c
+SRCS += srcs/ft_printhex_fd.c srcs/ft_bool_strncmp.c srcs/ft_realloc.c
 OBJS = $(SRCS:.c=.o)
 
 .PHONY: all clean fclean re

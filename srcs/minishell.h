@@ -12,7 +12,6 @@
 # include "tty_drawing/tty_drawing.h"
 # include "error/error.h"
 # include "environment_variables/environment_variables.h"
-# include "expand/expand.h"
 
 # define PROMPT_MINISHELL "minishell$> "
 
@@ -38,5 +37,9 @@ void    tokenize_squoted_text(t_token_list **tokens, char *user_input, int *i);
 //TTY_DRAWING_H
 void    draw_from_file(char *file_name);
 void    special_user_input_check(char *command);
+
+//ENVIRONMENT_VARIABLES
+char	*environment_variable_get(char **envp, char *variable_name, int *j);
+int     environment_variable_len(char *variable_name);
 
 #endif

@@ -18,7 +18,10 @@ void    quotation_check(char *quoted_text, t_token_list *token)
         token->is_quoted = true;
     }
     quoted_text++;
-    if (*quoted_text != '\0')
+    while (*quoted_text != DQUOTE_LITERAL && *quoted_text != SQUOTE_LITERAL
+        && *quoted_text != '\0')
+        quoted_text++;
+    if (*quoted_text == DQUOTE_LITERAL || *quoted_text == SQUOTE_LITERAL)
         quotation_check(quoted_text, token);
 }
 

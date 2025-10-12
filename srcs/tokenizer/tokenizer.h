@@ -57,6 +57,12 @@ typedef struct s_token_list
     struct s_token_list *next;
 }   t_token_list;
 
+typedef struct s_iter
+{
+    int     i;
+    int     j;
+}   t_iter;
+
 // STRING_LITERAL
 # define STRING "string"
 
@@ -78,6 +84,9 @@ typedef struct s_token_list
  * ".h" = string
  * | = operator
  * vim = cmd */
+
+//BOOLEAN
+bool    is_operator(char *c);
 
 // TOKEN_LIST
 void	        ft_token_lst_clear(t_token_list **lst);

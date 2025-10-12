@@ -1,10 +1,29 @@
 #include "environment_variables.h"
+#include "../tokenizer/tokenizer.h"
+
+bool    is_variable(char *token_string, int i)
+{
+    if (token_string[i] != EXPANSION_VARS)
+        return (false);
+    i++;
+    if (token_string[i] != EXPANSION_VARS)
+        return (false);
+    if (token_string[i] == DQUOTE_LITERAL || token_string[i] == '\0'
+        || ft_isspace(token_string[i]))
+        return (false);
+    if (ft_isalnum(token_string[i]) == true || token_string[i] == '_')
+        return (true);
+    return (false);
+}
 
 int     environment_variable_len(char *variable_name)
 {
     int i;
 
     i = 0;
+    if (ft_isdigit(variable_name[i]))
+            return (1);
+    i++;
     while (ft_isalnum(variable_name[i]))
         i++;
     return (i);

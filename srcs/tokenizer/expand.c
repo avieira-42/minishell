@@ -1,59 +1,64 @@
 #include "tokenizer.h"
 #include "../environment_variables/environment_variables.h"
 
-void    single_quotation_skip(char *token_string, int *i)
+void    single_quotation_skip(char *buffer, char *token_string, int *i, int *j)
 {
+    buffer[*j] = token_string[*i];
     (*i)++;
+    (*j)++;
     while (token_string[*i] != SQUOTE_LITERAL && token_string[*i] != '\0')
+    {
+        buffer[*j] = token_string[*i];
         (*i)++;
+        (*j)++;
+    }
+    buffer[*j] = token_string[*i];
+    (*i)++;
+    (*j)++;
 }
+
+void    buffer_expansion_fill();
 
 char    *token_expanded_create(char *token_string, char **envp)
 {
     int     i;
     int     j;
+    char    *buffer;
     char    *expansion;
-    char    *tmp;
-    char    *tmp2;
+    int     is_double_quoted;
 
     i = 0;
     j = 0;
+    buffer = malloc(107374182);
+    if (buffer == NULL)
+        return (NULL);
+    is_double_quoted = -1;
     while (token_string[i] != '\0')
     {
-        if (token_string[i] == SQUOTE_LITERAL)
-            single_quotation_skip(token_string, &i);
-        if (token_string[i] == '\0')
-            break;
-        if (token_string[i] == EXPANSION_VARS)
+        if (token_string[i] == DQUOTE_LITERAL)
+            is_double_quoted *= -1;
+        if (token_string[i] == SQUOTE_LITERAL && is_double_quoted == -1)
+            single_quotation_skip(buffer, token_string, &i, &j);
+        /*else if (token_string[i] == EXPANSION_VARS && token_string[i] == EXPANSION_VARS)*/
+        else if (token_string[i] == EXPANSION_VARS)
         {
-            j = i;
-            // GIVE A NAME TO THIS FUNCTION
+            /*if (token_string[i + 1] == EXPANSION_VARS)
+                expansion*/
             expansion = environment_variable_get(envp, &token_string[i], &i);
-            if (expansion == NULL)
-                return (NULL);
-            if (i - j == 1)
-                break;
-            tmp = ft_substr(token_string, 0, j);
-            if (tmp == NULL)
-                return (NULL);
-            tmp2 = ft_strjoin(tmp, expansion);
-            if (tmp2 == NULL)
-                return (NULL);
-            free(tmp);
-            if (token_string[i] != '\0')
-            {
-                tmp = ft_substr(token_string, i, ft_strlen(&token_string[i]));
-                if (tmp == NULL)
-                    return (NULL);
-            }
-            free(token_string);
-            token_string = ft_strjoin(tmp2, tmp);
-            if (token_string == NULL)
-                return (NULL);
+            ft_memcpy(&buffer[j], expansion, ft_strlen(expansion));
+            j+= ft_strlen(expansion);
         }
         else
+        {
+            buffer[j] = token_string[i];
             i++;
+            j++;
+        }
     }
+    buffer[j] = '\0';
+    free(token_string);
+    token_string = ft_strdup(buffer);
+    free(buffer);
     return (token_string);
 }
 

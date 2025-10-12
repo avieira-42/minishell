@@ -1,13 +1,11 @@
 #include "environment_variables.h"
-#include "../tokenizer/tokenizer.h"
 
 int     environment_variable_len(char *variable_name)
 {
     int i;
 
     i = 0;
-    while (!ft_isspace(variable_name[i])
-        && variable_name[i] != '\0' && variable_name[i] != DQUOTE_LITERAL)
+    while (ft_isalnum(variable_name[i]))
         i++;
     return (i);
 } 

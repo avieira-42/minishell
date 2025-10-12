@@ -54,10 +54,9 @@ void    minishell_loop(char **envp)
         add_history(user_input);
         special_user_input_check(user_input);
         tokenize_user_input(&tokens, user_input);
+        // tokenize command
         if (tokens != NULL)
             tokens_check(tokens, envp);
-        // user_input_expand
-        // tokenize command
         free(user_input);
         if (tokens != NULL)
             ft_token_lst_clear(&tokens);

@@ -34,12 +34,6 @@ void    token_expansion_init(t_iter *iter, char **buffer, int *double_quoted)
     *buffer = malloc(107374182);
 }
 
-void    single_quotation_check(char c, int *double_quoted)
-{
-    if (c == DQUOTE_LITERAL)
-        *double_quoted *= -1;
-}
-
 void    buffer_fill(char *buffer, char *token_string, t_iter *iter)
 {
     buffer[iter->j] = token_string[iter->i];
@@ -58,7 +52,7 @@ char    *token_expanded_create(char *token_string, char **envp)
         return (NULL);
     while (token_string[iter.i] != '\0')
     {
-        single_quotation_check(token_string[iter.i], &is_double_quoted);
+        is_single_quoted(token_string[iter.i], &is_double_quoted);
         if (token_string[iter.i] == SQUOTE_LITERAL && is_double_quoted == -1)
             single_quotation_skip(buffer, token_string, &iter);
         if (is_variable(token_string, iter.i) == true)

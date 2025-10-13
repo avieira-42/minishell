@@ -6,7 +6,7 @@ bool    is_variable(char *token_string, int i)
     if (token_string[i] != EXPANSION_VARS)
         return (false);
     i++;
-    if (token_string[i] != EXPANSION_VARS)
+    if (token_string[i] == EXPANSION_VARS)
         return (false);
     if (token_string[i] == DQUOTE_LITERAL || token_string[i] == '\0'
         || ft_isspace(token_string[i]))

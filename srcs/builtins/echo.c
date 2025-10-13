@@ -1,14 +1,16 @@
 #include "../minishell.h"
 
-int echo(char *input, char flag)
+static
+int echo_write(char *input, const char *append)
 {
-	ft_printf(input);
-	if (flag != 'n')
-		ft_printf("\n");
+	if (write(1, input, ft_strlen(input)) == -1)
+		return (-1);
+	if (write(1, append, ft_strlen(append)) == -1)
+		return (-1);
 	return (0);
 }
 
-int	echo_flags_check(char *input)
+int	echo(char *input)
 {
 	const char *command = "echo";
 	const char *flag = "-n";
@@ -19,7 +21,6 @@ int	echo_flags_check(char *input)
 		return (1);
 	input += len_command + 1;
 	if (ft_strncmp(input, flag, len_flag) == 0)
-		echo(input + len_flag + 1, 'n');
-	else
-		echo(input, 0);
+		return (echo_write(input + len_flag + 1, ""));
+	return (echo_write(input, "\n"));
 }

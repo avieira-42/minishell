@@ -21,7 +21,8 @@ PARSING_SRCS = srcs/parsing/parsing.c
 ERROR_SRCS = srcs/error/error.c \
 			 srcs/error/error_message.c
 
-BUILTINS_SRCS = srcs/builtins/echo.c
+BUILTINS_SRCS = srcs/builtins/builtins_echo.c \
+				srcs/builtins/builtins_exec.c
 				
 
 SRCS = $(MINISHELL_SRCS) \

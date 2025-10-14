@@ -1,31 +1,41 @@
 #include "minishell.h"
 
 // TESTING AREA START
-void    tokens_check(t_token_list *tokens, char **envp)
+void    tokens_check(t_token_list *tokens, char **envp, char *user_input)
 {
+    t_token_list    *quotation_tokens;
     t_token_list    *expanded_tokens;
     t_token_list    *unquoted_tokens;
 
-    expanded_tokens = tokens;
-    unquoted_tokens = tokens;
 
     //check token speration
     printf("\nTOKENS_CHECK\n");
-
-    //check quotation
-    printf("\nQUOTATION_CHECK\n");
+    tokenize_user_input(&tokens, user_input);
+    quotation_tokens = tokens;
+    expanded_tokens = tokens;
+    unquoted_tokens = tokens;
     while (tokens != NULL)
     {
         printf("[%s] ", tokens->token_string);
+        tokens = tokens->next;
+    }
+    printf("\n");
 
-        if (tokens->is_open_quoted == true)
+    //check quotation
+    printf("\nQUOTATION_CHECK\n");
+    quote_type_identify(quotation_tokens);
+    while (quotation_tokens != NULL)
+    {
+        printf("[%s] ", quotation_tokens->token_string);
+
+        if (quotation_tokens->is_open_quoted == true)
             printf("open_quoted\n");
-        else if (tokens->is_quoted == true)
+        else if (quotation_tokens->is_quoted == true)
             printf("quoted\n");
         else
             printf("unquoted\n");
 
-        tokens = tokens->next;
+        quotation_tokens = quotation_tokens->next;
     }
 
     // check expansion
@@ -65,10 +75,8 @@ void    minishell_loop(char **envp)
             break ;
         add_history(user_input);
         special_user_input_check(user_input);
-        tokenize_user_input(&tokens, user_input);
         // tokenize command
-        if (tokens != NULL)
-            tokens_check(tokens, envp);
+        tokens_check(tokens, envp, user_input);
         free(user_input);
         if (tokens != NULL)
             ft_token_lst_clear(&tokens);

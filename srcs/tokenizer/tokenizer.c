@@ -118,5 +118,5 @@ void    tokenize_user_input(t_token_list **tokens, char *user_input)
     }
     if (i > j)
         tokenize_word(tokens, user_input, i, j);
-    quote_type_identify(*tokens);
+    //quote_type_identify(*tokens);
 }

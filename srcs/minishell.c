@@ -30,7 +30,8 @@ void minishell_loop(void)
         user_input = readline(PROMPT_MINISHELL);
         if (user_input == NULL)
             break ;
-        echo_flags_check(user_input);
+        char **test = ft_split(user_input, ' ');
+        echo(test);
         add_history(user_input);
         special_user_input_check(user_input);
         tokenize_user_input(&tokens, user_input);

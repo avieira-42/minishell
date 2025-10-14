@@ -63,6 +63,8 @@ char    *token_expanded_create(char *token_string, char **envp)
     buffer[iter.j] = '\0';
     free(token_string);
     token_string = ft_strdup(buffer);
+    if (token_string == NULL)
+        return (NULL);
     free(buffer);
     return (token_string);
 }

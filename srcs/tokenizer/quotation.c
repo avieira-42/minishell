@@ -36,7 +36,7 @@ void    is_quoted_text(char c, int *quoted, char *quote)
     if (c == *quote)
     {
         *quoted *= -1;
-        *quote = '0';
+        *quote = '\\';
     }
     else if (*quote == '0' && (c == DQUOTE_LITERAL || c == SQUOTE_LITERAL))
     {
@@ -64,24 +64,24 @@ void    quote_type_identify(t_token_list *tokens)
     }
 }
 
-void    quote_remove(char *token_string)
+void    quote_remove(char *token)
 {
     int     i;
     int     quoted_text;
-    int     token_string_len;
+    int     token_len;
     char    quote;
 
     i = 0;
-    quote = '0';
+    quote = '\\';
     quoted_text = -1;
-    token_string_len = ft_strlen(token_string);
-    while(token_string[i] != '\0')
+    token_len = ft_strlen(token);
+    while(token[i] != '\0')
     {
-        is_quoted_text(token_string[i], &quoted_text, &quote);
+        if (((token[i] == SQUOTE_LITERAL || token[i] == DQUOTE_LITERAL)
+                && quoted_text == -1)
+            || (quoted_text == 1 && token[i] == quote))
+            ft_memmove(&token[i], &token[i + 1], token_len - (i + 1));
+        is_quoted_text(token[i], &quoted_text, &quote);
         i++;
-        if (quoted_tex == -1 &&)
-        {
-            ft_memmove(&token_string[], token_string, token_string_len - i);
-        }
     }
 }

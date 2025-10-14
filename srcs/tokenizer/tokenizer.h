@@ -102,6 +102,7 @@ void    tokenize_squoted_text(t_token_list **tokens, char *user_input, int *i);
 void    quote_type_identify(t_token_list *tokens);
 void    is_single_quoted(char c, int *double_quoted);
 void    is_quoted_text(char c, int *quoted, char *quote);
+void    quote_remove(char *token);
 
 // EXPANSION
 void    token_expand(t_token_list *tokens, char **envp);

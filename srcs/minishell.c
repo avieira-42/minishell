@@ -4,8 +4,10 @@
 void    tokens_check(t_token_list *tokens, char **envp)
 {
     t_token_list    *expanded_tokens;
+    t_token_list    *unquoted_tokens;
 
     expanded_tokens = tokens;
+    unquoted_tokens = tokens;
 
     printf("\nTOKENS \n");
     while (tokens != NULL)
@@ -26,7 +28,7 @@ void    tokens_check(t_token_list *tokens, char **envp)
 
     printf("\nEXPANSION \n");
 
-    //check expansion
+    // check expansion
     token_expand(expanded_tokens, envp);
     while (expanded_tokens != NULL)
     {
@@ -34,6 +36,14 @@ void    tokens_check(t_token_list *tokens, char **envp)
         expanded_tokens = expanded_tokens->next;
     }
 
+    // quote remove
+    while (unquoted_tokens != NULL)
+    {
+        if (unquoted_tokens->is_quoted == true)
+            quote_remove(unquoted_tokens->token_string);
+        printf("[%s]\n", unquoted_tokens->token_string);
+        unquoted_tokens = unquoted_tokens->next;
+    }
 
     printf("\n");
 }

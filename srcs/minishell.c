@@ -7,7 +7,6 @@ void    tokens_check(t_token_list *tokens, char **envp, char *user_input)
     t_token_list    *expanded_tokens;
     t_token_list    *unquoted_tokens;
 
-
     //check token speration
     printf("\nTOKENS_CHECK\n");
     tokenize_user_input(&tokens, user_input);
@@ -18,12 +17,13 @@ void    tokens_check(t_token_list *tokens, char **envp, char *user_input)
     {
         printf("[%s] ", tokens->token_string);
         tokens = tokens->next;
+        if (tokens == NULL)
+            printf("\n");
     }
-    printf("\n");
 
     //check quotation
     printf("\nQUOTATION_CHECK\n");
-    quote_type_identify(quotation_tokens);
+    quotation_check(quotation_tokens);
     while (quotation_tokens != NULL)
     {
         printf("[%s] ", quotation_tokens->token_string);

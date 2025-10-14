@@ -34,6 +34,9 @@ t_token_list	*ft_token_lst_last(t_token_list *lst);
 void    tokenize_user_input(t_token_list **tokens, char *user_input);
 void    tokenize_squoted_text(t_token_list **tokens, char *user_input, int *i);
 
+//quotation
+void    quotation_check(t_token_list *tokens);
+
 //TTY_DRAWING_H
 void    draw_from_file(char *file_name);
 void    special_user_input_check(char *command);

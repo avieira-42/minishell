@@ -52,7 +52,7 @@ char    *token_expanded_create(char *token_string, char **envp)
         return (NULL);
     while (token_string[iter.i] != '\0')
     {
-        is_single_quoted(token_string[iter.i], &is_double_quoted);
+        quoted_text_check(token_string[iter.i], &is_double_quoted, DQUOTE_LITERAL);
         if (token_string[iter.i] == SQUOTE_LITERAL && is_double_quoted == -1)
             single_quotation_skip(buffer, token_string, &iter);
         if (is_variable(token_string, iter.i) == true)

@@ -99,9 +99,8 @@ void    tokenize_user_input(t_token_list **tokens, char *user_input);
 void    tokenize_squoted_text(t_token_list **tokens, char *user_input, int *i);
 
 // QUOTATION
-void    quote_type_identify(t_token_list *tokens);
-void    is_single_quoted(char c, int *double_quoted);
-void    is_quoted_text(char c, int *quoted, char *quote);
+void    quotation_check(t_token_list *tokens);
+void    quoted_text_check(char c, int *quoted, char quote);
 void    quote_remove(char *token);
 
 // EXPANSION

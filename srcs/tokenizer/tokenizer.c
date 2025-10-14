@@ -54,8 +54,6 @@ void    tokenize_quoted_text(t_token_list **tokens, char *user_input, int *i/*, 
 
 void    tokenize_operator(char *c, t_token_list **tokens, int *i)
 {
-    /* CREATE TOKENIZE_SINGLE_CHAR_OPERATOR and TOKENIZE_DOUBLE_CHAR_OPERATOR and TOKENIZE_SPACE_OPERATOR
-       WITH iteration on double char operator and free on space*/
     t_token_list    *token_node_new;
 
     if (*c == SPACE)

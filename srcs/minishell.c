@@ -1,7 +1,7 @@
 #include "minishell.h"
 
 // TESTING AREA START
-void    tokens_check(t_token_list *tokens)
+void tokens_check(t_token_list *tokens)
 {
     while (tokens != NULL)
     {
@@ -18,10 +18,10 @@ void    tokens_check(t_token_list *tokens)
 }
 // TESTING AREA END
 
-void    minishell_loop(void)
+void minishell_loop(void)
 {
-    char            *user_input;
-    t_token_list    *tokens;
+    char *user_input;
+    t_token_list *tokens;
 
     user_input = NULL;
     tokens = NULL;
@@ -46,8 +46,8 @@ void    minishell_loop(void)
 
 int main(int argc, char **argv, char **envp)
 {
-    (void)  argv;
-    (void)  envp;
+    (void)argv;
+    (void)envp;
 
     parse_start(argc, argv[1]);
     draw_from_file(FILE_LOGO);

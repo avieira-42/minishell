@@ -23,7 +23,8 @@ ERROR_SRCS = srcs/error/error.c \
 
 BUILTINS_SRCS = srcs/builtins/builtins_echo.c \
 				srcs/builtins/builtins_exec.c \
-				srcs/builtins/builtins_exit.c
+				srcs/builtins/builtins_exit.c \
+				srcs/builtins/builtins_pwd.c
 				
 
 SRCS = $(MINISHELL_SRCS) \

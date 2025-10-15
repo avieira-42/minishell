@@ -10,7 +10,6 @@
 # include "tty_drawing/tty_drawing.h"
 # include "error/error.h"
 # include "environment_variables/environment_variables.h"
-//# include "expand/expand.h"
 # include "builtins/builtins.h"
 
 # define COLOR_GREEN "\e[0;32m"

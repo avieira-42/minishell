@@ -55,7 +55,7 @@ char    *token_expanded_create(char *token_string, char **envp)
         quoted_text_check(token_string[iter.i], &is_double_quoted, DQUOTE_LITERAL);
         if (token_string[iter.i] == SQUOTE_LITERAL && is_double_quoted == -1)
             single_quotation_skip(buffer, token_string, &iter);
-        if (is_variable(token_string, iter.i) == true)
+        else if (is_variable(token_string, iter.i) == true)
             expansion_vars_handle(buffer, token_string, &iter, envp);
         else
             buffer_fill(buffer, token_string, &iter);

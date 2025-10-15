@@ -1,6 +1,8 @@
 #include "environment_variables.h"
 #include "../tokenizer/tokenizer.h"
 
+//int   is_under_brackets
+
 bool    is_variable(char *token_string, int i)
 {
     if (token_string[i] != EXPANSION_VARS)

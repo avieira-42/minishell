@@ -22,7 +22,10 @@ ENVIRONMENT_VARIABLES_SRCS = srcs/environment_variables/environment_variables.c
 PARSING_SRCS = srcs/parsing/parsing.c
 
 ERROR_SRCS = srcs/error/error.c \
-			 srcs/error/error_message.c
+        srcs/error/error_message.c
+
+BUILTINS_SRCS = srcs/builtins/builtins_echo.c \
+        srcs/builtins/builtins_exec.c
 				
 
 SRCS = $(MINISHELL_SRCS) \
@@ -30,7 +33,8 @@ SRCS = $(MINISHELL_SRCS) \
 		$(PARSING_SRCS) \
 		$(ERROR_SRCS) \
 		$(TOKENIZE_SRCS) \
-		$(ENVIRONMENT_VARIABLES_SRCS)
+		$(ENVIRONMENT_VARIABLES_SRCS) \
+		$(BUILTINS_SRCS)
 
 
 OBJS = $(SRCS:.c=.o)

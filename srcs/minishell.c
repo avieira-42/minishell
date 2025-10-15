@@ -63,8 +63,8 @@ void    tokens_check(t_token_list *tokens, char **envp, char *user_input)
 
 void    minishell_loop(char **envp)
 {
-    char            *user_input;
-    t_token_list    *tokens;
+    char *user_input;
+    t_token_list *tokens;
 
     user_input = NULL;
     tokens = NULL;
@@ -86,8 +86,8 @@ void    minishell_loop(char **envp)
 
 int main(int argc, char **argv, char **envp)
 {
-    (void)  argv;
-    (void)  envp;
+    (void)argv;
+    (void)envp;
 
     parse_start(argc, argv[1]);
     draw_from_file(FILE_LOGO);

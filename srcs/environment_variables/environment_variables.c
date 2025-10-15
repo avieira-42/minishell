@@ -1,58 +1,55 @@
 #include "environment_variables.h"
+#include "../tokenizer/tokenizer.h"
 
-char	*join_command(char *dir, char *cmd)
+bool    is_variable(char *token_string, int i)
 {
-	char	*path;
-	char	*tmp;
-
-	path = ft_strjoin(dir, "/");
-	if (!path)
-		return (NULL);
-	tmp = path;
-	path = ft_strjoin(path, cmd);
-	free(tmp);
-	return (path);
+    if (token_string[i] != EXPANSION_VARS)
+        return (false);
+    i++;
+    if (token_string[i] == EXPANSION_VARS)
+        return (false);
+    if (token_string[i] == DQUOTE_LITERAL || token_string[i] == '\0'
+        || ft_isspace(token_string[i]))
+        return (false);
+    if (ft_isalnum(token_string[i]) == true || token_string[i] == '_')
+        return (true);
+    return (false);
 }
 
-void	get_path(char **dirs, char **path, char *cmd)
+int     environment_variable_len(char *variable_name)
+{
+    int i;
+
+    i = 0;
+    if (ft_isdigit(variable_name[i]))
+            return (1);
+    i++;
+    while (ft_isalnum(variable_name[i]))
+        i++;
+    return (i);
+} 
+
+char	*environment_variable_get(char **envp, char *variable_name, int *j)
 {
 	int		i;
-	char	*tmp;
+    int     variable_len;
+	char	*expansion;
 
-	*path = NULL;
-	tmp = NULL;
+    (*j)++;
+    variable_name++;
 	i = 0;
-	while (dirs[i])
-	{
-		tmp = join_command(dirs[i++], cmd);
-		if (!tmp)
-			break ;
-		if (access(tmp, F_OK) == 0)
-		{
-			*path = tmp;
-			break ;
-		}
-		free(tmp);
-	}
-}
-
-char	**get_dirs(char **envp)
-{
-	int		i;
-	char	*path;
-	char	**dirs;
-
-	i = 0;
-	path = NULL;
-	dirs = NULL;
+	expansion = "";
 	while (envp[i])
 	{
-		if (ft_bool_strncmp(envp[i], "PATH", 4) == 0)
-			path = envp[i] + 5;
+        variable_len = environment_variable_len(variable_name);
+		if (ft_bool_strncmp(envp[i], variable_name, variable_len) == true
+            && envp[i][variable_len] == '=')
+        {
+			expansion = envp[i] + variable_len + 1;
+            break;
+        }
 		i++;
 	}
-	dirs = ft_split(path, ':');
-	if (dirs == NULL)
-		error_exit("Failed to get path directories");
-	return (dirs);
+    (*j) += variable_len;
+	return (expansion);
 }

@@ -1,42 +1,67 @@
 #include "tokenizer.h"
 
-void    quotation_check(char *quoted_text, t_token_list *token)
+bool    is_quote_to_remove(char c, int quoted_text, char quote)
 {
-    char    quote_type;
-
-    quote_type = *quoted_text;
-    token->is_open_quoted = true;
-    token->is_quoted = false;
-    quoted_text++;
-    while (*quoted_text != '\0' && *quoted_text != quote_type)
-        quoted_text++;
-    if (*quoted_text == '\0')
-        return ;
-    if (*quoted_text == quote_type)
-    {
-        token->is_open_quoted = false;
-        token->is_quoted = true;
-    }
-    quoted_text++;
-    if (*quoted_text != '\0')
-        quotation_check(quoted_text, token);
+    if (((c == SQUOTE_LITERAL || c == DQUOTE_LITERAL)
+                && quoted_text == -1)
+            || (quoted_text == 1 && c == quote))
+        return (true);
+    return (false);
 }
 
-void    quote_type_identify(t_token_list *tokens)
+void    quotation_check(t_token_list *tokens)
 {
-    char    *quote_ptr;
+    int     i;
+    int     quoted;
+    char    quote;
 
     while (tokens != NULL)
     {
-        quote_ptr = ft_strchr(tokens->token_string, DQUOTE_LITERAL);
-        if (quote_ptr != NULL)
-            quotation_check(quote_ptr, tokens);
-        else
+        i = 0;
+        quoted = -1;
+        quote = '\0';
+        while(tokens->token_string[i++] != '\0')
         {
-            quote_ptr = ft_strchr(tokens->token_string, SQUOTE_LITERAL);
-            if (quote_ptr != NULL)
-                quotation_check(quote_ptr, tokens);
+            if (is_quote_to_remove(tokens->token_string[i - 1], quoted, quote))
+            {
+                quote = tokens->token_string[i - 1];
+                quoted *= -1;
+            }
         }
+        if (quote != '\0' && quoted == 1)
+            tokens->is_open_quoted = true;
+        else if (quote != '\0' && quoted == -1)
+            tokens->is_quoted = true;
         tokens = tokens->next;
+    }
+}
+
+void    quoted_text_check(char c, int *quoted, char quote)
+{
+    if (c == quote)
+        *quoted *= -1;
+}
+
+void    quote_remove(char *token)
+{
+    int     i;
+    int     quoted_text;
+    int     token_len;
+    char    quote;
+
+    i = 0;
+    quoted_text = -1;
+    token_len = ft_strlen(token);
+    quote = '\0';
+    while(token[i] != '\0')
+    {
+        i++;
+        if (is_quote_to_remove(token[i - 1], quoted_text, quote))
+        {
+            quote = token[i - 1];
+            ft_memmove(&token[i - 1], &token[i], token_len - (i - 1));
+            i--;
+            quoted_text *= -1;
+        }
     }
 }

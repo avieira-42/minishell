@@ -3,4 +3,3 @@ srcs/*.o
 libs/libft/srcs/*.o
 libs/libft/libft.a
 minishell
-.vscode/*

@@ -1,24 +1,67 @@
 #include "minishell.h"
 
 // TESTING AREA START
-void tokens_check(t_token_list *tokens)
+void    tokens_check(t_token_list *tokens, char **envp, char *user_input)
 {
+    t_token_list    *quotation_tokens;
+    t_token_list    *expanded_tokens;
+    t_token_list    *unquoted_tokens;
+
+    //check token speration
+    printf("\nTOKENS_CHECK\n");
+    tokenize_user_input(&tokens, user_input);
+    quotation_tokens = tokens;
+    expanded_tokens = tokens;
+    unquoted_tokens = tokens;
     while (tokens != NULL)
     {
         printf("[%s] ", tokens->token_string);
-        if (tokens->is_open_quoted == true)
+        tokens = tokens->next;
+        if (tokens == NULL)
+            printf("\n");
+    }
+
+    //check quotation
+    printf("\nQUOTATION_CHECK\n");
+    quotation_check(quotation_tokens);
+    while (quotation_tokens != NULL)
+    {
+        printf("[%s] ", quotation_tokens->token_string);
+
+        if (quotation_tokens->is_open_quoted == true)
             printf("open_quoted\n");
-        else if (tokens->is_quoted == true)
+        else if (quotation_tokens->is_quoted == true)
             printf("quoted\n");
         else
             printf("unquoted\n");
-        tokens = tokens->next;
+
+        quotation_tokens = quotation_tokens->next;
     }
+
+    // check expansion
+    printf("\nEXPANSION_CHECK\n");
+    token_expand(expanded_tokens, envp);
+    while (expanded_tokens != NULL)
+    {
+        printf("[%s]\n", expanded_tokens->token_string);
+        expanded_tokens = expanded_tokens->next;
+    }
+
+    // quote remove
+    printf("\nQUOTATION_REMOVE_CHECK\n");
+    while (unquoted_tokens != NULL)
+    {
+        if (unquoted_tokens->is_quoted == true)
+            quote_remove(unquoted_tokens->token_string);
+        printf("[%s]\n", unquoted_tokens->token_string);
+        unquoted_tokens = unquoted_tokens->next;
+    }
+
     printf("\n");
 }
 // TESTING AREA END
 
-void minishell_loop(void)
+void    minishell_loop(char **envp)
 {
     char *user_input;
     t_token_list *tokens;
@@ -32,11 +75,8 @@ void minishell_loop(void)
             break ;
         add_history(user_input);
         special_user_input_check(user_input);
-        tokenize_user_input(&tokens, user_input);
-        if (tokens != NULL)
-            tokens_check(tokens);
-        // user_input_expand
         // tokenize command
+        tokens_check(tokens, envp, user_input);
         free(user_input);
         if (tokens != NULL)
             ft_token_lst_clear(&tokens);
@@ -51,6 +91,6 @@ int main(int argc, char **argv, char **envp)
 
     parse_start(argc, argv[1]);
     draw_from_file(FILE_LOGO);
-    minishell_loop();
+    minishell_loop(envp);
     clear_history();
 }

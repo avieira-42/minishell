@@ -1,21 +1,19 @@
 #ifndef MINISHELL_H
-#define MINISHELL_H
+# define MINISHELL_H
 
-#include <stdio.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#include "/usr/include/readline/readline.h"
-#include "/usr/include/readline/history.h"
-#include "binary_tree/binary_tree.h"
-#include "tokenizer/tokenizer.h"
-#include "parsing/parsing.h"
-#include "tty_drawing/tty_drawing.h"
-#include "error/error.h"
-#include "environment_variables/environment_variables.h"
-#include "expand/expand.h"
-#include "builtins/builtins.h"
+# include <stdio.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include "binary_tree/binary_tree.h"
+# include "tokenizer/tokenizer.h"
+# include "parsing/parsing.h"
+# include "tty_drawing/tty_drawing.h"
+# include "error/error.h"
+# include "environment_variables/environment_variables.h"
+# include "expand/expand.h"
+# include "builtins/builtins.h"
 
-#define PROMPT_MINISHELL "minishell$> "
+# define PROMPT_MINISHELL "minishell$> "
 
 // ERROR_H
 void error_exit(char *argv1);
@@ -36,8 +34,15 @@ t_token_list *ft_token_lst_last(t_token_list *lst);
 void tokenize_user_input(t_token_list **tokens, char *user_input);
 void tokenize_squoted_text(t_token_list **tokens, char *user_input, int *i);
 
-// TTY_DRAWING_H
-void draw_from_file(char *file_name);
-void special_user_input_check(char *command);
+//quotation
+void    quotation_check(t_token_list *tokens);
+
+//TTY_DRAWING_H
+void    draw_from_file(char *file_name);
+void    special_user_input_check(char *command);
+
+//ENVIRONMENT_VARIABLES
+char	*environment_variable_get(char **envp, char *variable_name, int *j);
+int     environment_variable_len(char *variable_name);
 
 #endif

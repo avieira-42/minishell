@@ -13,7 +13,9 @@
 //# include "expand/expand.h"
 # include "builtins/builtins.h"
 
-# define PROMPT_MINISHELL "minishell$> "
+# define COLOR_GREEN "\e[0;32m"
+# define COLOR_RESET "\e[0m"
+# define PROMPT_MINISHELL COLOR_GREEN "minishell" COLOR_RESET "$> "
 
 // ERROR_H
 void error_exit(char *argv1);

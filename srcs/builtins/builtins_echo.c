@@ -29,7 +29,7 @@ int	echo_write(char **user_input, const char *append)
 	return (0);
 }
 
-int	echo(char **user_input)
+int	builtins_echo(char **user_input)
 {
 	const char	*flag = "-";
 	const int	len_flag = ft_strlen(flag);

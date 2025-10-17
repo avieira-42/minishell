@@ -5,9 +5,7 @@ bool    is_operator(char *c)
     if (ft_bool_strncmp(c, HEREDOC, 2) == true
         || ft_bool_strncmp(c, APPEND, 2) == true
         || *c == PIPE || *c == REDIRECT_IN
-        || *c == REDIRECT_OUT || *c == SPACE
-        /*|| ft_bool_strncmp(c, LOGICAL_AND, 2) == true
-        || ft_bool_strncmp(c, LOGICAL_OR, 2) == true)*/)
+        || *c == REDIRECT_OUT || *c == SPACE)
     {
 
         return (true);
@@ -73,12 +71,6 @@ void    tokenize_operator(char *c, t_token_list **tokens, int *i)
         token_node_new->token_string = ft_strdup(STRING_REDIRECT_IN);
     else if (*c == REDIRECT_OUT)
         token_node_new->token_string = ft_strdup(STRING_REDIRECT_OUT);
-    /*else if (ft_bool_strncmp(c, LOGICAL_AND, 2) == true)
-      (token_node_new->token_type = TOKEN_HEREDOC, (*i)++);
-      else if (ft_bool_strncmp(c, LOGICAL_OR, 2) == true)
-      (token_node_new->token_type = TOKEN_LOGICAL_OR, (*i)++);
-      else if (ft_bool_strncmp(c, LOGICAL_AND, 2) == true)
-      (token_node_new->token_type = TOKEN_LOGICAL_AND, (*i)++);*/
     (*i)++;
 }
 
@@ -109,12 +101,10 @@ void    tokenize_user_input(t_token_list **tokens, char *user_input)
             tokenize_word(tokens, user_input, i, j);
             tokenize_operator(&user_input[i], tokens, &i);
             j = i;
-            tokenize_quoted_text(tokens, user_input, &i);
         }
         else
             i++;
     }
     if (i > j)
         tokenize_word(tokens, user_input, i, j);
-    //quote_type_identify(*tokens);
 }

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tokenizer.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/17 17:38:29 by avieira-          #+#    #+#             */
+/*   Updated: 2025/10/17 17:48:50 by avieira-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef TOKENIZER_H
 # define TOKENIZER_H
 
@@ -30,22 +42,20 @@
 // TOKENS
 typedef enum e_token_type
 {
-    TOKEN_SPACE,
-    TOKEN_COMMAND,
-    TOKEN_ARGUMENT,
+    TOKEN_NULL,
     TOKEN_REDIRECT_IN,
     TOKEN_REDIRECT_OUT,
     TOKEN_HEREDOC,
     TOKEN_APPEND,
+    TOKEN_CMD,
+    TOKEN_FILE,
+    TOKEN_SPACE,
+    TOKEN_COMMAND,
     TOKEN_PIPE,
-    TOKEN_LOGICAL_OR,
-    TOKEN_LOGICAL_AND,
     TOKEN_DQUOTE_LITERAL,
     TOKEN_SQUOTE_LITERAL,
     TOKEN_EXPANSION_VARS,
     TOKEN_EXPANSION_EXIT,
-    TOKEN_OPEN_PAREN,
-    TOKEN_CLOSE_PAREN,
 }   t_token_type;
 
 typedef struct s_token_list

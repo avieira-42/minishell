@@ -2,8 +2,7 @@
 
 bool    is_pipe(t_token_list *token)
 {
-    if (token->token_string[0] == PIPE)
-        return (true);
+    if (token->token_string[0] == PIPE) return (true);
     return (false);
 }
 
@@ -13,11 +12,6 @@ bool    is_enum_redirect_token(t_token_type token)
         return (true);
     return (false);
 }
-
-/*void    token_first_identify(t_token_list *token)
-{
-    return ;
-}*/
 
 bool    is_redirect(t_token_list *token)
 {
@@ -58,7 +52,7 @@ void    token_identify(t_token_list *tokens)
         else if (is_enum_redirect_token(previous_token) == true)
             tokens->token_type = TOKEN_FILE;
         else if (previous_token == TOKEN_NULL)
-            token_first_identify(tokens);
+            tokens->token_type = TOKEN_CMD;
         previous_token = tokens->token_type;
         tokens = tokens->next;
     }

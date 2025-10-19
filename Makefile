@@ -15,7 +15,8 @@ TTY_DRAWING_SRCS = srcs/tty_drawing/tty_drawing.c
 TOKENIZE_SRCS = srcs/tokenizer/tokenizer.c \
 				srcs/tokenizer/token_list.c \
 				srcs/tokenizer/quotation.c \
-				srcs/tokenizer/expand.c
+				srcs/tokenizer/expand.c \
+				srcs/tokenizer/token_identify.c
 
 ENVIRONMENT_VARIABLES_SRCS = srcs/environment_variables/environment_variables.c
 

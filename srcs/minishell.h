@@ -10,7 +10,6 @@
 # include "tty_drawing/tty_drawing.h"
 # include "error/error.h"
 # include "environment_variables/environment_variables.h"
-//# include "expand/expand.h"
 # include "builtins/builtins.h"
 
 # define COLOR_GREEN "\e[0;32m"
@@ -25,12 +24,15 @@ void error_message_put_1(char *error_message, char *argv1);
 // PARSE_H
 void parse_start(int argc, char *argv1);
 
-// TOKENIZER_H
+// PARSER
 //  token list
 void ft_token_lst_clear(t_token_list **lst);
 void ft_token_lst_add_back(t_token_list **lst, t_token_list *new_node);
 t_token_list *ft_token_lst_new(char *token);
 t_token_list *ft_token_lst_last(t_token_list *lst);
+
+//token_identifiy.h
+void    token_identify(t_token_list *tokens);
 
 // tokenize
 void tokenize_user_input(t_token_list **tokens, char *user_input);

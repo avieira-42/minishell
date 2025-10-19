@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 17:38:29 by avieira-          #+#    #+#             */
-/*   Updated: 2025/10/17 17:48:50 by avieira-         ###   ########.fr       */
+/*   Updated: 2025/10/19 11:22:14 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,19 +82,6 @@ typedef struct s_iter
 // CHARACTER
 # define BACK_SLASH '\\'
 
-/* where the functions regarding the seperation of tokens (categories of a string) will be 
- *
- * lets look at :
- * infile < ls -l | grep -H ".h" * | vim > outfile && mkdir header_modules
- * infile = file
- * < = operator
- * ls -l = command
- * | = operator
- * grep -H = command 
- * ".h" = string
- * | = operator
- * vim = cmd */
-
 //BOOLEAN
 bool    is_operator(char *c);
 
@@ -115,5 +102,8 @@ void    quote_remove(char *token);
 
 // EXPANSION
 void    token_expand(t_token_list *tokens, char **envp);
+
+// TOKEN_IDENTIFY
+void    token_identify(t_token_list *tokens);
 
 #endif

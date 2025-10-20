@@ -64,7 +64,7 @@ void    tokenize_operator(char *c, t_token_list **tokens, int *i)
     if (ft_bool_strncmp(c, HEREDOC, 2) == true)
         (token_node_new->token_string = ft_strdup(HEREDOC), (*i)++);
     else if (ft_bool_strncmp(c, APPEND, 2) == true)
-        (token_node_new->token_string = ft_strdup(HEREDOC), (*i)++);
+        (token_node_new->token_string = ft_strdup(APPEND), (*i)++);
     else if (*c == PIPE)
         token_node_new->token_string = ft_strdup(STRING_PIPE);
     else if (*c == REDIRECT_IN)

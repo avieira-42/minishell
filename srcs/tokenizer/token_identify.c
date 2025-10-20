@@ -23,17 +23,16 @@ bool    is_redirect(t_token_list *token)
     return (false);
 }
 
-bool    token_redirect_identify(t_token_list *token)
+void    token_redirect_identify(t_token_list *token)
 {
     if (ft_bool_strncmp(token->token_string, HEREDOC, 2) == true)
         token->token_type = TOKEN_HEREDOC;
-    if (ft_bool_strncmp(token->token_string, APPEND, 2) == true)
+    else if (ft_bool_strncmp(token->token_string, APPEND, 2) == true)
         token->token_type = TOKEN_APPEND;
-    if (token->token_string[0] == REDIRECT_IN)
+    else if (token->token_string[0] == REDIRECT_IN)
         token->token_type = TOKEN_REDIRECT_IN;
-    if (token->token_string[0] == REDIRECT_OUT)
+    else if (token->token_string[0] == REDIRECT_OUT)
         token->token_type = TOKEN_REDIRECT_OUT;
-    return (false);
 }
 
 void    token_identify(t_token_list *tokens)
@@ -49,8 +48,12 @@ void    token_identify(t_token_list *tokens)
             token_redirect_identify(tokens);
         else if (previous_token == TOKEN_PIPE)
             tokens->token_type = TOKEN_CMD;
+        else if (previous_token == TOKEN_HEREDOC)
+            tokens->token_type = TOKEN_LIMITER;
         else if (is_enum_redirect_token(previous_token) == true)
-            tokens->token_type = TOKEN_FILE;
+            tokens->token_type = TOKEN_CMD;
+        else if (previous_token == TOKEN_LIMITER)
+            tokens->token_type = TOKEN_CMD;
         else if (previous_token == TOKEN_NULL)
             tokens->token_type = TOKEN_CMD;
         previous_token = tokens->token_type;

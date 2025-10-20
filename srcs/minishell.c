@@ -27,6 +27,40 @@ void    tokens_check(t_token_list *tokens, char **envp, char *user_input)
             printf("\n");
     }
 
+    //token_identify
+    printf("\nTOKEN_IDENTIFY\n");
+    while (unidentified_tokens != NULL)
+    {
+        printf("[%s] ", unidentified_tokens->token_string);
+        unidentified_tokens = unidentified_tokens->next;
+        if (unidentified_tokens == NULL)
+            printf("\n");
+    }
+
+    token_identify(identified_tokens);
+    while (identified_tokens != NULL)
+    {
+        if (identified_tokens->token_type == TOKEN_CMD)
+            token_type = "COMMAND";
+        else if (identified_tokens->token_type == TOKEN_LIMITER)
+            token_type = "LIMITER";
+        else if (identified_tokens->token_type == TOKEN_REDIRECT_IN)
+            token_type = "REDIRECT_IN";
+        else if (identified_tokens->token_type == TOKEN_REDIRECT_OUT)
+            token_type = "REDIRECT_OUT";
+        else if (identified_tokens->token_type == TOKEN_APPEND)
+            token_type = "APPEND";
+        else if (identified_tokens->token_type == TOKEN_HEREDOC)
+            token_type = "HERE_DOC";
+        else if (identified_tokens->token_type == TOKEN_PIPE)
+            token_type = "PIPE";
+        else if (identified_tokens->token_type == TOKEN_FILE)
+            token_type = "FILE";
+        printf("[%s] -> %s\n", identified_tokens->token_string, token_type);
+        identified_tokens = identified_tokens->next;
+    }
+
+
     //check quotation
     printf("\nQUOTATION_CHECK\n");
     quotation_check(quotation_tokens);
@@ -61,34 +95,6 @@ void    tokens_check(t_token_list *tokens, char **envp, char *user_input)
             quote_remove(unquoted_tokens->token_string);
         printf("[%s]\n", unquoted_tokens->token_string);
         unquoted_tokens = unquoted_tokens->next;
-    }
-
-    //token_identify
-    printf("\nTOKEN_IDENTIFY\n");
-    while (unidentified_tokens != NULL)
-    {
-        printf("[%s] ", unidentified_tokens->token_string);
-        unidentified_tokens = unidentified_tokens->next;
-        if (unidentified_tokens == NULL)
-            printf("\n");
-    }
-
-    token_identify(identified_tokens);
-    while (identified_tokens != NULL)
-    {
-        if (identified_tokens->token_type == TOKEN_CMD)
-            token_type = "COMMAND";
-        else if (identified_tokens->token_type == TOKEN_REDIRECT_IN
-                || identified_tokens->token_type == TOKEN_REDIRECT_OUT
-                || identified_tokens->token_type == TOKEN_APPEND
-                || identified_tokens->token_type == TOKEN_HEREDOC)
-            token_type = "REDIRECT";
-        else if (identified_tokens->token_type == TOKEN_PIPE)
-            token_type = "PIPE";
-        else if (identified_tokens->token_type == TOKEN_FILE)
-            token_type = "FILE";
-        printf("[%s] -> %s\n", identified_tokens->token_string, token_type);
-        identified_tokens = identified_tokens->next;
     }
 
     printf("\n");

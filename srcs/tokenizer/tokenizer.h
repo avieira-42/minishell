@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   tokenizer.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/17 17:38:29 by avieira-          #+#    #+#             */
-/*   Updated: 2025/10/19 11:22:14 by avieira-         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef TOKENIZER_H
 # define TOKENIZER_H
 
@@ -56,6 +44,7 @@ typedef enum e_token_type
     TOKEN_SQUOTE_LITERAL,
     TOKEN_EXPANSION_VARS,
     TOKEN_EXPANSION_EXIT,
+    TOKEN_LIMITER,
 }   t_token_type;
 
 typedef struct s_token_list
@@ -105,5 +94,6 @@ void    token_expand(t_token_list *tokens, char **envp);
 
 // TOKEN_IDENTIFY
 void    token_identify(t_token_list *tokens);
+bool    is_enum_redirect_token(t_token_type token);
 
 #endif

@@ -29,7 +29,7 @@ BUILTINS_SRCS = srcs/builtins/builtins_echo.c \
 				srcs/builtins/builtins_exit.c \
 				srcs/builtins/builtins_pwd.c
 
-EXECUTION_SRCS = srcs/execution/command_exec.c
+EXECUTION_SRCS = srcs/execution/program_path_find.c
 
 SRCS = $(MINISHELL_SRCS) \
 		$(TTY_DRAWING_SRCS) \

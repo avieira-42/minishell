@@ -10,9 +10,9 @@
 // OPERATORS AND SPECIAL CHARACTERS
 # define SPACE ' '
 # define STRING_SPACE " "
-# define REDIRECT_IN '>'
+# define REDIRECT_IN '<'
 # define STRING_REDIRECT_IN ">"
-# define REDIRECT_OUT '<'
+# define REDIRECT_OUT '>'
 # define STRING_REDIRECT_OUT "<"
 # define HEREDOC "<<"
 # define APPEND ">>"

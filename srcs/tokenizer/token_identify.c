@@ -37,26 +37,28 @@ void    token_redirect_identify(t_token_list *token)
 
 void    token_identify(t_token_list *tokens)
 {
-    t_token_type    previous_token;
+	t_token_type    previous_token;
 
-    previous_token = TOKEN_NULL;
-    while (tokens != NULL)
-    {
-        if (is_pipe(tokens) == true)
-            tokens->token_type = TOKEN_PIPE;
-        else if (is_redirect(tokens) == true)
-            token_redirect_identify(tokens);
-        else if (previous_token == TOKEN_PIPE)
-            tokens->token_type = TOKEN_CMD;
-        else if (previous_token == TOKEN_HEREDOC)
-            tokens->token_type = TOKEN_LIMITER;
-        else if (is_enum_redirect_token(previous_token) == true)
-            tokens->token_type = TOKEN_CMD;
-        else if (previous_token == TOKEN_LIMITER)
-            tokens->token_type = TOKEN_CMD;
-        else if (previous_token == TOKEN_NULL)
-            tokens->token_type = TOKEN_CMD;
-        previous_token = tokens->token_type;
-        tokens = tokens->next;
-    }
+	previous_token = TOKEN_NULL;
+	while (tokens != NULL)
+	{
+		if (is_pipe(tokens) == true)
+			tokens->token_type = TOKEN_PIPE;
+		else if (is_redirect(tokens) == true)
+			token_redirect_identify(tokens);
+		else if (previous_token == TOKEN_PIPE)
+			tokens->token_type = TOKEN_CMD;
+		else if (previous_token == TOKEN_HEREDOC)
+			tokens->token_type = TOKEN_LIMITER;
+		else if (is_enum_redirect_token(previous_token) == true)
+			tokens->token_type = TOKEN_FILE;
+		else if (previous_token == TOKEN_LIMITER)
+			tokens->token_type = TOKEN_CMD;
+		else if (previous_token == TOKEN_NULL)
+			tokens->token_type = TOKEN_CMD;
+		else if (previous_token == TOKEN_FILE)
+			tokens->token_type = TOKEN_CMD;
+		previous_token = tokens->token_type;
+		tokens = tokens->next;
+	}
 }

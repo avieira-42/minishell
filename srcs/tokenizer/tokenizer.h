@@ -10,9 +10,9 @@
 // OPERATORS AND SPECIAL CHARACTERS
 # define SPACE ' '
 # define STRING_SPACE " "
-# define REDIRECT_IN '>'
+# define REDIRECT_IN '<'
 # define STRING_REDIRECT_IN ">"
-# define REDIRECT_OUT '<'
+# define REDIRECT_OUT '>'
 # define STRING_REDIRECT_OUT "<"
 # define HEREDOC "<<"
 # define APPEND ">>"
@@ -30,22 +30,21 @@
 // TOKENS
 typedef enum e_token_type
 {
-    TOKEN_SPACE,
-    TOKEN_COMMAND,
-    TOKEN_ARGUMENT,
+    TOKEN_NULL,
     TOKEN_REDIRECT_IN,
     TOKEN_REDIRECT_OUT,
     TOKEN_HEREDOC,
     TOKEN_APPEND,
+    TOKEN_CMD,
+    TOKEN_FILE,
+    TOKEN_SPACE,
+    TOKEN_COMMAND,
     TOKEN_PIPE,
-    TOKEN_LOGICAL_OR,
-    TOKEN_LOGICAL_AND,
     TOKEN_DQUOTE_LITERAL,
     TOKEN_SQUOTE_LITERAL,
     TOKEN_EXPANSION_VARS,
     TOKEN_EXPANSION_EXIT,
-    TOKEN_OPEN_PAREN,
-    TOKEN_CLOSE_PAREN,
+    TOKEN_LIMITER,
 }   t_token_type;
 
 typedef struct s_token_list
@@ -72,19 +71,6 @@ typedef struct s_iter
 // CHARACTER
 # define BACK_SLASH '\\'
 
-/* where the functions regarding the seperation of tokens (categories of a string) will be 
- *
- * lets look at :
- * infile < ls -l | grep -H ".h" * | vim > outfile && mkdir header_modules
- * infile = file
- * < = operator
- * ls -l = command
- * | = operator
- * grep -H = command 
- * ".h" = string
- * | = operator
- * vim = cmd */
-
 //BOOLEAN
 bool    is_operator(char *c);
 
@@ -105,5 +91,9 @@ void    quote_remove(char *token);
 
 // EXPANSION
 void    token_expand(t_token_list *tokens, char **envp);
+
+// TOKEN_IDENTIFY
+void    token_identify(t_token_list *tokens);
+bool    is_enum_redirect_token(t_token_type token);
 
 #endif

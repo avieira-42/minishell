@@ -3,9 +3,12 @@
 // TESTING AREA START
 void    tokens_check(t_token_list *tokens, char **envp, char *user_input)
 {
+	char            *token_type;
     t_token_list    *quotation_tokens;
     t_token_list    *expanded_tokens;
     t_token_list    *unquoted_tokens;
+    t_token_list    *identified_tokens;
+    t_token_list    *unidentified_tokens;
 
     //check token speration
     printf("\nTOKENS_CHECK\n");
@@ -13,6 +16,8 @@ void    tokens_check(t_token_list *tokens, char **envp, char *user_input)
     quotation_tokens = tokens;
     expanded_tokens = tokens;
     unquoted_tokens = tokens;
+    identified_tokens = tokens;
+    unidentified_tokens = tokens;
     while (tokens != NULL)
     {
         printf("[%s] ", tokens->token_string);
@@ -20,6 +25,41 @@ void    tokens_check(t_token_list *tokens, char **envp, char *user_input)
         if (tokens == NULL)
             printf("\n");
     }
+
+    //token_identify
+    printf("\nTOKEN_IDENTIFY\n");
+    while (unidentified_tokens != NULL)
+    {
+        printf("[%s] ", unidentified_tokens->token_string);
+        unidentified_tokens = unidentified_tokens->next;
+        if (unidentified_tokens == NULL)
+            printf("\n");
+    }
+
+    token_identify(identified_tokens);
+    while (identified_tokens != NULL)
+    {
+        if (identified_tokens->token_type == TOKEN_CMD)
+            token_type = "COMMAND";
+        else if (identified_tokens->token_type == TOKEN_LIMITER)
+            token_type = "LIMITER";
+        else if (identified_tokens->token_type == TOKEN_REDIRECT_IN)
+            token_type = "REDIRECT_IN";
+        else if (identified_tokens->token_type == TOKEN_REDIRECT_OUT)
+            token_type = "REDIRECT_OUT";
+        else if (identified_tokens->token_type == TOKEN_APPEND)
+            token_type = "APPEND";
+        else if (identified_tokens->token_type == TOKEN_HEREDOC)
+            token_type = "HERE_DOC";
+        else if (identified_tokens->token_type == TOKEN_PIPE)
+            token_type = "PIPE";
+        else if (identified_tokens->token_type == TOKEN_FILE)
+            token_type = "FILE";
+        printf("[%s] -> %s\n", identified_tokens->token_string, token_type);
+        identified_tokens = identified_tokens->next;
+		token_type = "TOKEN_NULL";
+    }
+
 
     //check quotation
     printf("\nQUOTATION_CHECK\n");

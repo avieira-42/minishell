@@ -49,4 +49,7 @@ void    special_user_input_check(char *command);
 char	*environment_variable_get(char **envp, char *variable_name, int *j);
 int     environment_variable_len(char *variable_name);
 
+//BINARY_TREE
+t_btree	*btree_create(t_token_list *tokens);
+
 #endif

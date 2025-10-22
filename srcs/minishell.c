@@ -9,6 +9,9 @@ void    tokens_check(t_token_list *tokens, char **envp, char *user_input)
     t_token_list    *unquoted_tokens;
     t_token_list    *identified_tokens;
     t_token_list    *unidentified_tokens;
+	t_token_list	*tree_tokens;
+	t_btree			*tree;
+
 
     //check token speration
     printf("\nTOKENS_CHECK\n");
@@ -18,6 +21,7 @@ void    tokens_check(t_token_list *tokens, char **envp, char *user_input)
     unquoted_tokens = tokens;
     identified_tokens = tokens;
     unidentified_tokens = tokens;
+    tree_tokens = tokens;
     while (tokens != NULL)
     {
         printf("[%s] ", tokens->token_string);
@@ -96,6 +100,10 @@ void    tokens_check(t_token_list *tokens, char **envp, char *user_input)
         printf("[%s]\n", unquoted_tokens->token_string);
         unquoted_tokens = unquoted_tokens->next;
     }
+
+	// check binary_tree
+	tree = btree_create(tree_tokens);
+	
 
     printf("\n");
 }

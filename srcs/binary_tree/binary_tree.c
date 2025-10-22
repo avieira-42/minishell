@@ -1,5 +1,14 @@
 #include "binary_tree.h"
 
+//  NEED TO FIGURE HOW TO POPULATE THE TREE
+void	btree_add_leafs(t_btree *btree, t_btree *leaf)
+{
+	if (btree == NULL || btree->left->node_type == TOKEN_CMD)
+		return ;
+	btree_add_leafs(btree->left, leaf);
+	btree->left = leaf;
+}
+
 t_btree	*btree_add_new(void)
 {
 	t_btree	*node_new;
@@ -8,9 +17,37 @@ t_btree	*btree_add_new(void)
 	if (node_new == NULL)
 		return (NULL);
 	node_new->node_type = TOKEN_NULL;
+	node_new->command = NULL;
 	node_new->left = NULL;
 	node_new->right = NULL;
 	return (node_new);
+}
+
+t_redirect	*redirect_add_new(t_token_type redir_type, char *filename)
+{
+	t_redirect *node_new;
+
+	node_new = malloc(sizeof(t_redirect));
+	if (node_new == NULL)
+		return (NULL);
+	node_new->redir_type = redir_type;
+	node_new->filename = filename;
+	return (node_new);
+}
+
+t_redirect *redirect_last(t_redirect *redirs)
+{
+	while (redirs != NULL)
+		redirs = redirs->next;
+	return (redirs);
+}
+
+void	redirect_add_back(t_redirect *redirs, t_redirect *node_new)
+{
+	t_redirect	*node_last;
+
+	node_last = redirect_last(redirs);
+	node_last->next = node_new;
 }
 
 int	command_count(t_token_list *tokens)
@@ -20,32 +57,47 @@ int	command_count(t_token_list *tokens)
 	count = 0;
 	while (tokens != NULL && tokens->token_type != TOKEN_PIPE)
 	{
-		if (is_enum_redirect_token(tokens->token_type) != false)
+		if (tokens->token_type == TOKEN_CMD)
 			count++;
 		tokens = tokens->next;
 	}
 	return (count);
 }
 
-void	command_init(t_token_list **tokens, t_btree *node)
+void	command_init(int *i, int *cmd_size, t_token_list **tokens, t_btree *node)
 {
-	// NEED TO INITIALIZE REDIT_TYPE AND REDIT_COUNT
-	// NEED TO RETHINK THIS WITH JULIO
-	int		i;
-	char	**command;
+	*i = 0;
+	*cmd_size = command_count(*tokens);
+	node->command = malloc(sizeof(t_command));
+	node->command->redirects = NULL;
+	node->command->argv = malloc(sizeof(char *) * (*cmd_size + 1));
+	node->command->argv[*cmd_size] = NULL;
+}
 
-	i = 0;
-	command = malloc(sizeof(char *) * (command_count(*tokens) + 1));
-	if (command == NULL)
-		exit(1);
+void	command_get(t_token_list **tokens, t_btree *node)
+{
+	int				i;
+	int				cmd_count;
+	t_token_type	token_type;
+	t_redirect		*node_redir;
+
+	token_type = TOKEN_NULL;
+	command_init(&i, &cmd_count, tokens, node);
 	while (*tokens != NULL && (*tokens)->token_type != TOKEN_PIPE)
 	{
-		if (is_enum_redirect_token((*tokens)->token_type) != false)
-			command[i] = (*tokens)->token_string;
-		i++;
+		token_type = (*tokens)->token_type;
+		if (token_type == TOKEN_CMD)
+		{
+			node->command->argv[i++] = (*tokens)->token_string;
+			i++;
+		}
+		else if (is_enum_redirect_token(token_type) == true)
+		{
+			(*tokens) = (*tokens)->next;
+			node_redir = redirect_add_new(token_type, (*tokens)->token_string);
+		}
 		(*tokens) = (*tokens)->next;
 	}
-	node->command->argv = command;
 }
 
 t_btree	*btree_last(t_btree *btree)
@@ -70,7 +122,6 @@ void	btree_create(t_token_list *tokens)
 {
 	t_btree			*btree;
 	t_btree			*node_new;
-	t_btree			*node_last;
 
 	btree = NULL;
 	while (tokens != NULL)
@@ -79,14 +130,14 @@ void	btree_create(t_token_list *tokens)
 		if (tokens->token_type == TOKEN_CMD)
 		{
 			node_new->node_type = TOKEN_CMD;
-			command_init(&tokens, node_new);
+			command_get(&tokens, node_new);
 		}
 		else if (tokens->token_type == TOKEN_PIPE)
 		{
 			node_new->node_type = TOKEN_PIPE;
 			node_new->command = NULL;
 		}
-		btree_add_back(btree, node_new);
+		//btree_add_back(btree, node_new);
 		tokens = tokens->next;
 	}
 }

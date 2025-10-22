@@ -5,14 +5,14 @@
 
 typedef struct s_redirect
 {
-	t_token_type redir_type;
-	char *filename;
+	t_token_type		redir_type;
+	char				*filename;
+	struct s_redirect	*next;
 }	t_redirect;
 
 typedef struct s_command
 {
-	t_token_type	redir_type;
-	int				redir_count;
+	t_redirect		*redirects;
 	char			**argv;
 }	t_command;
 

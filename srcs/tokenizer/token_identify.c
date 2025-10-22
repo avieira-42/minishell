@@ -56,7 +56,7 @@ void    token_identify(t_token_list *tokens)
 			tokens->token_type = TOKEN_CMD;
 		else if (previous_token == TOKEN_NULL)
 			tokens->token_type = TOKEN_CMD;
-		else if (previous_token == TOKEN_FILE)
+		else if (previous_token == TOKEN_FILE || previous_token == TOKEN_CMD)
 			tokens->token_type = TOKEN_CMD;
 		previous_token = tokens->token_type;
 		tokens = tokens->next;

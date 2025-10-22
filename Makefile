@@ -10,6 +10,8 @@ LIBFT = $(LIBFT_DIR)/libft.a
 
 MINISHELL_SRCS = srcs/minishell.c
 
+BINARY_TREE_SRCS = srcs/binary_tree/binary_tree.c
+
 TTY_DRAWING_SRCS = srcs/tty_drawing/tty_drawing.c
 
 TOKENIZE_SRCS = srcs/tokenizer/tokenizer.c \
@@ -37,7 +39,7 @@ SRCS = $(MINISHELL_SRCS) \
 		$(ERROR_SRCS) \
 		$(TOKENIZE_SRCS) \
 		$(ENVIRONMENT_VARIABLES_SRCS) \
-		$(BUILTINS_SRCS)
+		$(BUILTINS_SRCS) \
 
 
 OBJS = $(SRCS:.c=.o)

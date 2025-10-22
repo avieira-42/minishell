@@ -3,13 +3,12 @@
 // TESTING AREA START
 void    tokens_check(t_token_list *tokens, char **envp, char *user_input)
 {
+	char            *token_type;
     t_token_list    *quotation_tokens;
     t_token_list    *expanded_tokens;
     t_token_list    *unquoted_tokens;
     t_token_list    *identified_tokens;
     t_token_list    *unidentified_tokens;
-    char            *token_type;
-
 
     //check token speration
     printf("\nTOKENS_CHECK\n");
@@ -58,6 +57,7 @@ void    tokens_check(t_token_list *tokens, char **envp, char *user_input)
             token_type = "FILE";
         printf("[%s] -> %s\n", identified_tokens->token_string, token_type);
         identified_tokens = identified_tokens->next;
+		token_type = "TOKEN_NULL";
     }
 
 

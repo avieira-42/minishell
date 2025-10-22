@@ -54,17 +54,22 @@ t_redirect	*redirect_add_new(t_token_type redir_type, char *filename)
 
 t_redirect *redirect_last(t_redirect *redirs)
 {
-	while (redirs != NULL)
+	while (redirs->next != NULL)
 		redirs = redirs->next;
 	return (redirs);
 }
 
-void	redirect_add_back(t_redirect *redirs, t_redirect *node_new)
+void	redirect_add_back(t_redirect **redirs, t_redirect *node_new)
 {
 	t_redirect	*node_last;
 
-	node_last = redirect_last(redirs);
-	node_last->next = node_new;
+	if (*redirs == NULL)
+		*redirs = node_new;
+	else
+	{
+		node_last = redirect_last(*redirs);
+		node_last->next = node_new;
+	}
 }
 
 int	command_count(t_token_list *tokens)
@@ -87,6 +92,7 @@ void	command_init(int *i, int *cmd_size, t_token_list **tokens, t_btree *node)
 	*cmd_size = command_count(*tokens);
 	node->command = malloc(sizeof(t_command));
 	node->command->redirects = NULL;
+	// might need to set command to NULL when no commands
 	node->command->argv = malloc(sizeof(char *) * (*cmd_size + 1));
 	node->command->argv[*cmd_size] = NULL;
 }
@@ -112,6 +118,8 @@ void	command_get(t_token_list **tokens, t_btree *node)
 		{
 			(*tokens) = (*tokens)->next;
 			node_redir = redirect_add_new(token_type, (*tokens)->token_string);
+			redirect_add_back(&(node->command->redirects), node_redir);
+
 		}
 		(*tokens) = (*tokens)->next;
 	}
@@ -138,7 +146,7 @@ t_btree	*btree_create(t_token_list *tokens)
 	{
 		node_new = btree_add_new();
 		if (tokens->token_type == TOKEN_CMD
-			|| is_enum_redirect_token(tokens->token_type) == true)
+				|| is_enum_redirect_token(tokens->token_type) == true)
 		{
 			node_new->node_type = TOKEN_CMD;
 			command_get(&tokens, node_new);

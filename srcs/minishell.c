@@ -59,6 +59,27 @@ void    tokens_check(t_token_list *tokens, char **envp, char *user_input)
 
     printf("\n");
 }
+
+char	**create_command(char *command)
+{
+	char	**commands;
+
+	commands = ft_split(command, ' ');
+	if (commands == NULL)
+		return (NULL);
+	return (commands);
+}
+
+void	test_execve_simple_commands(char **envp)
+{
+	t_command	command;
+	
+	command.redirects = NULL;
+	command.argv = create_command("ls -mtp");
+	command_execute(&command, envp);
+	free_array((void **)command.argv, -1, TRUE);
+}
+
 // TESTING AREA END
 
 void    minishell_loop(char **envp)
@@ -73,8 +94,6 @@ void    minishell_loop(char **envp)
         user_input = readline(PROMPT_MINISHELL);
         if (user_input == NULL)
             break ;
-        char **test = ft_split(user_input, ' ');
-        builtins_exec(test);
         add_history(user_input);
         special_user_input_check(user_input);
         // tokenize command
@@ -84,40 +103,7 @@ void    minishell_loop(char **envp)
             ft_token_lst_clear(&tokens);
         // >> alongside builtins >> (special_user_input_check(user_input)); <<
     }
-}
-
-char	**create_command(char *command)
-{
-	char	**commands;
-	char	**result;
-	int		i;
-
-	commands = ft_split(command, ' ');
-	if (commands == NULL)
-		return (NULL);
-	i = 0;
-	while (commands[i] != NULL)
-		++i;
-	result = ft_calloc(i + 1, sizeof(char *));
-	if (result == NULL)
-		return (NULL);
-	i = 0;
-	while (commands[i] != NULL)
-	{
-		result[i] = commands[i];
-		++i;
-	}
-	return (result);
-}
-
-void	test_execve_simple_commands(char **envp)
-{
-	t_command	command;
-	
-	command.redirects = NULL;
-	command.argv = create_command("echo this is a basic test");
-	command_execute(&command, envp);
-	free_array((void **)command.argv, -1, TRUE);
+    rl_clear_history();
 }
 
 int main(int argc, char **argv, char **envp)
@@ -126,8 +112,6 @@ int main(int argc, char **argv, char **envp)
     (void)envp;
 
     parse_start(argc, argv[1]);
-    //draw_from_file(FILE_LOGO);
-    //minishell_loop(envp);
-    //clear_history();
-	test_execve_simple_commands(envp);
+    draw_from_file(FILE_LOGO);
+    minishell_loop(envp);
 }

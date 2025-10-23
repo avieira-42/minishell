@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:40:52 by avieira-          #+#    #+#             */
-/*   Updated: 2025/10/10 19:19:32 by avieira-         ###   ########.fr       */
+/*   Updated: 2025/10/23 01:02:33 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <stdarg.h>
 # include <fcntl.h>
 # include <stdbool.h>
+# include <stdio.h>
 
 
 # define TRUE 1

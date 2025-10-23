@@ -29,7 +29,10 @@ BUILTINS_SRCS = srcs/builtins/builtins_echo.c \
 				srcs/builtins/builtins_exit.c \
 				srcs/builtins/builtins_pwd.c
 
-EXECUTION_SRCS = srcs/execution/program_path_find.c
+EXECUTION_SRCS = srcs/execution/program_path_find.c \
+				 srcs/execution/command_execute.c
+
+CLEANING_SRCS = srcs/cleaning/program_clean.c
 
 SRCS = $(MINISHELL_SRCS) \
 		$(TTY_DRAWING_SRCS) \
@@ -38,7 +41,8 @@ SRCS = $(MINISHELL_SRCS) \
 		$(TOKENIZE_SRCS) \
 		$(ENVIRONMENT_VARIABLES_SRCS) \
 		$(BUILTINS_SRCS) \
-		$(EXECUTION_SRCS)
+		$(EXECUTION_SRCS) \
+		$(CLEANING_SRCS)
 
 
 OBJS = $(SRCS:.c=.o)

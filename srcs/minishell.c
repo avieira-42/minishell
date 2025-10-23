@@ -86,13 +86,48 @@ void    minishell_loop(char **envp)
     }
 }
 
+char	**create_command(char *command)
+{
+	char	**commands;
+	char	**result;
+	int		i;
+
+	commands = ft_split(command, ' ');
+	if (commands == NULL)
+		return (NULL);
+	i = 0;
+	while (commands[i] != NULL)
+		++i;
+	result = ft_calloc(i + 1, sizeof(char *));
+	if (result == NULL)
+		return (NULL);
+	i = 0;
+	while (commands[i] != NULL)
+	{
+		result[i] = commands[i];
+		++i;
+	}
+	return (result);
+}
+
+void	test_execve_simple_commands(char **envp)
+{
+	t_command	command;
+	
+	command.redirects = NULL;
+	command.argv = create_command("echo this is a basic test");
+	command_execute(&command, envp);
+	free_array((void **)command.argv, -1, TRUE);
+}
+
 int main(int argc, char **argv, char **envp)
 {
     (void)argv;
     (void)envp;
 
     parse_start(argc, argv[1]);
-    draw_from_file(FILE_LOGO);
-    minishell_loop(envp);
-    clear_history();
+    //draw_from_file(FILE_LOGO);
+    //minishell_loop(envp);
+    //clear_history();
+	test_execve_simple_commands(envp);
 }

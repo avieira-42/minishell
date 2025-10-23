@@ -1,5 +1,36 @@
 #include "binary_tree.h"
 
+void	btree_print(t_btree *btree, int indent, bool tree_top);
+
+void	btree_print_contents(t_btree *btree, int indent)
+{
+	char	*argument;
+
+	argument = NULL;
+	if (btree->node_type == TOKEN_CMD)
+		argument = "CMD";
+	else if (btree->node_type == TOKEN_PIPE)
+		argument = "PIPE";
+	printf("%*s\n", indent, argument);
+}
+
+void	btree_print(t_btree *btree, int indent, bool tree_top)
+{
+	if (tree_top == true)
+	{
+		printf ("%*s\n", indent, "BINARY_TREE");
+		indent = indent - 5;
+		printf ("%*s\n", indent, "|");
+		printf ("%*s\n", indent, "|");
+		tree_top = false;
+	}
+	while (btree != NULL)
+	{
+		btree_print_contents(btree, indent);
+		btree = btree->left;
+	}
+}
+
 void	btree_add_to_pipe(t_btree **btree, t_btree *leaf)
 {
 	if (*btree == NULL)

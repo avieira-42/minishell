@@ -103,6 +103,7 @@ void    tokens_check(t_token_list *tokens, char **envp, char *user_input)
 
 	// check binary_tree
 	tree = btree_create(tree_tokens);
+	btree_print(tree, 60, true);
 	
 
     printf("\n");

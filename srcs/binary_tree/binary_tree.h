@@ -25,5 +25,6 @@ typedef struct s_btree
 }	t_btree;
 
 t_btree	*btree_create(t_token_list *tokens);
+void	btree_print(t_btree *btree, int indent, bool tree_top);
 
 #endif

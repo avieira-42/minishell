@@ -140,7 +140,8 @@ int main(int argc, char **argv, char **envp)
     (void)argv;
     (void)envp;
 
-    parse_start(argc, argv[1]);
+    if (argc != 1)
+        error_exit(argv[1]);
     draw_from_file(FILE_LOGO);
     minishell_loop(envp);
     clear_history();

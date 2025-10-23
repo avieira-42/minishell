@@ -1,7 +1,7 @@
 #ifndef BINARY_TREE_H
 # define BINARY_TREE_H
 
-# include "../tokenizer/tokenizer.h"
+# include "../parsing/parsing.h"
 
 typedef struct s_redirect
 {

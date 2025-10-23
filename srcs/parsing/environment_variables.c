@@ -1,7 +1,4 @@
-#include "environment_variables.h"
-#include "../tokenizer/tokenizer.h"
-
-//int   is_under_brackets
+#include "../parsing/parsing.h"
 
 bool    is_variable(char *token_string, int i)
 {

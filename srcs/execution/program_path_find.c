@@ -1,4 +1,15 @@
-#include "../minishell.h"
+#include "execution.h"
+
+static
+int	program_exists(char *program_path, char **result_path)
+{
+	if (access(program_path, X_OK | F_OK) == 0)
+	{
+		*result_path = program_path;
+		return (1);
+	}
+	return (0);
+}
 
 static
 int	program_path_get(const char *program_name, char **exec_paths, char **result_path)
@@ -16,15 +27,12 @@ int	program_path_get(const char *program_name, char **exec_paths, char **result_
 		program_path = ft_strjoin(exec_paths[i], tmp);
 		if (program_path == NULL)
 			return (free(tmp), -1);
-		if (access(program_path, X_OK) == 0)
-		{
-			*result_path = program_path;
-			return (free(tmp), 0);
-		}
+		if (program_exists(program_path, result_path))
+			return (free(tmp), 1);
 		free(program_path);
 		++i;
 	}
-	return (free(tmp), 1);
+	return (free(tmp), 0);
 }
 
 int	program_path_find(char *program_name, char **exec_paths, char **result_path)
@@ -33,8 +41,9 @@ int	program_path_find(char *program_name, char **exec_paths, char **result_path)
 		return (-1);
 	if (ft_strchr(program_name, '/') != NULL)
 	{
-		*result_path = program_name;
-		return (0);
+		if (program_exists(program_name, result_path))
+			return (1);
+		return (2);
 	}
 	return(program_path_get(program_name, exec_paths, result_path));
 }

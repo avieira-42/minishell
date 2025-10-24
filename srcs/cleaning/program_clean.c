@@ -9,33 +9,42 @@ void	safe_close(int *fd_ptr)
 	}
 }
 
+static
+void	free_null_array(void **array)
+{
+	while (*array != NULL)
+	{
+		free(*array);
+		*array++ = NULL;
+	}
+	free(*array);
+}
+
+static
+void	free_sized_array(void **array, int size)
+{
+	int	i;
+
+	i = 0;
+	while (i < size)
+	{
+		free(array[i]);
+		array[i++] = NULL;
+	}
+	free(array[i]);
+}
+
 void	free_array(void **array, int size, int free_ptr)
 {
-	int		i;
 	void	**array_copy;
 
 	if (array == NULL)
 		return ;
 	array_copy = array;
-	i = 0;
 	if (size < 0)
-	{
-		while (*array != NULL)
-		{
-			free(*array);
-			*array++ = NULL;
-		}
-		free(*array);
-	}
+		free_null_array(array);	
 	else
-	{
-		while (i < size)
-		{
-			free(array[i]);
-			array[i++] = NULL;
-		}
-		free(array[i]);
-	}
-	if (free_ptr > 0)
+		free_sized_array(array, size);
+	if (free_ptr != 0)
 		free(array_copy);
 }

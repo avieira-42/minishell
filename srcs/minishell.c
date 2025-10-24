@@ -75,7 +75,7 @@ void	test_execve_simple_commands(char **envp)
 	t_command	command;
 	
 	command.redirects = NULL;
-	command.argv = create_command("ls -mtp");
+	command.argv = create_command("../../../../../test.sh");
 	command_execute(&command, envp);
 	free_array((void **)command.argv, -1, TRUE);
 }
@@ -112,6 +112,7 @@ int main(int argc, char **argv, char **envp)
     (void)envp;
 
     parse_start(argc, argv[1]);
-    draw_from_file(FILE_LOGO);
-    minishell_loop(envp);
+//    draw_from_file(FILE_LOGO);
+//    minishell_loop(envp);
+	test_execve_simple_commands(envp);
 }

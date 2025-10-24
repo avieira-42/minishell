@@ -14,9 +14,14 @@ int	command_exists(t_command *command, char **command_path)
 		ft_printf_fd(2, "error: could not allocate memory\n");
 		return (0);
 	}
-	else if (exit_code == 1)
+	else if (exit_code == 0)
 	{
 		ft_printf_fd(2, "%s: command not found\n", command->argv[0]);
+		return (0);
+	}
+	else if (exit_code == 2)
+	{
+		ft_printf_fd(2, "minishell: %s: No such file or directory\n", command->argv[0]);
 		return (0);
 	}
 	return (1);

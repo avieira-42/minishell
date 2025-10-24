@@ -42,7 +42,7 @@ void	free_array(void **array, int size, int free_ptr)
 		return ;
 	array_copy = array;
 	if (size < 0)
-		free_null_array(array);	
+		free_null_array(array);
 	else
 		free_sized_array(array, size);
 	if (free_ptr != 0)

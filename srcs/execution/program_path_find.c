@@ -12,7 +12,7 @@ int	program_exists(char *program_path, char **result_path)
 }
 
 static
-int	program_path_get(const char *program_name, char **exec_paths, char **result_path)
+int	program_path_get(const char *program_name, char **path, char **result)
 {
 	char	*program_path;
 	char	*tmp;
@@ -22,12 +22,12 @@ int	program_path_get(const char *program_name, char **exec_paths, char **result_
 	if (tmp == NULL)
 		return (-1);
 	i = 0;
-	while (exec_paths[i] != NULL)
+	while (path[i] != NULL)
 	{
-		program_path = ft_strjoin(exec_paths[i], tmp);
+		program_path = ft_strjoin(path[i], tmp);
 		if (program_path == NULL)
 			return (free(tmp), -1);
-		if (program_exists(program_path, result_path))
+		if (program_exists(program_path, result))
 			return (free(tmp), 1);
 		free(program_path);
 		++i;
@@ -35,15 +35,15 @@ int	program_path_get(const char *program_name, char **exec_paths, char **result_
 	return (free(tmp), 0);
 }
 
-int	program_path_find(char *program_name, char **exec_paths, char **result_path)
+int	program_path_find(char *program_name, char **path, char **result)
 {
 	if (program_name == NULL)
 		return (-1);
 	if (ft_strchr(program_name, '/') != NULL)
 	{
-		if (program_exists(program_name, result_path))
+		if (program_exists(program_name, result))
 			return (1);
 		return (2);
 	}
-	return(program_path_get(program_name, exec_paths, result_path));
+	return (program_path_get(program_name, path, result));
 }

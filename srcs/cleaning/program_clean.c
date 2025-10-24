@@ -31,7 +31,6 @@ void	free_sized_array(void **array, int size)
 		free(array[i]);
 		array[i++] = NULL;
 	}
-	free(array[i]);
 }
 
 void	free_array(void **array, int size, int free_ptr)

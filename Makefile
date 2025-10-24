@@ -10,16 +10,16 @@ LIBFT = $(LIBFT_DIR)/libft.a
 
 MINISHELL_SRCS = srcs/minishell.c
 
+BINARY_TREE_SRCS = srcs/binary_tree/binary_tree.c
+
 TTY_DRAWING_SRCS = srcs/tty_drawing/tty_drawing.c
 
-TOKENIZE_SRCS = srcs/tokenizer/tokenizer.c \
-				srcs/tokenizer/token_list.c \
-				srcs/tokenizer/quotation.c \
-				srcs/tokenizer/expand.c
-
-ENVIRONMENT_VARIABLES_SRCS = srcs/environment_variables/environment_variables.c
-
-PARSING_SRCS = srcs/parsing/parsing.c
+PARSING_SRCS = srcs/parsing/tokenizer.c \
+				srcs/parsing/token_list.c \
+				srcs/parsing/quotation.c \
+				srcs/parsing/expand.c \
+				srcs/parsing/environment_variables.c \
+				srcs/parsing/token_identify.c
 
 ERROR_SRCS = srcs/error/error.c \
         srcs/error/error_message.c
@@ -36,13 +36,12 @@ CLEANING_SRCS = srcs/cleaning/program_clean.c
 				
 SRCS = $(MINISHELL_SRCS) \
 		$(TTY_DRAWING_SRCS) \
-		$(PARSING_SRCS) \
 		$(ERROR_SRCS) \
-		$(TOKENIZE_SRCS) \
-		$(ENVIRONMENT_VARIABLES_SRCS) \
 		$(BUILTINS_SRCS) \
 		$(EXECUTION_SRCS) \
 		$(CLEANING_SRCS)
+		$(PARSING_SRCS) \
+		$(BINARY_TREE_SRCS)
 
 
 OBJS = $(SRCS:.c=.o)

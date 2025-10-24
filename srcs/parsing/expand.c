@@ -1,5 +1,4 @@
-#include "tokenizer.h"
-#include "../environment_variables/environment_variables.h"
+#include "parsing.h"
 
 void    single_quotation_skip(char *buffer, char *token_string, t_iter *iter)
 {

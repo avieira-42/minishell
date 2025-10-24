@@ -108,6 +108,27 @@ void    tokens_check(t_token_list *tokens, char **envp, char *user_input)
 
     printf("\n");
 }
+
+char	**create_command(char *command)
+{
+	char	**commands;
+
+	commands = ft_split(command, ' ');
+	if (commands == NULL)
+		return (NULL);
+	return (commands);
+}
+
+void	test_execve_simple_commands(char **envp)
+{
+	t_command	command;
+	
+	command.redirects = NULL;
+	command.argv = create_command("../../../../../test.sh");
+	command_execute(&command, envp);
+	free_array((void **)command.argv, -1, TRUE);
+}
+
 // TESTING AREA END
 
 void    minishell_loop(char **envp)
@@ -122,8 +143,6 @@ void    minishell_loop(char **envp)
         user_input = readline(PROMPT_MINISHELL);
         if (user_input == NULL)
             break ;
-        char **test = ft_split(user_input, ' ');
-        builtins_exec(test);
         add_history(user_input);
         special_user_input_check(user_input);
         // tokenize command
@@ -133,6 +152,7 @@ void    minishell_loop(char **envp)
             ft_token_lst_clear(&tokens);
         // >> alongside builtins >> (special_user_input_check(user_input)); <<
     }
+    rl_clear_history();
 }
 
 int main(int argc, char **argv, char **envp)
@@ -144,5 +164,4 @@ int main(int argc, char **argv, char **envp)
         error_exit(argv[1]);
     draw_from_file(FILE_LOGO);
     minishell_loop(envp);
-    clear_history();
 }

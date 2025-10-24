@@ -4,3 +4,5 @@ libs/libft/srcs/*.o
 libs/libft/libft.a
 minishell
 .vscode/*
+.cache/*
+compile_commands.json

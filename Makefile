@@ -28,13 +28,19 @@ BUILTINS_SRCS = srcs/builtins/builtins_echo.c \
 				srcs/builtins/builtins_exec.c \
 				srcs/builtins/builtins_exit.c \
 				srcs/builtins/builtins_pwd.c
-				
 
+EXECUTION_SRCS = srcs/execution/program_path_find.c \
+				 srcs/execution/command_execute.c
+
+CLEANING_SRCS = srcs/cleaning/program_clean.c
+				
 SRCS = $(MINISHELL_SRCS) \
 		$(TTY_DRAWING_SRCS) \
 		$(ERROR_SRCS) \
-		$(PARSING_SRCS) \
 		$(BUILTINS_SRCS) \
+		$(EXECUTION_SRCS) \
+		$(CLEANING_SRCS)
+		$(PARSING_SRCS) \
 		$(BINARY_TREE_SRCS)
 
 

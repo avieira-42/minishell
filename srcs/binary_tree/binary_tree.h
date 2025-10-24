@@ -11,6 +11,12 @@ typedef struct s_redirect
 	struct s_redirect	*next;
 }	t_redirect;
 
+typedef struct s_redirect
+{
+	t_token_type	type;
+	char			*filename;
+}	t_redirect;
+
 typedef struct s_command
 {
 	t_redirect		*redirects;

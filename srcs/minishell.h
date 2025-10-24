@@ -9,6 +9,8 @@
 # include "tty_drawing/tty_drawing.h"
 # include "error/error.h"
 # include "builtins/builtins.h"
+# include "execution/execution.h"
+# include "cleaning/cleaning.h"
 
 # define COLOR_GREEN "\e[0;32m"
 # define COLOR_RESET "\e[0m"
@@ -46,9 +48,5 @@ void    special_user_input_check(char *command);
 //ENVIRONMENT_VARIABLES
 char	*environment_variable_get(char **envp, char *variable_name, int *j);
 int     environment_variable_len(char *variable_name);
-
-//BINARY_TREE
-t_btree	*btree_create(t_token_list *tokens);
-void	btree_print(t_btree *btree, int indent, bool tree_top);
 
 #endif

@@ -15,7 +15,7 @@ void	free_null_array(void **array)
 	while (*array != NULL)
 	{
 		free(*array);
-		*array++ = NULL;
+		array++;
 	}
 	free(*array);
 }

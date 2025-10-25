@@ -102,11 +102,17 @@ void    tokens_check(t_token_list *tokens, char **envp, char *user_input)
     }
 
 	// check binary_tree
+	if (user_input_parse(NULL, &tree_tokens) == -1)
+	{
+		printf("invalid_user_input\n");
+		return ;
+	}
+
 	tree = btree_create(tree_tokens);
 	btree_print(tree, 60, true);
-	
 
-    printf("\n");
+
+	printf("\n");
 }
 
 char	**create_command(char *command)
@@ -122,7 +128,7 @@ char	**create_command(char *command)
 void	test_execve_simple_commands(char **envp)
 {
 	t_command	command;
-	
+
 	command.redirects = NULL;
 	command.argv = create_command("../../../../../test.sh");
 	command_execute(&command, envp);
@@ -133,35 +139,37 @@ void	test_execve_simple_commands(char **envp)
 
 void    minishell_loop(char **envp)
 {
-    char *user_input;
-    t_token_list *tokens;
+	char *user_input;
+	t_token_list *tokens;
 
-    user_input = NULL;
-    tokens = NULL;
-    while (TRUE)
-    {
-        user_input = readline(PROMPT_MINISHELL);
-        if (user_input == NULL)
-            break ;
-        add_history(user_input);
-        special_user_input_check(user_input);
-        // tokenize command
-        tokens_check(tokens, envp, user_input);
-        free(user_input);
-        if (tokens != NULL)
-            ft_token_lst_clear(&tokens);
-        // >> alongside builtins >> (special_user_input_check(user_input)); <<
-    }
-    rl_clear_history();
+	user_input = NULL;
+	tokens = NULL;
+	while (TRUE)
+	{
+		user_input = readline(PROMPT_MINISHELL);
+		if (user_input == NULL)
+			break ;
+		add_history(user_input);
+		special_user_input_check(user_input);
+		// tokenize command
+		tokens_check(tokens, envp, user_input);
+		free(user_input);
+		if (tokens != NULL)
+			ft_token_lst_clear(&tokens);
+		/*if (tree != NULL)
+		  free_tree(tree);*/
+		// >> alongside builtins >> (special_user_input_check(user_input)); <<
+	}
+	rl_clear_history();
 }
 
 int main(int argc, char **argv, char **envp)
 {
-    (void)argv;
-    (void)envp;
+	(void)argv;
+	(void)envp;
 
-    if (argc != 1)
-        error_exit(argv[1]);
-    draw_from_file(FILE_LOGO);
-    minishell_loop(envp);
+	if (argc != 1)
+		error_exit(argv[1]);
+	draw_from_file(FILE_LOGO);
+	minishell_loop(envp);
 }

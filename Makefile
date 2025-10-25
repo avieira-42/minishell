@@ -19,7 +19,8 @@ PARSING_SRCS = srcs/parsing/tokenizer.c \
 				srcs/parsing/quotation.c \
 				srcs/parsing/expand.c \
 				srcs/parsing/environment_variables.c \
-				srcs/parsing/token_identify.c
+				srcs/parsing/token_identify.c \
+				srcs/parsing/user_input_parse.c
 
 ERROR_SRCS = srcs/error/error.c \
         srcs/error/error_message.c

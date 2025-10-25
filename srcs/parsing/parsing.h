@@ -96,6 +96,9 @@ void    token_expand(t_token_list *tokens, char **envp);
 void    token_identify(t_token_list *tokens);
 bool    is_enum_redirect_token(t_token_type token);
 
+//TOKEN_PARSE
+int	user_input_parse(char *readline, t_token_list **tokens);
+
 // ENVIRONMENT_VARIABLES
 char	*environment_variable_get(char **envp, char *variable_name, int *j);
 int     environment_variable_len(char *variable_name);

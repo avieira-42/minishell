@@ -8,7 +8,7 @@ bool	is_valid_token(t_token_type previous_token, t_token_type current_token)
 	if (is_enum_redirect_token(previous_token) == true
 			&& is_enum_redirect_token(current_token) == true)
 		return (false);
-	if (previous_token == TOKEN_PIPE)
+	if (previous_token == TOKEN_PIPE && current_token == TOKEN_PIPE)
 		return (false);
 	return (true);
 }
@@ -43,6 +43,7 @@ int	user_input_parse(char *user_input, t_token_list **tokens)
 		if (tokens_iter->next == NULL)
 			if (is_valid_token_final(tokens_iter->token_type) == false)
 				return (-1);
+		previous_token = tokens_iter->token_type;
 		tokens_iter = tokens_iter->next;
 	}
 	return (0);

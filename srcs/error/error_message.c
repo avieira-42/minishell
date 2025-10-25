@@ -1,18 +1,18 @@
 #include "error.h"
 
-void error_message_put_1(char *error_message, char *argv1)
+void	error_message_put_1(char *error_message, char *argv1)
 {
-    ft_putstr_fd(MINI_SHELL_ERROR, 2);
-    ft_putstr_fd(argv1, 2);
-    ft_putstr_fd(error_message, 2);
+	ft_printf_fd(2, "%s%s%s", MINI_SHELL_ERROR, argv1, error_message);
 }
 
-void error_message_put_2(char *error_message, char *argv1)
+void	error_message_put_2(char *error_message, char *argv1)
 {
-    ft_putstr_fd(argv1, 2);
-    ft_putstr_fd(": ", 2);
-    ft_putstr_fd(argv1, 2);
-    ft_putstr_fd(error_message, 2);
+	ft_printf_fd(2, "%s: %s%s", argv1, argv1, error_message);
+}
+
+void	error_message_put_tokens(char *error_message)
+{
+	ft_printf_fd(2, "%s", error_message);
 }
 
 void error_message_get(int error_code, char **error_message)

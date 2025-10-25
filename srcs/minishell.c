@@ -1,4 +1,79 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/25 23:33:23 by avieira-          #+#    #+#             */
+/*   Updated: 2025/10/26 00:16:19 by avieira-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
+
+void	btree_print(t_btree *btree, int indent, bool tree_top);
+
+void	btree_print_contents(t_btree *btree, int indent)
+{
+	char	*argument;
+
+	if (btree == NULL)
+		return ;
+	argument = NULL;
+	if (btree->node_type == TOKEN_CMD)
+		argument = "CMD";
+	else if (btree->node_type == TOKEN_PIPE)
+		argument = "PIPE";
+	printf("%*s", indent, argument);
+}
+
+void	btree_print(t_btree *btree, int indent, bool tree_top)
+{
+	int	i;
+	int	space;
+	int	indent_left;
+	int	indent_right;
+
+	space = 1;
+	if (tree_top == true)
+	{
+		tree_top = false;
+		printf ("%*s\n", indent, "BINARY_TREE");
+		indent = indent - 5;
+		printf ("%*s\n", indent, "|");
+		printf ("%*s\n", indent, "|");
+		btree_print_contents(btree, indent + space);
+		indent_left = indent - space;
+		indent_right = space * 2;
+		printf("\n");
+	}
+	i = 0;
+	while (btree != NULL)
+	{
+		if (i > 0)
+			indent_right = indent_right + 1;
+		printf("%*s", indent_left, "/");
+		printf("%*s\n", indent_right, "\\");
+		indent_left = indent_left - space;
+		indent_right = indent_right + space * 2;
+		printf("%*s", indent_left, "/");
+		printf("%*s\n", indent_right, "\\");
+		//indent_left = indent_left - space;
+		//indent_right = indent_right + space * 2;
+		//printf("%*s", indent_left, "/");
+		//printf("%*s\n", indent_right, "\\");
+		//indent_left = indent_left - space;
+		//indent_right++;
+		btree_print_contents(btree->left, indent_left);
+		btree_print_contents(btree->right, indent_right + space * 2);
+		btree = btree->left;
+		indent_left = indent_left - space;
+		indent_right = 0;
+		printf("\n");
+		i++;
+	}
+}
 
 // TESTING AREA START
 void    tokens_check(t_token_list *tokens, char **envp, char *user_input)
@@ -111,7 +186,6 @@ void    tokens_check(t_token_list *tokens, char **envp, char *user_input)
 	tree = btree_create(tree_tokens);
 	btree_print(tree, 60, true);
 
-
 	printf("\n");
 }
 
@@ -169,7 +243,7 @@ int main(int argc, char **argv, char **envp)
 	(void)envp;
 
 	if (argc != 1)
-		error_exit(argv[1]);
+		error_exit_argv(argv[1]);
 	draw_from_file(FILE_LOGO);
 	minishell_loop(envp);
 }

@@ -25,7 +25,18 @@ typedef struct s_btree
 	struct s_btree	*right;
 }	t_btree;
 
+//binary_tree
 t_btree	*btree_create(t_token_list *tokens);
-void	btree_print(t_btree *btree, int indent, bool tree_top);
+
+//redirects
+t_redirect	*redirect_add_new(t_token_type redir_type, char *filename);
+t_redirect *redirect_last(t_redirect *redirs);
+void	redirect_add_back(t_redirect **redirs, t_redirect *node_new);
+
+//command
+void	command_get(t_token_list **tokens, t_btree *node);
+
+//binary_tree_clear
+void	btree_clear(t_btree *btree);
 
 #endif

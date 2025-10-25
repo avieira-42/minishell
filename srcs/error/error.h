@@ -8,8 +8,9 @@
 # define CANNOT_EXECUTE ": cannot execute binary file\n"
 # define IS_DIR ": Is a directory\n"
 
-void    error_exit(char *argv1);
+void	error_exit_argv(char *argv1);
 void    error_message_get(int error_code, char **error_message);
 void    error_message_put_1(char *error_message, char *argv1);
+void	error_message_put_tokens(char *error_message);
 
 #endif

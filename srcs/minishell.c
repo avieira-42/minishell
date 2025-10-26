@@ -1,7 +1,7 @@
 #include "minishell.h"
 
 // TESTING AREA START
-void    tokens_check(t_token_list *tokens, char **envp, char *user_input)
+void    tokens_check(t_token_list *tokens, char **envp, char *user_input, t_btree **tree)
 {
 	char            *token_type;
     t_token_list    *quotation_tokens;
@@ -10,8 +10,6 @@ void    tokens_check(t_token_list *tokens, char **envp, char *user_input)
     t_token_list    *identified_tokens;
     t_token_list    *unidentified_tokens;
 	t_token_list	*tree_tokens;
-	t_btree			*tree;
-
 
     //check token speration
     printf("\nTOKENS_CHECK\n");
@@ -102,8 +100,8 @@ void    tokens_check(t_token_list *tokens, char **envp, char *user_input)
     }
 
 	// check binary_tree
-	tree = btree_create(tree_tokens);
-	btree_print(tree, 60, true);
+	*tree = btree_create(tree_tokens);
+	btree_print(*tree, 60, true);
 	
 
     printf("\n");
@@ -124,7 +122,7 @@ void	test_execve_simple_commands(char **envp)
 	t_command	command;
 	
 	command.redirects = NULL;
-	command.argv = create_command("../../../../../test.sh");
+	command.argv = create_command("ls -mtp");
 	command_execute(&command, envp);
 	free_array((void **)command.argv, -1, TRUE);
 }
@@ -135,6 +133,7 @@ void    minishell_loop(char **envp)
 {
     char *user_input;
     t_token_list *tokens;
+	t_btree	*node;
 
     user_input = NULL;
     tokens = NULL;
@@ -146,7 +145,8 @@ void    minishell_loop(char **envp)
         add_history(user_input);
         special_user_input_check(user_input);
         // tokenize command
-        tokens_check(tokens, envp, user_input);
+        tokens_check(tokens, envp, user_input, &node);
+		traverse_btree(node, FALSE);
         free(user_input);
         if (tokens != NULL)
             ft_token_lst_clear(&tokens);
@@ -160,8 +160,8 @@ int main(int argc, char **argv, char **envp)
     (void)argv;
     (void)envp;
 
-    if (argc != 1)
-        error_exit(argv[1]);
+	if (argc != 1)
+		error_exit(argv[1]);
     draw_from_file(FILE_LOGO);
     minishell_loop(envp);
 }

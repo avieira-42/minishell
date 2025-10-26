@@ -6,7 +6,8 @@
 
 # include "../binary_tree/binary_tree.h"
 
-int	program_path_find(char *program_name, char **path, char **result);
-int	command_execute(t_command *command, char **envp);
+int		program_path_find(char *program_name, char **path, char **result);
+int		command_execute(t_command *command, char **envp);
+void	traverse_btree(t_btree *node, int is_pipe_child);
 
 #endif

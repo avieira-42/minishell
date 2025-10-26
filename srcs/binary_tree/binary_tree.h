@@ -21,6 +21,7 @@ typedef struct s_btree
 {
 	t_token_type	node_type;
 	t_command		*command;
+	int				pipefd[2];
 	struct s_btree	*left;
 	struct s_btree	*right;
 }	t_btree;

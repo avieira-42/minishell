@@ -5,17 +5,6 @@
 #include <unistd.h>
 
 static
-void	pipe_parent(int fd[2], int *exit_code, int pid_left, int pid_right)
-{
-	safe_close(&fd[0]);
-	safe_close(&fd[1]);
-	waitpid(pid_left, exit_code, 0);
-	waitpid(pid_right, exit_code, 0);
-	if (WIFEXITED(*exit_code))
-		*exit_code = WEXITSTATUS(*exit_code);
-}
-
-static
 void	pipe_execute(t_btree *node, int *exit_code)
 {
 	int	pipefd[2];
@@ -23,22 +12,8 @@ void	pipe_execute(t_btree *node, int *exit_code)
 	int	pid_right;
 
 	pipe(pipefd);
-	pid_left = fork();
-	if (pid_left == 0)
-	{
-		dup2(pipefd[1], STDOUT_FILENO);
-		safe_close(&pipefd[0]);
-		safe_close(&pipefd[1]);
-		traverse_btree(node->left);
-	}
-	pid_right = fork();
-	if (pid_right == 0)
-	{
-		dup2(pipefd[0], STDIN_FILENO);
-		safe_close(&pipefd[1]);
-		safe_close(&pipefd[0]);
-		traverse_btree(node->right);
-	}
+	pid_left = pipe_child(pipefd, node->left, pipefd[1], STDOUT_FILENO);
+	pid_right = pipe_child(pipefd, node->right, pipefd[0], STDIN_FILENO);
 	pipe_parent(pipefd, exit_code, pid_left, pid_right);
 }
 
@@ -86,7 +61,7 @@ void	traverse_btree(t_btree *node)
 
 	exit_status = 0;
 	if (node == NULL)
-		return ;
+		exit(exit_status);
 	if (node->node_type == TOKEN_PIPE)
 		pipe_execute(node, &exit_status);
 	else

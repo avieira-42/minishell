@@ -1,4 +1,5 @@
 #include "minishell.h"
+#include <sys/wait.h>
 
 // TESTING AREA START
 void    tokens_check(t_token_list *tokens, char **envp, char *user_input, t_btree **tree)
@@ -146,7 +147,9 @@ void    minishell_loop(char **envp)
         special_user_input_check(user_input);
         // tokenize command
         tokens_check(tokens, envp, user_input, &node);
-		traverse_btree(node, FALSE);
+		if (fork() == 0)
+			traverse_btree(node, FALSE);
+		wait(0);
         free(user_input);
         if (tokens != NULL)
             ft_token_lst_clear(&tokens);

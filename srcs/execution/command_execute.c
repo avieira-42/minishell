@@ -7,43 +7,39 @@ void	pipe_execute(t_btree *node);
 
 void	traverse_btree(t_btree *node, int is_pipe_child)
 {
+	(void)is_pipe_child;
 	if (node == NULL)
 		return ;
 	if (node->node_type == TOKEN_PIPE)
 		pipe_execute(node);
 	else
-	{
-		if (is_pipe_child == TRUE)
-			command_execute(node->command, NULL); 
-		else
-		{
-			if (fork() == 0)
-				command_execute(node->command, NULL);
-			else
-				wait(0);
-		}
-	}
+		command_execute(node->command, NULL);
+	exit(0);
 }
 
 void	pipe_execute(t_btree *node)
 {
-	pipe(node->pipefd);
+	int	pipefd[2];
+
+	pipe(pipefd);
 	if (fork() == 0)
 	{
-		dup2(node->pipefd[1], STDOUT_FILENO);
-		safe_close(&node->pipefd[0]);
-		safe_close(&node->pipefd[1]);
+		dup2(pipefd[1], STDOUT_FILENO);
+		safe_close(&pipefd[0]);
+		safe_close(&pipefd[1]);
 		traverse_btree(node->left, TRUE);
 	}
 	if (fork() == 0)
 	{
-		dup2(node->pipefd[0], STDIN_FILENO);
-		safe_close(&node->pipefd[1]);
-		safe_close(&node->pipefd[0]);
+		dup2(pipefd[0], STDIN_FILENO);
+		safe_close(&pipefd[1]);
+		safe_close(&pipefd[0]);
 		traverse_btree(node->right, TRUE);
 	}
-	safe_close(&node->pipefd[0]);
-	safe_close(&node->pipefd[1]);
+	safe_close(&pipefd[0]);
+	safe_close(&pipefd[1]);
+	wait(0);
+	wait(0);
 }
 
 int	command_exists(t_command *command, char **command_path)

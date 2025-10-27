@@ -30,7 +30,8 @@ BUILTINS_SRCS = srcs/builtins/builtins_echo.c \
 				srcs/builtins/builtins_pwd.c
 
 EXECUTION_SRCS = srcs/execution/program_path_find.c \
-				 srcs/execution/command_execute.c
+				 srcs/execution/command_execute.c \
+				 srcs/execution/process_control.c
 
 CLEANING_SRCS = srcs/cleaning/program_clean.c
 				

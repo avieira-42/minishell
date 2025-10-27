@@ -5,10 +5,10 @@
 #include <unistd.h>
 
 static
-void	parent_process(int pipefd[2], int *exit_code, int pid_left, int pid_right)
+void	pipe_parent(int fd[2], int *exit_code, int pid_left, int pid_right)
 {
-	safe_close(&pipefd[0]);
-	safe_close(&pipefd[1]);
+	safe_close(&fd[0]);
+	safe_close(&fd[1]);
 	waitpid(pid_left, exit_code, 0);
 	waitpid(pid_right, exit_code, 0);
 	if (WIFEXITED(*exit_code))
@@ -39,7 +39,7 @@ void	pipe_execute(t_btree *node, int *exit_code)
 		safe_close(&pipefd[0]);
 		traverse_btree(node->right);
 	}
-	parent_process(pipefd, exit_code, pid_left, pid_right);
+	pipe_parent(pipefd, exit_code, pid_left, pid_right);
 }
 
 static
@@ -93,4 +93,3 @@ void	traverse_btree(t_btree *node)
 		command_execute(node->command, NULL);
 	exit(exit_status);
 }
-

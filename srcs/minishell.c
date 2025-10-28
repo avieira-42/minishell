@@ -1,6 +1,4 @@
 #include "minishell.h"
-#include <stdlib.h>
-#include <sys/wait.h>
 
 // TESTING AREA START
 void    tokens_check(t_token_list *tokens, char **envp, char *user_input, t_btree **tree)

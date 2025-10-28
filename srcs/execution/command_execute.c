@@ -1,8 +1,4 @@
 #include "../minishell.h"
-#include "execution.h"
-#include <stdlib.h>
-#include <sys/wait.h>
-#include <unistd.h>
 
 static
 void	pipe_execute(t_btree *node, int *exit_code)

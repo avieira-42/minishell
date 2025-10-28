@@ -6,6 +6,8 @@
 typedef struct s_redirect
 {
 	t_token_type		redir_type;
+	int					fd;
+	int					mode;
 	char				*filename;
 	char				*limiter;
 	struct s_redirect	*next;

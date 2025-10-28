@@ -1,19 +1,6 @@
 #include "../minishell.h"
 
 static
-void	pipe_execute(t_btree *node, int *exit_code)
-{
-	int	pipefd[2];
-	int	pid_left;
-	int	pid_right;
-
-	pipe(pipefd);
-	pid_left = pipe_child(pipefd, node->left, pipefd[1], STDOUT_FILENO);
-	pid_right = pipe_child(pipefd, node->right, pipefd[0], STDIN_FILENO);
-	pipe_parent(pipefd, exit_code, pid_left, pid_right);
-}
-
-static
 void	command_exists(t_command *command, char **command_path)
 {
 	char	**path_env;
@@ -41,6 +28,40 @@ void	command_exists(t_command *command, char **command_path)
 }
 
 static
+void	pipe_execute(t_btree *node, int *exit_code)
+{
+	int	pipefd[2];
+	int	pid_left;
+	int	pid_right;
+
+	pipe(pipefd);
+	pid_left = pipe_child(pipefd, node->left, pipefd[1], STDOUT_FILENO);
+	pid_right = pipe_child(pipefd, node->right, pipefd[0], STDIN_FILENO);
+	pipe_parent(pipefd, exit_code, pid_left, pid_right);
+}
+
+static
+void	redirect_execute(t_btree *node)
+{
+	int		fd;
+	int		mode;
+	char	*filename;
+
+	fd = node->command->redirects->fd;
+	mode = node->command->redirects->mode;
+	filename = node->command->redirects->filename;
+	safe_close(&fd);
+	if (open(filename, mode) < 0)
+	{
+		perror("open");
+		ft_printf_fd(STDERR_FILENO, "Failed to open file: %s\n", filename);
+		exit(EXIT_FAILURE);
+	}
+	node->command->redirects = node->command->redirects->next;
+	traverse_btree(node);
+}
+
+static
 int	command_execute(t_command *command, char **envp)
 {
 	char	*command_path;
@@ -58,6 +79,8 @@ void	traverse_btree(t_btree *node)
 	exit_status = 0;
 	if (node == NULL)
 		exit(exit_status);
+	if (node->command->redirects != NULL)
+		redirect_execute(node);
 	if (node->node_type == TOKEN_PIPE)
 		pipe_execute(node, &exit_status);
 	else

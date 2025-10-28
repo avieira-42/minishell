@@ -44,16 +44,15 @@ static
 void	redirect_execute(t_btree *node)
 {
 	int		fd;
-	int		mode;
+	int		open_flags;
 	char	*filename;
 
 	fd = node->command->redirects->fd;
-	mode = node->command->redirects->mode;
+	open_flags = node->command->redirects->open_flags;
 	filename = node->command->redirects->filename;
 	safe_close(&fd);
-	if (open(filename, mode) < 0)
+	if (open(filename, open_flags, 0644) < 0)
 	{
-		perror("open");
 		ft_printf_fd(STDERR_FILENO, "Failed to open file: %s\n", filename);
 		exit(EXIT_FAILURE);
 	}
@@ -79,7 +78,7 @@ void	traverse_btree(t_btree *node)
 	exit_status = 0;
 	if (node == NULL)
 		exit(exit_status);
-	if (node->command->redirects != NULL)
+	if (node->node_type != TOKEN_PIPE && node->command->redirects != NULL)
 		redirect_execute(node);
 	if (node->node_type == TOKEN_PIPE)
 		pipe_execute(node, &exit_status);

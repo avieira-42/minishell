@@ -105,10 +105,10 @@ t_btree	*btree_add_new(void)
 	return (node_new);
 }
 
-void	redirect_set(t_redirect *node, int fd, int mode)
+void	redirect_set(t_redirect *node, int fd, int open_flags)
 {
 	node->fd = fd;
-	node->mode = mode;
+	node->open_flags = open_flags;
 }
 
 t_redirect	*redirect_add_new(t_token_type redir_type, char *filename)
@@ -125,7 +125,7 @@ t_redirect	*redirect_add_new(t_token_type redir_type, char *filename)
 	else if (redir_type == TOKEN_APPEND)
 		redirect_set(node_new, STDOUT_FILENO, O_WRONLY | O_CREAT | O_APPEND);
 	else if (redir_type == TOKEN_HEREDOC)
-		redirect_set(node_new, STDIN_FILENO, O_RDONLY);
+		redirect_set(node_new, STDIN_FILENO, O_TRUNC);
 	node_new->filename = filename;
 	return (node_new);
 }

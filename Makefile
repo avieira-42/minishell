@@ -1,7 +1,8 @@
 NAME = minishell
 
 CC = cc
-CFLAGS = -g -Wall -Wextra -Werror
+ADD_FLAGS=
+CFLAGS = -g -Wall -Wextra -Werror $(ADD_FLAGS)
 FLAG_READLINE = -lreadline
 LDFLAGS = -I/usr/local/opt/readline/include -L/usr/local/op/readline/lib
 

@@ -1,4 +1,5 @@
 #include "../minishell.h"
+#include <unistd.h>
 
 static
 void	command_exists(t_command *command, char **command_path)
@@ -41,6 +42,26 @@ void	pipe_execute(t_btree *node, int *exit_code)
 }
 
 static
+void	heredoc_execute(char *limiter)
+{
+	char	*line;
+	int		pipefd[2];
+
+	pipe(pipefd);
+	while (true)
+	{
+		ft_printf("> ");
+		line = get_next_line(STDIN_FILENO);
+		if (line == NULL || ft_strncmp(line, limiter, ft_strlen(line) - 1) == 0)
+			break ;
+		ft_printf_fd(pipefd[1], line);
+	}
+	dup2(pipefd[0], STDIN_FILENO);
+	safe_close(&pipefd[1]);
+	safe_close(&pipefd[0]);
+}
+
+static
 void	redirect_execute(t_btree *node)
 {
 	int		fd;
@@ -50,12 +71,17 @@ void	redirect_execute(t_btree *node)
 	fd = node->command->redirects->fd;
 	open_flags = node->command->redirects->open_flags;
 	filename = node->command->redirects->filename;
-	safe_close(&fd);
-	if (open(filename, open_flags, 0644) < 0)
+	if (node->command->redirects->redir_type != TOKEN_HEREDOC)
 	{
-		ft_printf_fd(STDERR_FILENO, "Failed to open file: %s\n", filename);
-		exit(EXIT_FAILURE);
+		safe_close(&fd);
+		if (open(filename, open_flags, 0644) < 0)
+		{
+			ft_printf_fd(STDERR_FILENO, "Failed to open file: %s\n", filename);
+			exit(EXIT_FAILURE);
+		}
 	}
+	else
+		heredoc_execute(filename);
 	node->command->redirects = node->command->redirects->next;
 	traverse_btree(node);
 }

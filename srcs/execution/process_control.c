@@ -14,10 +14,10 @@ int	pipe_child(int fd[2], t_btree *node, int oldfd, int newfd)
 {
 	int	pid;
 
-	pid = fork();
+	pid = safe_fork();
 	if (pid == 0)
 	{
-		dup2(oldfd, newfd);
+		safe_dup2(oldfd, newfd);
 		safe_close(&fd[1]);
 		safe_close(&fd[0]);
 		traverse_btree(node);

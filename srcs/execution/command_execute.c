@@ -35,7 +35,7 @@ void	pipe_execute(t_btree *node, int *exit_code)
 	int	pid_left;
 	int	pid_right;
 
-	pipe(pipefd);
+	safe_pipe(pipefd);
 	pid_left = pipe_child(pipefd, node->left, pipefd[1], STDOUT_FILENO);
 	pid_right = pipe_child(pipefd, node->right, pipefd[0], STDIN_FILENO);
 	pipe_parent(pipefd, exit_code, pid_left, pid_right);
@@ -64,7 +64,7 @@ void	redirect_execute(t_btree *node)
 	}
 	else
 	{
-		dup2(fd, STDIN_FILENO);
+		safe_dup2(fd, STDIN_FILENO);
 		safe_close(&fd);
 	}
 	node->command->redirects = node->command->redirects->next;

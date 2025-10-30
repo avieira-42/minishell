@@ -6,7 +6,7 @@ void	heredoc_execute(char *limiter, t_redirect *redir)
 	char	*line;
 	int		pipefd[2];
 
-	pipe(pipefd);
+	safe_pipe(pipefd);
 	while (true)
 	{
 		ft_printf("> ");

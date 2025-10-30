@@ -127,6 +127,7 @@ void    minishell_loop(char **envp)
         special_user_input_check(user_input);
         // tokenize command
         tokens_check(tokens, envp, user_input, &node);
+		heredoc_find(node);
 		int pid = fork();
 		if (pid == 0)
 			traverse_btree(node);

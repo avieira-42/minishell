@@ -125,7 +125,7 @@ t_redirect	*redirect_add_new(t_token_type redir_type, char *filename)
 	else if (redir_type == TOKEN_APPEND)
 		redirect_set(node_new, STDOUT_FILENO, O_WRONLY | O_CREAT | O_APPEND);
 	else if (redir_type == TOKEN_HEREDOC)
-		redirect_set(node_new, STDIN_FILENO, O_TRUNC);
+		redirect_set(node_new, -2, 0);
 	node_new->redir_type = redir_type;
 	node_new->filename = filename;
 	node_new->next = NULL;

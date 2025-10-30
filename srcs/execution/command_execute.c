@@ -42,7 +42,7 @@ void	pipe_execute(t_btree *node, int *exit_code)
 }
 
 static
-void	heredoc_execute(char *limiter)
+void	heredoc_execute(char *limiter, t_redirect *redir)
 {
 	char	*line;
 	int		pipefd[2];
@@ -56,9 +56,12 @@ void	heredoc_execute(char *limiter)
 			break ;
 		ft_printf_fd(pipefd[1], line);
 	}
-	dup2(pipefd[0], STDIN_FILENO);
 	safe_close(&pipefd[1]);
-	safe_close(&pipefd[0]);
+	if (redir->fd != -1)
+	{
+		safe_close(&redir->fd);
+		redir->fd = pipefd[0];
+	}
 }
 
 static
@@ -81,7 +84,10 @@ void	redirect_execute(t_btree *node)
 		}
 	}
 	else
-		heredoc_execute(filename);
+	{
+		dup2(fd, STDIN_FILENO);
+		safe_close(&fd);
+	}
 	node->command->redirects = node->command->redirects->next;
 	traverse_btree(node);
 }
@@ -111,4 +117,35 @@ void	traverse_btree(t_btree *node)
 	else
 		command_execute(node->command, NULL);
 	exit(exit_status);
+}
+
+void	heredoc_find(t_btree *node);
+
+void	heredoc_iterate(t_btree *node)
+{
+	if (node == NULL)
+		return ;
+	if (node->command->redirects->redir_type == TOKEN_HEREDOC)
+		heredoc_execute(node->command->redirects->filename, node->command->redirects);
+	node->command->redirects = node->command->redirects->next;
+	heredoc_find(node);
+}
+
+void	heredoc_find(t_btree *node)
+{
+	t_redirect *redir_save;
+
+	if (node == NULL)
+		return ;
+	if (node->node_type == TOKEN_PIPE)
+	{
+		heredoc_find(node->left);
+		heredoc_find(node->right);
+	}
+	else if (node->node_type == TOKEN_CMD && node->command->redirects != NULL)
+	{
+		redir_save = node->command->redirects;
+		heredoc_iterate(node);
+		node->command->redirects = redir_save;
+	}
 }

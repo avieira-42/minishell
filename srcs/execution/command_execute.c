@@ -1,5 +1,5 @@
 #include "../minishell.h"
-#include <unistd.h>
+#include <errno.h>
 
 static
 void	command_exists(t_command *command, char **command_path)
@@ -44,19 +44,21 @@ void	pipe_execute(t_btree *node, int *exit_code)
 static
 void	redirect_execute(t_btree *node)
 {
+	char	*filename;
 	int		fd;
 	int		open_flags;
-	char	*filename;
 
+	filename = node->command->redirects->filename;
 	fd = node->command->redirects->fd;
 	open_flags = node->command->redirects->open_flags;
-	filename = node->command->redirects->filename;
 	if (node->command->redirects->redir_type != TOKEN_HEREDOC)
 	{
 		safe_close(&fd);
 		if (open(filename, open_flags, 0644) < 0)
 		{
-			ft_printf_fd(STDERR_FILENO, "Failed to open file: %s\n", filename);
+			ft_printf_fd(
+				STDERR_FILENO, "%s: %s\n",
+				filename, strerror(errno));
 			exit(EXIT_FAILURE);
 		}
 	}

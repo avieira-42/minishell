@@ -135,7 +135,7 @@ void	btree_print(t_btree *btree, int indent, bool tree_top, int cmd_count)
 	}
 }
 
-void    tokens_check(t_token_list *tokens, char **envp, char *user_input)
+void    tokens_check(t_token_list *tokens, char **envp, char *user_input, t_btree **node)
 {
 	char            *token_type;
     t_token_list    *quotation_tokens;
@@ -250,6 +250,7 @@ void    tokens_check(t_token_list *tokens, char **envp, char *user_input)
 	btree_print(tree, 60, true, cmd_count);
 	btree_contents_print(tree, node_count, cmd_count);
 
+	*node = tree;
 	printf("\n");
 }
 

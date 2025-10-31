@@ -46,6 +46,7 @@ void	command_get(t_token_list **tokens, t_btree *node)
 		{
 			(*tokens) = (*tokens)->next;
 			node_redir = redirect_add_new(token_type, (*tokens)->token_string);
+			node_redir->next = NULL;
 			redirect_add_back(&(node->command->redirects), node_redir);
 
 		}

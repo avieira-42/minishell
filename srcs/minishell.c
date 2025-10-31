@@ -1,34 +1,100 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/25 23:33:23 by avieira-          #+#    #+#             */
-/*   Updated: 2025/10/26 00:16:19 by avieira-         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
-void	btree_print(t_btree *btree, int indent, bool tree_top);
+// TESTING AREA START
+void	btree_print(t_btree *btree, int indent, bool tree_top, int cmd_count);
 
-void	btree_print_contents(t_btree *btree, int indent)
+int	btree_node_count(t_btree *btree)
 {
-	char	*argument;
+	int	count;
 
-	if (btree == NULL)
-		return ;
-	argument = NULL;
-	if (btree->node_type == TOKEN_CMD)
-		argument = "CMD";
-	else if (btree->node_type == TOKEN_PIPE)
-		argument = "PIPE";
-	printf("%*s", indent, argument);
+	count = 1;
+	while (btree != NULL)
+	{
+		if (btree->right)
+			count++;
+		if (btree->left)
+			count ++;
+		btree = btree->left;
+	}
+	return (count);
 }
 
-void	btree_print(t_btree *btree, int indent, bool tree_top)
+int	btree_cmd_count(t_btree *btree)
+{
+	int	count;
+
+	count = 0;
+	while (btree != NULL)
+	{
+		if (btree->right && btree->right->node_type == TOKEN_CMD)
+			count++;
+		if (btree->right && btree->left->node_type == TOKEN_CMD)
+			count++;
+		btree = btree->left;
+	}
+	return (count);
+}
+
+void	btree_print_contents(t_btree *btree, int indent, int *cmd_count)
+{
+	if (btree == NULL)
+		return ;
+	if (btree->node_type == TOKEN_CMD)
+	{
+		printf("%*s%i", indent, "CMD", *cmd_count);
+		(*cmd_count)--;
+	}
+	else if (btree->node_type == TOKEN_PIPE)
+		printf("%*s", indent, "PIPE");
+}
+
+void	contents_print(t_btree *btree_node, int *i, int *j)
+{
+	if (btree_node == NULL)
+		return ;
+	if (btree_node->node_type == TOKEN_PIPE)
+	{
+		printf("NODE %i -> PIPE\n", *j);
+		(*j)--;
+	}
+	else if (btree_node->node_type == TOKEN_CMD)
+	{
+		printf("NODE %i -> CMD\nargv: ", *i);
+		(*i)--;
+		while (*(btree_node->command->argv) != NULL)
+		{
+			printf("%s ", *(btree_node->command->argv));
+			btree_node->command->argv++;
+		}
+		printf("\nredirect list: ");
+		while (btree_node->command->redirects != NULL)
+		{
+			if (btree_node->command->redirects->redir_type == TOKEN_APPEND)
+				printf(">> %s ", btree_node->command->redirects->filename);
+			if (btree_node->command->redirects->redir_type == TOKEN_HEREDOC)
+				printf("<< %s ", btree_node->command->redirects->filename);
+			if (btree_node->command->redirects->redir_type == TOKEN_REDIRECT_IN)
+				printf("> %s ", btree_node->command->redirects->filename);
+			if (btree_node->command->redirects->redir_type == TOKEN_REDIRECT_OUT)
+				printf("< %s ", btree_node->command->redirects->filename);
+			btree_node->command->redirects = btree_node->command->redirects->next;
+		}
+		printf("\n\n");
+	}
+}
+
+void	btree_contents_print(t_btree *btree, int node_count, int cmd_count)
+{
+	while (btree != NULL)
+	{
+		contents_print(btree->left, &cmd_count, &node_count);
+		contents_print(btree->right, &cmd_count, &node_count);
+		btree = btree->left;
+		printf("\n");
+	}
+}
+
+void	btree_print(t_btree *btree, int indent, bool tree_top, int cmd_count)
 {
 	int	i;
 	int	space;
@@ -43,7 +109,7 @@ void	btree_print(t_btree *btree, int indent, bool tree_top)
 		indent = indent - 5;
 		printf ("%*s\n", indent, "|");
 		printf ("%*s\n", indent, "|");
-		btree_print_contents(btree, indent + space);
+		btree_print_contents(btree, indent + space, &cmd_count);
 		indent_left = indent - space;
 		indent_right = space * 2;
 		printf("\n");
@@ -59,14 +125,8 @@ void	btree_print(t_btree *btree, int indent, bool tree_top)
 		indent_right = indent_right + space * 2;
 		printf("%*s", indent_left, "/");
 		printf("%*s\n", indent_right, "\\");
-		//indent_left = indent_left - space;
-		//indent_right = indent_right + space * 2;
-		//printf("%*s", indent_left, "/");
-		//printf("%*s\n", indent_right, "\\");
-		//indent_left = indent_left - space;
-		//indent_right++;
-		btree_print_contents(btree->left, indent_left);
-		btree_print_contents(btree->right, indent_right + space * 2);
+		btree_print_contents(btree->left, indent_left, &cmd_count);
+		btree_print_contents(btree->right, indent_right + space * 2, &cmd_count);
 		btree = btree->left;
 		indent_left = indent_left - space;
 		indent_right = 0;
@@ -75,7 +135,6 @@ void	btree_print(t_btree *btree, int indent, bool tree_top)
 	}
 }
 
-// TESTING AREA START
 void    tokens_check(t_token_list *tokens, char **envp, char *user_input)
 {
 	char            *token_type;
@@ -86,6 +145,8 @@ void    tokens_check(t_token_list *tokens, char **envp, char *user_input)
     t_token_list    *unidentified_tokens;
 	t_token_list	*tree_tokens;
 	t_btree			*tree;
+	int				node_count;
+	int				cmd_count;
 
 
     //check token speration
@@ -184,7 +245,10 @@ void    tokens_check(t_token_list *tokens, char **envp, char *user_input)
 	}
 
 	tree = btree_create(tree_tokens);
-	btree_print(tree, 60, true);
+	node_count = btree_node_count(tree);
+	cmd_count = btree_cmd_count(tree);
+	btree_print(tree, 60, true, cmd_count);
+	btree_contents_print(tree, node_count, cmd_count);
 
 	printf("\n");
 }

@@ -1,7 +1,4 @@
 #include "binary_tree.h"
-t_redirect	*redirect_add_new(t_token_type redir_type, char *filename);
-void	redirect_add_back(t_redirect **redirs, t_redirect *node_new);
-t_redirect *redirect_last(t_redirect *redirs);
 
 t_redirect	*redirect_add_new(t_token_type redir_type, char *filename)
 {

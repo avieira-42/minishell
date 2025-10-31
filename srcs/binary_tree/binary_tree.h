@@ -9,7 +9,6 @@ typedef struct s_redirect
 	int					fd;
 	int					open_flags;
 	char				*filename;
-	char				*limiter;
 	struct s_redirect	*next;
 }	t_redirect;
 

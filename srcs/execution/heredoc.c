@@ -18,7 +18,7 @@ void	heredoc_write_bytes_to_file(char *line, char **envp, int fd)
 		else
 		{
 			ft_putchar_fd(line[i], fd);
-			i++; 
+			i++;
 		}
 	}
 	ft_putchar_fd('\n', fd);

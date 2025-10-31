@@ -1,4 +1,6 @@
 #include "binary_tree.h"
+#include <fcntl.h>
+#include <unistd.h>
 
 void	btree_print(t_btree *btree, int indent, bool tree_top);
 
@@ -103,6 +105,12 @@ t_btree	*btree_add_new(void)
 	return (node_new);
 }
 
+void	redirect_set(t_redirect *node, int fd, int open_flags)
+{
+	node->fd = fd;
+	node->open_flags = open_flags;
+}
+
 t_redirect	*redirect_add_new(t_token_type redir_type, char *filename)
 {
 	t_redirect *node_new;
@@ -110,8 +118,17 @@ t_redirect	*redirect_add_new(t_token_type redir_type, char *filename)
 	node_new = malloc(sizeof(t_redirect));
 	if (node_new == NULL)
 		return (NULL);
+	if (redir_type == TOKEN_REDIRECT_IN)
+		redirect_set(node_new, STDIN_FILENO, O_RDONLY);
+	else if (redir_type == TOKEN_REDIRECT_OUT)
+		redirect_set(node_new, STDOUT_FILENO, O_WRONLY | O_CREAT | O_TRUNC);
+	else if (redir_type == TOKEN_APPEND)
+		redirect_set(node_new, STDOUT_FILENO, O_WRONLY | O_CREAT | O_APPEND);
+	else if (redir_type == TOKEN_HEREDOC)
+		redirect_set(node_new, -1, 0);
 	node_new->redir_type = redir_type;
 	node_new->filename = filename;
+	node_new->next = NULL;
 	return (node_new);
 }
 

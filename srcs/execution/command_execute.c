@@ -1,17 +1,5 @@
 #include "../minishell.h"
-
-static
-void	pipe_execute(t_btree *node, int *exit_code)
-{
-	int	pipefd[2];
-	int	pid_left;
-	int	pid_right;
-
-	pipe(pipefd);
-	pid_left = pipe_child(pipefd, node->left, pipefd[1], STDOUT_FILENO);
-	pid_right = pipe_child(pipefd, node->right, pipefd[0], STDIN_FILENO);
-	pipe_parent(pipefd, exit_code, pid_left, pid_right);
-}
+#include <errno.h>
 
 static
 void	command_exists(t_command *command, char **command_path)
@@ -41,6 +29,49 @@ void	command_exists(t_command *command, char **command_path)
 }
 
 static
+void	pipe_execute(t_btree *node, int *exit_code)
+{
+	int	pipefd[2];
+	int	pid_left;
+	int	pid_right;
+
+	safe_pipe(pipefd);
+	pid_left = pipe_child(pipefd, node->left, pipefd[1], STDOUT_FILENO);
+	pid_right = pipe_child(pipefd, node->right, pipefd[0], STDIN_FILENO);
+	pipe_parent(pipefd, exit_code, pid_left, pid_right);
+}
+
+static
+void	redirect_execute(t_btree *node)
+{
+	char	*filename;
+	int		fd;
+	int		open_flags;
+
+	filename = node->command->redirects->filename;
+	fd = node->command->redirects->fd;
+	open_flags = node->command->redirects->open_flags;
+	if (node->command->redirects->redir_type != TOKEN_HEREDOC)
+	{
+		safe_close(&fd);
+		if (open(filename, open_flags, 0644) < 0)
+		{
+			ft_printf_fd(
+				STDERR_FILENO, "%s: %s\n",
+				filename, strerror(errno));
+			exit(EXIT_FAILURE);
+		}
+	}
+	else
+	{
+		safe_dup2(fd, STDIN_FILENO);
+		safe_close(&fd);
+	}
+	node->command->redirects = node->command->redirects->next;
+	traverse_btree(node);
+}
+
+static
 int	command_execute(t_command *command, char **envp)
 {
 	char	*command_path;
@@ -58,6 +89,8 @@ void	traverse_btree(t_btree *node)
 	exit_status = 0;
 	if (node == NULL)
 		exit(exit_status);
+	if (node->node_type != TOKEN_PIPE && node->command->redirects != NULL)
+		redirect_execute(node);
 	if (node->node_type == TOKEN_PIPE)
 		pipe_execute(node, &exit_status);
 	else

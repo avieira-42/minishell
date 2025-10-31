@@ -6,8 +6,9 @@
 typedef struct s_redirect
 {
 	t_token_type		redir_type;
+	int					fd;
+	int					open_flags;
 	char				*filename;
-	char				*limiter;
 	struct s_redirect	*next;
 }	t_redirect;
 
@@ -21,7 +22,6 @@ typedef struct s_btree
 {
 	t_token_type	node_type;
 	t_command		*command;
-	int				pipefd[2];
 	struct s_btree	*left;
 	struct s_btree	*right;
 }	t_btree;

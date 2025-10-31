@@ -34,12 +34,11 @@ void	heredoc_execute(char *limiter, t_redirect *redir, char **envp)
 	while (true)
 	{
 		line = readline("> ");
-		if (line == NULL || ft_strncmp(line, limiter, ft_strlen(line) - 1) == 0)
+		if (line == NULL || ft_strcmp(line, limiter) == 0)
 			break ;
 		add_history(line);
 		heredoc_write_bytes_to_file(line, envp, pipefd[1]);
 	}
-	rl_clear_history();
 	safe_close(&pipefd[1]);
 	redir->fd = pipefd[0];
 }

@@ -1,7 +1,8 @@
 NAME = minishell
 
 CC = cc
-CFLAGS = -g -Wall -Wextra -Werror
+ADD_FLAGS=
+CFLAGS = -g -Wall -Wextra -Werror $(ADD_FLAGS)
 FLAG_READLINE = -lreadline
 LDFLAGS = -I/usr/local/opt/readline/include -L/usr/local/op/readline/lib
 
@@ -36,7 +37,10 @@ BUILTINS_SRCS = srcs/builtins/builtins_echo.c \
 				srcs/builtins/builtins_pwd.c
 
 EXECUTION_SRCS = srcs/execution/program_path_find.c \
-				 srcs/execution/command_execute.c
+				 srcs/execution/command_execute.c \
+				 srcs/execution/process_control.c \
+				 srcs/execution/heredoc.c \
+				 srcs/execution/execution_utils.c
 
 CLEANING_SRCS = srcs/cleaning/program_clean.c
 				

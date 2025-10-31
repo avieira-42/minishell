@@ -253,52 +253,38 @@ void    tokens_check(t_token_list *tokens, char **envp, char *user_input)
 	printf("\n");
 }
 
-char	**create_command(char *command)
-{
-	char	**commands;
-
-	commands = ft_split(command, ' ');
-	if (commands == NULL)
-		return (NULL);
-	return (commands);
-}
-
-void	test_execve_simple_commands(char **envp)
-{
-	t_command	command;
-
-	command.redirects = NULL;
-	command.argv = create_command("../../../../../test.sh");
-	command_execute(&command, envp);
-	free_array((void **)command.argv, -1, TRUE);
-}
-
 // TESTING AREA END
 
 void    minishell_loop(char **envp)
 {
-	char *user_input;
-	t_token_list *tokens;
+    char *user_input;
+    t_token_list *tokens;
+	  t_btree	*node;
+	  int		exit_code;
 
-	user_input = NULL;
-	tokens = NULL;
-	while (TRUE)
-	{
-		user_input = readline(PROMPT_MINISHELL);
-		if (user_input == NULL)
-			break ;
-		add_history(user_input);
-		special_user_input_check(user_input);
-		// tokenize command
-		tokens_check(tokens, envp, user_input);
-		free(user_input);
-		if (tokens != NULL)
-			ft_token_lst_clear(&tokens);
-		/*if (tree != NULL)
-		  free_tree(tree);*/
-		// >> alongside builtins >> (special_user_input_check(user_input)); <<
-	}
-	rl_clear_history();
+    user_input = NULL;
+    tokens = NULL;
+    while (TRUE)
+    {
+        user_input = readline(PROMPT_MINISHELL);
+        if (user_input == NULL)
+            break ;
+        add_history(user_input);
+        special_user_input_check(user_input);
+        // tokenize command
+        tokens_check(tokens, envp, user_input, &node);
+		    heredoc_find(node, envp);
+		    int pid = safe_fork();
+		    if (pid == 0)
+			    traverse_btree(node);
+		    waitpid(pid, &exit_code, 0);
+		    ft_printf("exit status: %d\n", WEXITSTATUS(exit_code));
+        free(user_input);
+        if (tokens != NULL)
+            ft_token_lst_clear(&tokens);
+        // >> alongside builtins >> (special_user_input_check(user_input)); <<
+    }
+    rl_clear_history();
 }
 
 int main(int argc, char **argv, char **envp)

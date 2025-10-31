@@ -32,8 +32,12 @@ void ft_token_lst_add_back(t_token_list **lst, t_token_list *new_node);
 t_token_list *ft_token_lst_new(char *token);
 t_token_list *ft_token_lst_last(t_token_list *lst);
 
-//token_identifiy.h
+//token_identifiy
 void    token_identify(t_token_list *tokens);
+
+//environment_variables
+char	*environment_variable_get(char **envp, char *variable_name, int *j);
+int     environment_variable_len(char *variable_name);
 
 // tokenize
 void tokenize_user_input(t_token_list **tokens, char *user_input);
@@ -42,12 +46,11 @@ void tokenize_squoted_text(t_token_list **tokens, char *user_input, int *i);
 //quotation
 void    quotation_check(t_token_list *tokens);
 
+//token_verification
+int	user_input_parse(char *readline, t_token_list **tokens);
+
 //TTY_DRAWING_H
 void    draw_from_file(char *file_name);
 void    special_user_input_check(char *command);
-
-//ENVIRONMENT_VARIABLES
-char	*environment_variable_get(char **envp, char *variable_name, int *j);
-int     environment_variable_len(char *variable_name);
 
 #endif

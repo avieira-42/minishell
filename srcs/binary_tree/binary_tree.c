@@ -2,69 +2,6 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-void	btree_print(t_btree *btree, int indent, bool tree_top);
-
-void	btree_print_contents(t_btree *btree, int indent)
-{
-	char	*argument;
-
-	if (btree == NULL)
-		return ;
-	argument = NULL;
-	if (btree->node_type == TOKEN_CMD)
-		argument = "CMD";
-	else if (btree->node_type == TOKEN_PIPE)
-		argument = "PIPE";
-	printf("%*s", indent, argument);
-}
-
-void	btree_print(t_btree *btree, int indent, bool tree_top)
-{
-	int	i;
-	int	space;
-	int	indent_left;
-	int	indent_right;
-
-	space = 1;
-	if (tree_top == true)
-	{
-		tree_top = false;
-		printf ("%*s\n", indent, "BINARY_TREE");
-		indent = indent - 5;
-		printf ("%*s\n", indent, "|");
-		printf ("%*s\n", indent, "|");
-		btree_print_contents(btree, indent + space);
-		indent_left = indent - space;
-		indent_right = space * 2;
-		printf("\n");
-	}
-	i = 0;
-	while (btree != NULL)
-	{
-		if (i > 0)
-			indent_right = indent_right + 1;
-		printf("%*s", indent_left, "/");
-		printf("%*s\n", indent_right, "\\");
-		indent_left = indent_left - space;
-		indent_right = indent_right + space * 2;
-		printf("%*s", indent_left, "/");
-		printf("%*s\n", indent_right, "\\");
-		//indent_left = indent_left - space;
-		//indent_right = indent_right + space * 2;
-		//printf("%*s", indent_left, "/");
-		//printf("%*s\n", indent_right, "\\");
-		//indent_left = indent_left - space;
-		//indent_right++;
-		btree_print_contents(btree->left, indent_left);
-		btree_print_contents(btree->right, indent_right + space * 2);
-		btree = btree->left;
-		indent_left = indent_left - space;
-		indent_right = 0;
-		printf("\n");
-		i++;
-	}
-}
-
 void	btree_add_to_pipe(t_btree **btree, t_btree *leaf)
 {
 	if (*btree == NULL)

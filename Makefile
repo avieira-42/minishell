@@ -11,7 +11,11 @@ LIBFT = $(LIBFT_DIR)/libft.a
 
 MINISHELL_SRCS = srcs/minishell.c
 
-BINARY_TREE_SRCS = srcs/binary_tree/binary_tree.c
+BINARY_TREE_SRCS = srcs/binary_tree/binary_tree.c \
+				   srcs/binary_tree/binary_tree_error.c \
+				   srcs/binary_tree/command.c \
+				   srcs/binary_tree/redirects.c \
+				   srcs/binary_tree/binary_tree_clear.c
 
 TTY_DRAWING_SRCS = srcs/tty_drawing/tty_drawing.c
 
@@ -20,10 +24,12 @@ PARSING_SRCS = srcs/parsing/tokenizer.c \
 				srcs/parsing/quotation.c \
 				srcs/parsing/expand.c \
 				srcs/parsing/environment_variables.c \
-				srcs/parsing/token_identify.c
+				srcs/parsing/token_identify.c \
+				srcs/parsing/user_input_parse.c \
+				srcs/parsing/token_error.c \
 
 ERROR_SRCS = srcs/error/error.c \
-        srcs/error/error_message.c
+			 srcs/error/error_message.c
 
 BUILTINS_SRCS = srcs/builtins/builtins_echo.c \
 				srcs/builtins/builtins_exec.c \

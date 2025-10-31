@@ -7,7 +7,7 @@ static void error_code_get(char *argv1, int *error_code)
     *error_code = 127;
 }
 
-void error_exit(char *argv1)
+void error_exit_argv(char *argv1)
 {
     int     error_code;
     char    *error_message;

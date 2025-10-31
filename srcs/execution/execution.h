@@ -18,7 +18,7 @@ int		program_path_find(char *program_name, char **path, char **result);
 int		pipe_child(int fd[2], t_btree *node, int oldfd, int newfd);
 void	traverse_btree(t_btree *node);
 void	pipe_parent(int fd[2], int *exit_code, int pid_left, int pid_right);
-void	heredoc_find(t_btree *node);
+void	heredoc_find(t_btree *node, char **envp);
 
 int		safe_fork(void);
 void	safe_dup2(int oldfd, int newfd);

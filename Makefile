@@ -34,7 +34,8 @@ ERROR_SRCS = srcs/error/error.c \
 BUILTINS_SRCS = srcs/builtins/builtins_echo.c \
 				srcs/builtins/builtins_exec.c \
 				srcs/builtins/builtins_exit.c \
-				srcs/builtins/builtins_pwd.c
+				srcs/builtins/builtins_pwd.c \
+				srcs/builtins/builtins_env.c
 
 EXECUTION_SRCS = srcs/execution/program_path_find.c \
 				 srcs/execution/command_execute.c \

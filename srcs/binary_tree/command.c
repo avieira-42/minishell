@@ -1,5 +1,14 @@
 #include "binary_tree.h"
 
+void	command_clear(t_command *command)
+{
+	if (command->redirects != NULL)
+		redirect_clear(command->redirects);
+	ft_free_matrix(command->argv);
+	free (command);
+}
+
+static
 int	command_count(t_token_list *tokens)
 {
 	int	count;
@@ -14,6 +23,7 @@ int	command_count(t_token_list *tokens)
 	return (count);
 }
 
+static
 void	command_init(int *i, int *cmd_size, t_token_list **tokens, t_btree *node)
 {
 	*i = 0;

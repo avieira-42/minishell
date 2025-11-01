@@ -50,6 +50,9 @@ void	btree_print_contents(t_btree *btree, int indent, int *cmd_count)
 
 void	contents_print(t_btree *btree_node, int *i, int *j)
 {
+	int	m;
+
+	m = 0;
 	if (btree_node == NULL)
 		return ;
 	if (btree_node->node_type == TOKEN_PIPE)
@@ -61,10 +64,10 @@ void	contents_print(t_btree *btree_node, int *i, int *j)
 	{
 		printf("NODE %i -> CMD\nargv: ", *i);
 		(*i)--;
-		while (*(btree_node->command->argv) != NULL)
+		while (btree_node->command->argv[m] != NULL)
 		{
-			printf("%s ", *(btree_node->command->argv));
-			btree_node->command->argv++;
+			printf("%s ", btree_node->command->argv[m]);
+			m++;
 		}
 		printf("\nredirect list: ");
 		while (btree_node->command->redirects != NULL)
@@ -135,7 +138,7 @@ void	btree_print(t_btree *btree, int indent, bool tree_top, int cmd_count)
 	}
 }
 
-t_token_list    *tokens_check(t_token_list *tokens, char **envp, char *user_input/*, t_btree **node*/)
+t_token_list    *tokens_check(t_token_list *tokens, char **envp, char *user_input, t_btree **node)
 {
 	char            *token_type;
     t_token_list    *quotation_tokens;
@@ -145,9 +148,9 @@ t_token_list    *tokens_check(t_token_list *tokens, char **envp, char *user_inpu
     t_token_list    *unidentified_tokens;
 	t_token_list	*tree_tokens;
 	t_token_list	*ret;
-	/*t_btree			*tree;
+	t_btree			*tree;
 	int				node_count;
-	int				cmd_count;*/
+	int				cmd_count;
 
 
     //check token speration
@@ -247,13 +250,13 @@ t_token_list    *tokens_check(t_token_list *tokens, char **envp, char *user_inpu
 		return NULL;
 	}
 
-	/*tree = btree_create(tree_tokens);
+	tree = btree_create(tree_tokens);
 	node_count = btree_node_count(tree);
 	cmd_count = btree_cmd_count(tree);
 	btree_print(tree, 60, true, cmd_count);
-	btree_contents_print(tree, node_count, cmd_count);*/
+	btree_contents_print(tree, node_count, cmd_count);
 
-	//*node = tree;
+	*node = tree;
 	printf("\n");
 	return (ret);
 }
@@ -264,8 +267,8 @@ void    minishell_loop(char **envp)
 {
 	char *user_input;
 	t_token_list *tokens;
-	//t_btree	*node;
-	//int		exit_code;
+	t_btree	*node;
+	int		exit_code;
 
 	user_input = NULL;
 	tokens = NULL;
@@ -277,14 +280,20 @@ void    minishell_loop(char **envp)
 		add_history(user_input);
 		special_user_input_check(user_input);
 		// tokenize command
-		tokens = tokens_check(tokens, envp, user_input/*, &node*/);
-		//heredoc_find(node, envp);
-		//int pid = safe_fork();
-		/*if (pid == 0)
-			traverse_btree(node);*/
-		//waitpid(pid, &exit_code, 0);
-		//ft_printf("exit status: %d\n", WEXITSTATUS(exit_code));
+		tokens = tokens_check(tokens, envp, user_input, &node);
+		heredoc_find(node, envp);
+		int pid = safe_fork();
+		if (pid == 0)
+			traverse_btree(node);
+		waitpid(pid, &exit_code, 0);
+		ft_printf("exit status: %d\n", WEXITSTATUS(exit_code));
 		free(user_input);
+		if (node != NULL)
+		{
+			btree_clear(node);
+			free(tokens);
+			tokens = NULL;
+		}
 		if (tokens != NULL)
 			ft_token_lst_clear(&tokens);
 		// >> alongside builtins >> (special_user_input_check(user_input)); <<

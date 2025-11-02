@@ -101,7 +101,7 @@ void    tokenize_user_input(t_token_list **tokens, char *user_input)
     int             i;
     int             j;
 
-    i =0;
+    i = 0;
     j = 0;
     while(user_input[i] != '\0')
     {
@@ -114,8 +114,9 @@ void    tokenize_user_input(t_token_list **tokens, char *user_input)
 				error_exit_tokens(user_input, *tokens, 1);
             j = i;
         }
-        else
+        else if (user_input[i] != '\0')
             i++;
+
     }
     if (i > j)
         tokenize_word(tokens, user_input, i, j);

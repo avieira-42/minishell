@@ -76,6 +76,7 @@ bool    is_operator(char *c);
 
 // TOKEN_LIST
 void	        ft_token_lst_clear(t_token_list **lst);
+void			token_lst_clear_safe(t_token_list **lst);
 void	        ft_token_lst_add_back(t_token_list **lst, t_token_list *new_node);
 t_token_list	*ft_token_lst_new(char *token);
 t_token_list	*ft_token_lst_last(t_token_list *lst);

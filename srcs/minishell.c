@@ -281,6 +281,7 @@ void    minishell_loop(char **envp)
 		special_user_input_check(user_input);
 		// tokenize command
 		tokens = tokens_check(tokens, envp, user_input, &node);
+		token_lst_clear_safe(&tokens);
 		heredoc_find(node, envp);
 		int pid = safe_fork();
 		if (pid == 0)

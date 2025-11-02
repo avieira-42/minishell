@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:40:52 by avieira-          #+#    #+#             */
-/*   Updated: 2025/10/23 01:02:33 by avieira-         ###   ########.fr       */
+/*   Updated: 2025/11/02 21:25:37 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct s_array
 {
 	int				*i_array;
 	char			*c_array;
+	char			**m_array;
 	int				length;
 }	t_array;
 
@@ -88,6 +89,7 @@ void		ft_removeline(char *buf);
 
 void		i_merge_sort(t_array middle);
 void		i_merge(t_array left, t_array middle, t_array right);
+void		matrix_merge(t_array left, t_array middle, t_array right);
 
 /* MEMORY */
 void		ft_free_matrix(char **matrix);

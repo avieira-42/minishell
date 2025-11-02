@@ -6,11 +6,11 @@
 #    By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/21 12:18:39 by avieira-          #+#    #+#              #
-#    Updated: 2025/10/10 18:56:00 by avieira-         ###   ########.fr        #
+#    Updated: 2025/11/02 21:50:24 by avieira-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 NAME = libft.a
 SRCS = srcs/ft_atoi.c srcs/ft_bzero.c srcs/ft_isalnum.c srcs/ft_isalpha.c
 SRCS += srcs/ft_isascii.c srcs/ft_isdigit.c srcs/ft_isspace.c
@@ -31,7 +31,7 @@ SRCS += srcs/ft_lstadd_back_bonus.c srcs/ft_lstadd_front_bonus.c
 SRCS += srcs/ft_lstclear_bonus.c srcs/ft_lstiter_bonus.c srcs/ft_lstmap_bonus.c
 SRCS += srcs/ft_dblylst_new.c srcs/ft_dblylst_addback.c srcs/ft_dblylst_last.c 
 SRCS += srcs/ft_dblylst_size.c srcs/ft_is_int.c srcs/ft_bool_strcmp.c
-SRCS += srcs/get_next_line.c srcs/get_next_line_utils.c
+SRCS += srcs/get_next_line.c srcs/get_next_line_utils.c srcs/matrix_merge_sort.c
 SRCS += srcs/ft_printadd_fd.c srcs/ft_printf_fd.c srcs/ft_printchar_fd.c
 SRCS += srcs/ft_printstr_fd.c srcs/ft_printnbr_fd.c srcs/ft_printunsign_nbr_fd.c
 SRCS += srcs/ft_printhex_fd.c srcs/ft_bool_strncmp.c srcs/ft_realloc.c

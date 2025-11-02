@@ -290,11 +290,7 @@ void    minishell_loop(char **envp)
 		ft_printf("exit status: %d\n", WEXITSTATUS(exit_code));
 		free(user_input);
 		if (node != NULL)
-		{
 			btree_clear(node);
-			free(tokens);
-			tokens = NULL;
-		}
 		if (tokens != NULL)
 			ft_token_lst_clear(&tokens);
 		// >> alongside builtins >> (special_user_input_check(user_input)); <<

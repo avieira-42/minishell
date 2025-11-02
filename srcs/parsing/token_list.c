@@ -50,6 +50,8 @@ void	token_lst_clear_safe(t_token_list **lst)
 	node = *lst;
 	while (node)
 	{
+		if (is_operator(node->token_string))
+			free(node->token_string);
 		tmp = node->next;
         free(node);
 		node = tmp;

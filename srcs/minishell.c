@@ -253,8 +253,56 @@ void    tokens_check(t_token_list *tokens, char **envp, char *user_input, t_btre
 	*node = tree;
 	printf("\n");
 }
-
 // TESTING AREA END
+
+static
+size_t	minishell_envp_size(t_shell *shell)
+{
+	int	size;
+
+	size = 0;
+	while (shell->envp[size])
+		size++;
+	return (size);
+}
+
+static
+char	**minishell_env_dup(t_shell *shell)
+{
+	int		i;
+	size_t	size;
+	char	**dup;
+
+	size = minishell_envp_size(shell);
+	dup = malloc(sizeof(char *) * (size + 1));
+	if (dup == NULL)
+		return NULL; // SAFE EXIT
+	i = 0;
+	while (i < size)
+	{
+		dup[i] = shell->envp[i];
+		i++;
+	}
+	return (dup);
+}
+
+char	**minishell_init(t_shell *shell)
+{
+	int	env_size;
+
+	env_size = minishell_envp_size(shell);
+	shell->export_vars = malloc(sizeof(char *) * (env_size + 1));
+	if (shell->export_vars == NULL)
+		return NULL; // SAFE EXIT
+	shell->env_vars = malloc(sizeof(char *) * (env_size + 1));
+	shell->export_vars = matrix_merge_sort();
+
+	env_size = minishell_envp_size(shell);
+	shell->export_vars = malloc(sizeof(char *) * (env_size + 1));
+	shell->env_vars = malloc(sizeof(char *) * (env_size + 1));
+	shell->export_vars = matrix_merge_sort();
+}
+
 
 void    minishell_loop(char **envp)
 {

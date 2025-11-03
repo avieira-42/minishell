@@ -6,18 +6,18 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 18:56:27 by avieira-          #+#    #+#             */
-/*   Updated: 2025/10/10 20:58:19 by avieira-         ###   ########.fr       */
+/*   Updated: 2025/11/03 17:00:15 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/libft.h"
 
-void    *ft_realloc(void *old_ptr, size_t size)
+void    *ft_realloc(void *old_ptr, size_t new_size, size_t old_size)
 {
     char    *new_ptr;
-    size_t  old_ptr_len;
+	size_t	cpy_size;
 
-    new_ptr = malloc(size);
+    new_ptr = malloc(new_size);
     if (new_ptr == NULL)
     {
         if (old_ptr != NULL)
@@ -26,9 +26,37 @@ void    *ft_realloc(void *old_ptr, size_t size)
     }
     if (old_ptr != NULL)
     {
-        old_ptr_len = ft_strlen(old_ptr);
-        ft_memcpy(new_ptr, old_ptr, old_ptr_len + 1);
+		if (old_size < new_size)
+			cpy_size = old_size;
+		else
+			cpy_size = new_size;
+        ft_memcpy(new_ptr, old_ptr, cpy_size);
         free(old_ptr);
     }
     return (new_ptr);
 }
+/*int	main(int argc, char **argv)
+{
+	size_t	i;
+	char	**split;
+
+	if (argc < 3)
+		return (1);
+	split = ft_split(argv[1], ' ');
+	i = 0;
+	while (split[i])
+	{
+		printf("%s\n", split[i]);
+		i++;
+	}
+	split = ft_realloc(split, sizeof(char *) * (i + 2), sizeof(char *) * (i + 1));
+	split[i] = ft_strdup(argv[2]);
+	split[i + 1] = NULL;
+	i = 0;
+	while (split[i])
+	{
+		printf("%s\n", split[i]);
+		i++;
+	}
+	ft_free_matrix(split);
+}*/

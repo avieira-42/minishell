@@ -12,6 +12,7 @@
 # include "builtins/builtins.h"
 # include "execution/execution.h"
 # include "cleaning/cleaning.h"
+# include "types.h"
 
 # define COLOR_GREEN "\e[0;32m"
 # define COLOR_RESET "\e[0m"

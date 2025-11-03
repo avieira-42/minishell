@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:40:52 by avieira-          #+#    #+#             */
-/*   Updated: 2025/11/02 21:25:37 by avieira-         ###   ########.fr       */
+/*   Updated: 2025/11/03 15:57:27 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ void		ft_removeline(char *buf);
 
 void		i_merge_sort(t_array middle);
 void		i_merge(t_array left, t_array middle, t_array right);
+void		matrix_merge_sort(t_array middle);
 void		matrix_merge(t_array left, t_array middle, t_array right);
 
 /* MEMORY */
@@ -99,7 +100,7 @@ void		*ft_memmove(void *dest, const void *src, size_t n);
 void		*ft_memchr(const void *s, int c, size_t n);
 void		*ft_calloc(size_t nmemb, size_t size);
 void		ft_bzero(void *s, size_t n);
-void        *ft_realloc(void *old_ptr, size_t size);
+void		*ft_realloc(void *old_ptr, size_t size, size_t old);
 
 /* STRING MANIPULATION */
 

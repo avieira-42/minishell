@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:40:52 by avieira-          #+#    #+#             */
-/*   Updated: 2025/11/03 15:57:27 by avieira-         ###   ########.fr       */
+/*   Updated: 2025/11/04 16:41:39 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,11 @@
 
 typedef int	t_bool;
 
-typedef struct s_array
+typedef struct s_str_array
 {
-	int				*i_array;
-	char			*c_array;
 	char			**m_array;
 	int				length;
-}	t_array;
+}	t_str_array;
 
 typedef struct s_list
 {
@@ -87,10 +85,8 @@ void		ft_removeline(char *buf);
 
 /* SORTING */
 
-void		i_merge_sort(t_array middle);
-void		i_merge(t_array left, t_array middle, t_array right);
-void		matrix_merge_sort(t_array middle);
-void		matrix_merge(t_array left, t_array middle, t_array right);
+void		str_merge_sort(t_str_array middle, int *ret);
+void		str_merge(t_str_array left, t_str_array middle, t_str_array right);
 
 /* MEMORY */
 void		ft_free_matrix(char **matrix);

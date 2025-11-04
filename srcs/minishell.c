@@ -294,8 +294,8 @@ char	**minishell_init(t_shell *shell)
 	shell->export_vars = malloc(sizeof(char *) * (env_size + 1));
 	if (shell->export_vars == NULL)
 		return NULL; // SAFE EXIT
+	shell->export_vars = matrix_merge_sort(shell->export_vars);
 	shell->env_vars = malloc(sizeof(char *) * (env_size + 1));
-	shell->export_vars = matrix_merge_sort();
 
 	env_size = minishell_envp_size(shell);
 	shell->export_vars = malloc(sizeof(char *) * (env_size + 1));

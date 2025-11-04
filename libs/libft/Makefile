@@ -6,7 +6,7 @@
 #    By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/21 12:18:39 by avieira-          #+#    #+#              #
-#    Updated: 2025/11/03 15:39:32 by avieira-         ###   ########.fr        #
+#    Updated: 2025/11/04 16:42:08 by avieira-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,14 +24,14 @@ SRCS += srcs/ft_putstr_fd.c srcs/ft_toupper.c srcs/ft_strlcpy.c srcs/ft_memchr.c
 SRCS += srcs/ft_putnbr_fd.c srcs/ft_printf.c srcs/ft_printadd.c
 SRCS += srcs/ft_printchar.c srcs/ft_printhex.c srcs/ft_printnbr.c
 SRCS += srcs/ft_printunsign_nbr.c srcs/ft_printstr.c srcs/ft_issign.c
-SRCS += srcs/ft_free_matrix.c srcs/i_merge_sort.c srcs/ft_atol.c
+SRCS += srcs/ft_free_matrix.c srcs/str_merge_sort.c srcs/ft_atol.c
 SRCS += srcs/ft_lstnew_bonus.c srcs/ft_lstdelone_bonus.c srcs/ft_strcmp.c
 SRCS += srcs/ft_lstsize_bonus.c srcs/ft_lstlast_bonus.c srcs/ft_dblylst_clear.c
 SRCS += srcs/ft_lstadd_back_bonus.c srcs/ft_lstadd_front_bonus.c
 SRCS += srcs/ft_lstclear_bonus.c srcs/ft_lstiter_bonus.c srcs/ft_lstmap_bonus.c
 SRCS += srcs/ft_dblylst_new.c srcs/ft_dblylst_addback.c srcs/ft_dblylst_last.c 
 SRCS += srcs/ft_dblylst_size.c srcs/ft_is_int.c srcs/ft_bool_strcmp.c
-SRCS += srcs/get_next_line.c srcs/get_next_line_utils.c srcs/matrix_merge_sort.c
+SRCS += srcs/get_next_line.c srcs/get_next_line_utils.c
 SRCS += srcs/ft_printadd_fd.c srcs/ft_printf_fd.c srcs/ft_printchar_fd.c
 SRCS += srcs/ft_printstr_fd.c srcs/ft_printnbr_fd.c srcs/ft_printunsign_nbr_fd.c
 SRCS += srcs/ft_printhex_fd.c srcs/ft_bool_strncmp.c srcs/ft_realloc.c

@@ -5,7 +5,7 @@ bool    is_operator(char *c)
     if (ft_bool_strncmp(c, HEREDOC, 2) == true
         || ft_bool_strncmp(c, APPEND, 2) == true
         || *c == PIPE || *c == REDIRECT_IN
-        || *c == REDIRECT_OUT || *c == SPACE)
+        || *c == REDIRECT_OUT || ft_isspace(*c))
     {
 
         return (true);

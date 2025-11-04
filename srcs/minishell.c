@@ -55,6 +55,7 @@ void	contents_print(t_btree *btree_node, int *i, int *j)
 	m = 0;
 	if (btree_node == NULL)
 		return ;
+	t_redirect	*redirects = btree_node->command->redirects;
 	if (btree_node->node_type == TOKEN_PIPE)
 	{
 		printf("NODE %i -> PIPE\n", *j);
@@ -70,17 +71,17 @@ void	contents_print(t_btree *btree_node, int *i, int *j)
 			m++;
 		}
 		printf("\nredirect list: ");
-		while (btree_node->command->redirects != NULL)
+		while (redirects != NULL)
 		{
-			if (btree_node->command->redirects->redir_type == TOKEN_APPEND)
-				printf(">> %s ", btree_node->command->redirects->filename);
-			if (btree_node->command->redirects->redir_type == TOKEN_HEREDOC)
+			if (redirects->redir_type == TOKEN_APPEND)
+				printf(">> %s ", redirects->filename);
+			if (redirects->redir_type == TOKEN_HEREDOC)
 				printf("<< %s ", btree_node->command->redirects->filename);
-			if (btree_node->command->redirects->redir_type == TOKEN_REDIRECT_IN)
+			if (redirects->redir_type == TOKEN_REDIRECT_IN)
 				printf("> %s ", btree_node->command->redirects->filename);
-			if (btree_node->command->redirects->redir_type == TOKEN_REDIRECT_OUT)
+			if (redirects->redir_type == TOKEN_REDIRECT_OUT)
 				printf("< %s ", btree_node->command->redirects->filename);
-			btree_node->command->redirects = btree_node->command->redirects->next;
+			redirects = redirects->next;
 		}
 		printf("\n\n");
 	}

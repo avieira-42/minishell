@@ -1,10 +1,12 @@
 #include "binary_tree.h"
+#include "../cleaning/cleaning.h"
 
 void	command_clear(t_command *command)
 {
 	if (command->redirects != NULL)
 		redirect_clear(command->redirects);
-	ft_free_matrix(command->argv);
+	if (command->argv != NULL)
+		free_array((void **)command->argv, -1, true);
 	free (command);
 }
 

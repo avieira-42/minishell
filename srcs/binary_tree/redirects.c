@@ -56,7 +56,8 @@ void	redirect_clear(t_redirect *redirs)
 	tmp = NULL;
 	while (redirs != NULL)
 	{
-		safe_close(&redirs->fd);
+		if (redirs->redir_type == TOKEN_HEREDOC)
+			safe_close(&(redirs->fd));
 		if (redirs->filename != NULL)
 			free (redirs->filename);
 		tmp = redirs->next;

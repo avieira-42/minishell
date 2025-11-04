@@ -51,11 +51,13 @@ void	btree_print_contents(t_btree *btree, int indent, int *cmd_count)
 void	contents_print(t_btree *btree_node, int *i, int *j)
 {
 	int	m;
+	t_redirect	*redirects = NULL;
 
 	m = 0;
 	if (btree_node == NULL)
 		return ;
-	t_redirect	*redirects = btree_node->command->redirects;
+	if (btree_node->command)
+		redirects = btree_node->command->redirects;
 	if (btree_node->node_type == TOKEN_PIPE)
 	{
 		printf("NODE %i -> PIPE\n", *j);

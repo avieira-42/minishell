@@ -7,11 +7,12 @@
 typedef struct s_shell
 {
 	int				argc;
-	int				level;
-	char			**envp;
-	char			**env_vars;
-	char			**export_vars;
 	char			**argv;
+	char			**envp;
+	int				merge_ret;
+	int				env_size;
+	char			**env_vars;
+	t_str_array		export_vars;
 	t_token_list	*tokens;
 	t_btree			*tree;
 }	t_shell;

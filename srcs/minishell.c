@@ -258,7 +258,7 @@ void    tokens_check(t_token_list *tokens, char **envp, char *user_input, t_btre
 static
 size_t	minishell_envp_size(t_shell *shell)
 {
-	int	size;
+	size_t	size;
 
 	size = 0;
 	while (shell->envp[size])
@@ -269,38 +269,41 @@ size_t	minishell_envp_size(t_shell *shell)
 static
 char	**minishell_env_dup(t_shell *shell)
 {
-	int		i;
-	size_t	size;
+	size_t	i;
 	char	**dup;
 
-	size = minishell_envp_size(shell);
-	dup = malloc(sizeof(char *) * (size + 1));
+	dup = malloc(sizeof(char *) * (shell->env_size + 1));
 	if (dup == NULL)
 		return NULL; // SAFE EXIT
 	i = 0;
-	while (i < size)
+	while (i < shell->env_size)
 	{
-		dup[i] = shell->envp[i];
+		dup[i] = ft_strdup(shell->envp[i]);
+		if (dup[i] == NULL)
+		{
+			free_array((void **)dup, -1, true);
+			return (NULL); // SAFE EXIT
+		}
 		i++;
 	}
 	return (dup);
 }
 
-char	**minishell_init(t_shell *shell)
+void	minishell_init(t_shell *shell, int argc, char **argv, char **envp)
 {
-	int	env_size;
-
-	env_size = minishell_envp_size(shell);
-	shell->export_vars = malloc(sizeof(char *) * (env_size + 1));
-	if (shell->export_vars == NULL)
-		return NULL; // SAFE EXIT
-	shell->export_vars = matrix_merge_sort(shell->export_vars);
-	shell->env_vars = malloc(sizeof(char *) * (env_size + 1));
-
-	env_size = minishell_envp_size(shell);
-	shell->export_vars = malloc(sizeof(char *) * (env_size + 1));
-	shell->env_vars = malloc(sizeof(char *) * (env_size + 1));
-	shell->export_vars = matrix_merge_sort();
+	shell->argc = argc;
+	shell->argv = argv;
+	shell->envp = envp;
+	shell->merge_ret = 0;
+	shell->env_size = minishell_envp_size(shell);
+	shell->env_vars = minishell_env_dup(shell);
+	shell->export_vars.length = shell->env_size;
+	shell->export_vars.m_array = minishell_env_dup(shell);
+	str_merge_sort(shell->export_vars, &shell->merge_ret);
+	if (shell->merge_ret == -1)
+		return ; // SAFE EXIT
+	shell->tokens = NULL;
+	shell->tree = NULL;
 }
 
 

@@ -294,6 +294,8 @@ void	minishell_init(t_shell *shell, int argc, char **argv, char **envp)
 	shell->argc = argc;
 	shell->argv = argv;
 	shell->envp = envp;
+	shell->user_input = NULL;
+	shell->exit_code = 0;
 	shell->merge_ret = 0;
 	shell->env_size = minishell_envp_size(shell);
 	shell->env_vars = minishell_env_dup(shell);
@@ -307,45 +309,57 @@ void	minishell_init(t_shell *shell, int argc, char **argv, char **envp)
 }
 
 
-void    minishell_loop(char **envp)
+void    minishell_loop(char **envp, t_shell *shell)
 {
+
+	char *export[2];
     char *user_input;
     t_token_list *tokens;
-	  t_btree	*node;
-	  int		exit_code;
-
+	t_btree	*node;
+	int		exit_code;
     user_input = NULL;
     tokens = NULL;
+	export[0] = "export";
+	export[1] = NULL;
+
+
     while (TRUE)
     {
-        user_input = readline(PROMPT_MINISHELL);
-        if (user_input == NULL)
-            break ;
-        add_history(user_input);
-        special_user_input_check(user_input);
-        // tokenize command
-        tokens_check(tokens, envp, user_input, &node);
-		    heredoc_find(node, envp);
-		    int pid = safe_fork();
-		    if (pid == 0)
-			    traverse_btree(node);
-		    waitpid(pid, &exit_code, 0);
-		    ft_printf("exit status: %d\n", WEXITSTATUS(exit_code));
-        free(user_input);
-        if (tokens != NULL)
-            ft_token_lst_clear(&tokens);
-        // >> alongside builtins >> (special_user_input_check(user_input)); <<
-    }
-    rl_clear_history();
+		user_input = readline(PROMPT_MINISHELL);
+		if (user_input == NULL)
+			break ;
+		if (ft_bool_strcmp(user_input, "export") == true)
+		{
+			builtins_export(shell, export);
+			break;
+		}
+		add_history(user_input);
+		special_user_input_check(user_input);
+		// tokenize command
+		tokens_check(tokens, envp, user_input, &node);
+		heredoc_find(node, envp);
+		int pid = safe_fork();
+		if (pid == 0)
+			traverse_btree(node);
+		waitpid(pid, &exit_code, 0);
+		ft_printf("exit status: %d\n", WEXITSTATUS(exit_code));
+		free(user_input);
+		if (tokens != NULL)
+			ft_token_lst_clear(&tokens);
+		// >> alongside builtins >> (special_user_input_check(user_input)); <<
+	}
+	rl_clear_history();
+	ft_free_matrix(shell->env_vars);
+	ft_free_matrix(shell->export_vars.m_array);
 }
 
 int main(int argc, char **argv, char **envp)
 {
-	(void)argv;
-	(void)envp;
+	t_shell	shell;
 
 	if (argc != 1)
 		error_exit_argv(argv[1]);
+	minishell_init(&shell, argc, argv, envp);
 	draw_from_file(FILE_LOGO);
-	minishell_loop(envp);
+	minishell_loop(envp, &shell);
 }

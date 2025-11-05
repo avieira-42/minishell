@@ -9,8 +9,10 @@ typedef struct s_shell
 	int				argc;
 	char			**argv;
 	char			**envp;
+	char			*user_input;
+	int				exit_code;
 	int				merge_ret;
-	int				env_size;
+	size_t			env_size;
 	char			**env_vars;
 	t_str_array		export_vars;
 	t_token_list	*tokens;

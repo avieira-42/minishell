@@ -6,14 +6,14 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 08:58:36 by avieira-          #+#    #+#             */
-/*   Updated: 2025/11/04 16:44:08 by avieira-         ###   ########.fr       */
+/*   Updated: 2025/11/05 19:27:19 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/libft.h"
 
 static
-void	matrix_merge_sort_init(t_str_array *middle, t_str_array *left,
+void	str_merge_sort_init(t_str_array *middle, t_str_array *left,
 		t_str_array *right, int *ret)
 {
 	left->length = middle->length / 2 ;
@@ -31,7 +31,7 @@ void	matrix_merge_sort_init(t_str_array *middle, t_str_array *left,
 	}
 }
 
-void	matrix_merge_sort(t_str_array middle, int *ret)
+void	str_merge_sort(t_str_array middle, int *ret)
 {
 	t_str_array	left;
 	t_str_array	right;
@@ -42,7 +42,7 @@ void	matrix_merge_sort(t_str_array middle, int *ret)
 	j = 0;
 	if (middle.length > 1)
 	{
-		matrix_merge_sort_init(&middle, &left, &right, ret);
+		str_merge_sort_init(&middle, &left, &right, ret);
 		if (*ret == -1)
 			return ;
 		while (i < left.length && middle.m_array[j])
@@ -50,8 +50,8 @@ void	matrix_merge_sort(t_str_array middle, int *ret)
 		j = 0;
 		while (i < middle.length && middle.m_array[j])
 			right.m_array[j++] = middle.m_array[i++];
-		matrix_merge_sort(left, ret);
-		matrix_merge_sort(right, ret);
+		str_merge_sort(left, ret);
+		str_merge_sort(right, ret);
 		str_merge(left, middle, right);
 	}
 }

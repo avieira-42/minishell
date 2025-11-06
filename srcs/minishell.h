@@ -5,6 +5,8 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <sys/wait.h>
+# include <errno.h>
+# include <string.h>
 # include "binary_tree/binary_tree.h"
 # include "parsing/parsing.h"
 # include "tty_drawing/tty_drawing.h"

@@ -24,3 +24,18 @@ int	pipe_child(int fd[2], t_btree *node, int oldfd, int newfd)
 	}
 	return (pid);
 }
+
+int	*stdfd_save(void)
+{
+	static int	fd[2];
+
+	fd[0] = dup(STDIN_FILENO);
+	fd[1] = dup(STDOUT_FILENO);
+	return (fd);
+}
+
+void	stdfd_restore(int fd[2])
+{
+	safe_dup2(STDIN_FILENO, fd[0]);
+	safe_dup2(STDOUT_FILENO, fd[1]);
+}

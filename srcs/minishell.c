@@ -275,10 +275,7 @@ void    minishell_loop(char **envp)
         // tokenize command
         tokens_check(tokens, envp, user_input, &node);
 		    heredoc_find(node, envp);
-		    int pid = safe_fork();
-		    if (pid == 0)
-			    traverse_btree(node);
-		    waitpid(pid, &exit_code, 0);
+			exit_code = traverse_btree(node);
 		    ft_printf("exit status: %d\n", WEXITSTATUS(exit_code));
         free(user_input);
         if (tokens != NULL)

@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 08:58:36 by avieira-          #+#    #+#             */
-/*   Updated: 2025/11/05 19:27:19 by avieira-         ###   ########.fr       */
+/*   Updated: 2025/11/06 18:43:41 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ void	str_merge(t_str_array left, t_str_array middle, t_str_array right)
 	argv[j] = NULL;
 	middle.m_array = argv;
 	int ret = 0;
-	matrix_merge_sort(middle, &ret);
+	str_merge_sort(middle, &ret);
 	while (i < argc - 1)
 		ft_printf("%s, ", argv[i++]);
 	printf("\n%i\n", ret);

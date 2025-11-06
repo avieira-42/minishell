@@ -3,6 +3,7 @@
 
 # include "../../libs/libft/include/libft.h"
 # include "../types.h"
+# include "../parsing/parsing.h"
 
 # define EXPORT_ERROR "minishell: export: '%s': not a valid identifier"
 

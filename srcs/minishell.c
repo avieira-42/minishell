@@ -312,28 +312,39 @@ void	minishell_init(t_shell *shell, int argc, char **argv, char **envp)
 void    minishell_loop(char **envp, t_shell *shell)
 {
 
-	char *export[2];
+	int	i = 1;
+	char *export[(shell->argc)];
     char *user_input;
     t_token_list *tokens;
 	t_btree	*node;
 	int		exit_code;
     user_input = NULL;
     tokens = NULL;
-	export[0] = "export";
-	export[1] = NULL;
+	export[shell->argc - 1] = NULL;
+	while (i < shell->argc)
+	{
+		export[i - 1] = shell->argv[i];
+		i++;
+	}
+	i = 0;
 
 
     while (TRUE)
     {
 		// IMPLEMENT THE !! (last user_input join)
+		if (shell->argc > 1 && ft_bool_strcmp(shell->argv[1], "export") == true)
+		{
+			builtins_export(shell, export);
+			export[0] = "export";
+			export[1] = NULL;
+			builtins_export(shell, export);
+			while (shell->env_vars[i])
+				ft_printf("%s\n", shell->env_vars[i++]);
+			return ;
+		}
 		user_input = readline(PROMPT_MINISHELL);
 		if (user_input == NULL)
 			break ;
-		if (ft_bool_strcmp(user_input, "export") == true)
-		{
-			builtins_export(shell, export);
-			break;
-		}
 		add_history(user_input);
 		special_user_input_check(user_input);
 		// tokenize command
@@ -358,7 +369,7 @@ int main(int argc, char **argv, char **envp)
 {
 	t_shell	shell;
 
-	if (argc != 1)
+	if (argc > 20)
 		error_exit_argv(argv[1]);
 	minishell_init(&shell, argc, argv, envp);
 	draw_from_file(FILE_LOGO);

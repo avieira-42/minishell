@@ -1,8 +1,10 @@
 #ifndef BUILTINS_H
 # define BUILTINS_H
 
-#include "../../libs/libft/include/libft.h"
-#include "../types.h"
+# include "../../libs/libft/include/libft.h"
+# include "../types.h"
+
+# define EXPORT_ERROR "minishell: export: '%s': not a valid identifier"
 
 int		builtins_echo(char **user_input);
 int		builtins_exec(char **argv);

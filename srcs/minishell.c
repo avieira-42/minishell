@@ -325,6 +325,7 @@ void    minishell_loop(char **envp, t_shell *shell)
 
     while (TRUE)
     {
+		// IMPLEMENT THE !! (last user_input join)
 		user_input = readline(PROMPT_MINISHELL);
 		if (user_input == NULL)
 			break ;

@@ -71,8 +71,8 @@ builtins_export_to_vars(t_shell *shell, char *var, char *var_end, size_t len)
 		i++;
 	}
 	vars->m_array = ft_realloc(vars->m_array,
-			sizeof(char *) * (vars->length + 1),
-			sizeof(char *) * shell->export_vars.length);
+			sizeof(char *) * (vars->length + 2),
+			sizeof(char *) * (shell->export_vars.length + 1));
 	if (vars->m_array == NULL)
 		return (free(var)) ; // SAFE EXIT
 	shell->export_vars.m_array[vars->length] = var;
@@ -100,11 +100,13 @@ void	builtins_export_to_env(t_shell *shell, char *var, size_t len)
 		i++;
 	}
 	shell->env_vars = ft_realloc(vars,
-			sizeof (char *) * (shell->env_size + 1),
-			sizeof(char *) * shell->env_size);
+			sizeof (char *) * (shell->env_size + 2),
+			sizeof(char *) * (shell->env_size + 1));
 	if (shell->env_vars == NULL)
 		return (free(var)); // SAFE EXIT
-	shell->env_vars[shell->env_size] = var;
+	shell->env_vars[shell->env_size] = ft_strdup(var);
+	if (shell->env_vars[shell->env_size] == NULL)
+		return ; // SAFE EXIT
 	shell->env_vars[shell->env_size + 1] = NULL;
 	shell->env_size++;
 }

@@ -99,15 +99,17 @@ void	builtins_export_to_env(t_shell *shell, char *var, size_t len)
 		}
 		i++;
 	}
-	vars = ft_realloc(vars,
+	shell->env_vars = ft_realloc(vars,
 			sizeof (char *) * (shell->env_size + 1),
 			sizeof(char *) * shell->env_size);
-	shell->env_size++;
 	if (shell->env_vars == NULL)
 		return (free(var)); // SAFE EXIT
+	shell->env_vars[shell->env_size] = var;
+	shell->env_vars[shell->env_size + 1] = NULL;
+	shell->env_size++;
 }
 
-	static inline void
+static inline void
 builtins_export_add_var(t_shell *shell, char *var, char *argv, char *var_end)
 {
 	size_t	var_len;

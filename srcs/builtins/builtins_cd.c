@@ -37,7 +37,7 @@ int	builtins_cd(char **argv, char **envp)
 		}
 		*argv = var_home;
 	}
-
+	var_old_pwd = env_get("OLDPWD", envp);
 	if (chdir(*argv) == -1)
 	{
 		ft_printf_fd(STDERR_FILENO, "minishell: cd: %s\n", strerror(errno));

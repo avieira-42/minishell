@@ -23,5 +23,7 @@ void	heredoc_find(t_btree *node, char **envp);
 int		safe_fork(void);
 void	safe_dup2(int oldfd, int newfd);
 void	safe_pipe(int pipefd[2]);
+int		*stdfd_save(void);
+void	stdfd_restore(int fd[2]);
 
 #endif

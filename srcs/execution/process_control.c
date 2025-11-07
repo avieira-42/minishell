@@ -1,4 +1,5 @@
 #include "../minishell.h"
+#include "execution.h"
 
 void	pipe_parent(int fd[2], int *exit_code, int pid_left, int pid_right)
 {
@@ -13,6 +14,7 @@ void	pipe_parent(int fd[2], int *exit_code, int pid_left, int pid_right)
 int	pipe_child(int fd[2], t_btree *node, int oldfd, int newfd)
 {
 	int	pid;
+	int	exit_status;
 
 	pid = safe_fork();
 	if (pid == 0)
@@ -20,8 +22,8 @@ int	pipe_child(int fd[2], t_btree *node, int oldfd, int newfd)
 		safe_dup2(oldfd, newfd);
 		safe_close(&fd[1]);
 		safe_close(&fd[0]);
-		traverse_btree(node);
-		exit(0);
+		exit_status = traverse_btree(node);
+		exit(exit_status);
 	}
 	return (pid);
 }

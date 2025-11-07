@@ -104,11 +104,7 @@ int	command_execute(t_command *command, char **envp)
 int	traverse_btree(t_btree *node)
 {
 	int	exit_status;
-	int	stdin_copy;
-	int	stdout_copy;
 
-	stdin_copy = dup(STDIN_FILENO);
-	stdout_copy = dup(STDOUT_FILENO);
 	exit_status = 0;
 	if (node == NULL)
 		exit(exit_status);
@@ -118,7 +114,5 @@ int	traverse_btree(t_btree *node)
 		pipe_execute(node, &exit_status);
 	else
 		exit_status = command_execute(node->command, NULL);
-	safe_dup2(stdin_copy, STDIN_FILENO);
-	safe_dup2(stdout_copy, STDOUT_FILENO);
 	return(exit_status);
 }

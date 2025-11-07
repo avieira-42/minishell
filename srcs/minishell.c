@@ -1,4 +1,5 @@
 #include "minishell.h"
+#include "execution/execution.h"
 
 // TESTING AREA START
 void	btree_print(t_btree *btree, int indent, bool tree_top, int cmd_count);
@@ -267,37 +268,60 @@ t_token_list    *tokens_check(t_token_list *tokens, char **envp, char *user_inpu
 // TESTING AREA END
 void    minishell_loop(char **envp)
 {
-    char *user_input;
-    t_token_list *tokens;
-	  t_btree	*node;
-	  int		exit_code;
+	char *user_input;
+	t_token_list *tokens;
+	t_btree	*node;
+	int		exit_code;
+	int		*stdfd;
 
-    user_input = NULL;
-    tokens = NULL;
-    while (TRUE)
-    {
-        user_input = readline(PROMPT_MINISHELL);
-        if (user_input == NULL)
-            break ;
-        add_history(user_input);
-        special_user_input_check(user_input);
-        // tokenize command
-        tokens_check(tokens, envp, user_input, &node);
-		    heredoc_find(node, envp);
-			exit_code = traverse_btree(node);
-		    ft_printf("exit status: %d\n", WEXITSTATUS(exit_code));
-        free(user_input);
-        if (tokens != NULL)
-            ft_token_lst_clear(&tokens);
-        // >> alongside builtins >> (special_user_input_check(user_input)); <<
-    }
-    rl_clear_history();
+	user_input = NULL;
+	tokens = NULL;
+	while (TRUE)
+	{
+		user_input = readline(PROMPT_MINISHELL);
+		if (user_input == NULL)
+			break ;
+		add_history(user_input);
+		special_user_input_check(user_input);
+		// tokenize command
+		tokens_check(tokens, envp, user_input, &node);
+		heredoc_find(node, envp);
+		stdfd = stdfd_save();
+		exit_code = traverse_btree(node);
+		stdfd_restore(stdfd);
+		ft_printf("exit status: %d\n", exit_code);
+		free(user_input);
+		if (tokens != NULL)
+			ft_token_lst_clear(&tokens);
+		// >> alongside builtins >> (special_user_input_check(user_input)); <<
+	}
+	rl_clear_history();
+}
+
+char	*test_env_get(char *var_name, char **envp)
+{
+	int	var_len;
+	int	i;
+
+	if (envp == NULL)
+		return (NULL);
+	var_len = ft_strlen(var_name);
+	i = 0;
+	while (envp[i] != NULL)
+	{
+		if (ft_strncmp(var_name, envp[i], var_len) == 0
+	  		&& envp[i][var_len] == '=')
+			return (envp[i] + var_len + 1);
+		++i;
+	}
+	return (NULL);
 }
 
 int main(int argc, char **argv, char **envp)
 {
 	(void)argv;
 	(void)envp;
+	(void)argc;
 
 	if (argc != 1)
 		error_exit_argv(argv[1]);

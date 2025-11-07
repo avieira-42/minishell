@@ -275,6 +275,7 @@ char	**minishell_env_dup(t_shell *shell)
 	dup = malloc(sizeof(char *) * (shell->env_size + 1));
 	if (dup == NULL)
 		return NULL; // SAFE EXIT
+	dup[shell->env_size] = NULL;
 	i = 0;
 	while (i < shell->env_size)
 	{
@@ -340,6 +341,8 @@ void    minishell_loop(char **envp, t_shell *shell)
 			builtins_export(shell, export);
 			while (shell->env_vars[i])
 				ft_printf("%s\n", shell->env_vars[i++]);
+			free_array((void **)shell->env_vars, -1, true);
+			free_array((void **)shell->export_vars.m_array, -1, true);
 			return ;
 		}
 		user_input = readline(PROMPT_MINISHELL);

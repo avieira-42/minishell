@@ -75,8 +75,8 @@ builtins_export_to_vars(t_shell *shell, char *var, char *var_end, size_t len)
 			sizeof(char *) * shell->export_vars.length);
 	if (vars->m_array == NULL)
 		return (free(var)) ; // SAFE EXIT
-	vars->m_array[vars->length] = var;
-	vars->m_array[vars->length + 1] = NULL;
+	shell->export_vars.m_array[vars->length] = var;
+	shell->export_vars.m_array[vars->length + 1] = NULL;
 	vars->length++;
 }
 

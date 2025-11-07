@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 18:56:27 by avieira-          #+#    #+#             */
-/*   Updated: 2025/11/06 19:37:53 by avieira-         ###   ########.fr       */
+/*   Updated: 2025/11/07 15:01:27 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void    *ft_realloc(void *old_ptr, size_t new_size, size_t old_size)
 {
-    char    *new_ptr;
+    void    *new_ptr = NULL;
 	size_t	cpy_size;
 
     new_ptr = malloc(new_size);

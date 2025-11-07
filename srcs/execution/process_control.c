@@ -21,6 +21,7 @@ int	pipe_child(int fd[2], t_btree *node, int oldfd, int newfd)
 		safe_close(&fd[1]);
 		safe_close(&fd[0]);
 		traverse_btree(node);
+		exit(0);
 	}
 	return (pid);
 }

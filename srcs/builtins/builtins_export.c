@@ -129,6 +129,7 @@ void	builtins_export(t_shell *shell, char **argv)
 	char	*var;
 	char	*var_end;
 
+	shell->exit_code = 0;
 	if (*(++argv) == NULL)
 		return (builtins_export_print(shell));
 	while (*argv != NULL)

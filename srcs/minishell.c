@@ -338,11 +338,12 @@ void    minishell_loop(char **envp, t_shell *shell)
 			builtins_export(shell, export);
 			export[0] = "export";
 			export[1] = NULL;
-			builtins_export(shell, export);
+			ft_printf("\n EXIT_CODE = %i\n\n", shell->exit_code);
+			/*builtins_export(shell, export);
 			while (shell->env_vars[i])
 				ft_printf("%s\n", shell->env_vars[i++]);
 			free_array((void **)shell->env_vars, -1, true);
-			free_array((void **)shell->export_vars.m_array, -1, true);
+			free_array((void **)shell->export_vars.m_array, -1, true);*/
 			return ;
 		}
 		user_input = readline(PROMPT_MINISHELL);

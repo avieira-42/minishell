@@ -119,6 +119,6 @@ int	traverse_btree(t_btree *node)
 	else
 		exit_status = command_execute(node->command, NULL);
 	safe_dup2(stdin_copy, STDIN_FILENO);
-	safe_dup2(stdout_copy, STDOUT_FILENO)	;
+	safe_dup2(stdout_copy, STDOUT_FILENO);
 	return(exit_status);
 }

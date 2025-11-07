@@ -5,7 +5,7 @@
 # include "../types.h"
 # include "../parsing/parsing.h"
 
-# define EXPORT_ERROR "minishell: export: '%s': not a valid identifier"
+# define EXPORT_ERROR "minishell: export: '%s': not a valid identifier\n"
 
 int		builtins_echo(char **user_input);
 int		builtins_exec(char **argv);

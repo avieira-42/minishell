@@ -50,8 +50,14 @@ void	btree_print_contents(t_btree *btree, int indent, int *cmd_count)
 
 void	contents_print(t_btree *btree_node, int *i, int *j)
 {
+	int	m;
+	t_redirect	*redirects = NULL;
+
+	m = 0;
 	if (btree_node == NULL)
 		return ;
+	if (btree_node->command)
+		redirects = btree_node->command->redirects;
 	if (btree_node->node_type == TOKEN_PIPE)
 	{
 		printf("NODE %i -> PIPE\n", *j);
@@ -61,23 +67,23 @@ void	contents_print(t_btree *btree_node, int *i, int *j)
 	{
 		printf("NODE %i -> CMD\nargv: ", *i);
 		(*i)--;
-		while (*(btree_node->command->argv) != NULL)
+		while (btree_node->command->argv[m] != NULL)
 		{
-			printf("%s ", *(btree_node->command->argv));
-			btree_node->command->argv++;
+			printf("%s ", btree_node->command->argv[m]);
+			m++;
 		}
 		printf("\nredirect list: ");
-		while (btree_node->command->redirects != NULL)
+		while (redirects != NULL)
 		{
-			if (btree_node->command->redirects->redir_type == TOKEN_APPEND)
-				printf(">> %s ", btree_node->command->redirects->filename);
-			if (btree_node->command->redirects->redir_type == TOKEN_HEREDOC)
+			if (redirects->redir_type == TOKEN_APPEND)
+				printf(">> %s ", redirects->filename);
+			if (redirects->redir_type == TOKEN_HEREDOC)
 				printf("<< %s ", btree_node->command->redirects->filename);
-			if (btree_node->command->redirects->redir_type == TOKEN_REDIRECT_IN)
+			if (redirects->redir_type == TOKEN_REDIRECT_IN)
 				printf("> %s ", btree_node->command->redirects->filename);
-			if (btree_node->command->redirects->redir_type == TOKEN_REDIRECT_OUT)
+			if (redirects->redir_type == TOKEN_REDIRECT_OUT)
 				printf("< %s ", btree_node->command->redirects->filename);
-			btree_node->command->redirects = btree_node->command->redirects->next;
+			redirects = redirects->next;
 		}
 		printf("\n\n");
 	}
@@ -135,7 +141,7 @@ void	btree_print(t_btree *btree, int indent, bool tree_top, int cmd_count)
 	}
 }
 
-void    tokens_check(t_token_list *tokens, char **envp, char *user_input, t_btree **node)
+t_token_list    *tokens_check(t_token_list *tokens, char **envp, char *user_input, t_btree **node)
 {
 	char            *token_type;
     t_token_list    *quotation_tokens;
@@ -144,6 +150,7 @@ void    tokens_check(t_token_list *tokens, char **envp, char *user_input, t_btre
     t_token_list    *identified_tokens;
     t_token_list    *unidentified_tokens;
 	t_token_list	*tree_tokens;
+	t_token_list	*ret;
 	t_btree			*tree;
 	int				node_count;
 	int				cmd_count;
@@ -157,6 +164,7 @@ void    tokens_check(t_token_list *tokens, char **envp, char *user_input, t_btre
     unquoted_tokens = tokens;
     identified_tokens = tokens;
     unidentified_tokens = tokens;
+	ret = tokens;
     tree_tokens = tokens;
     while (tokens != NULL)
     {
@@ -241,7 +249,8 @@ void    tokens_check(t_token_list *tokens, char **envp, char *user_input, t_btre
 	if (user_input_parse(NULL, &tree_tokens) == -1)
 	{
 		printf("invalid_user_input\n");
-		return ;
+		ft_token_lst_clear(&ret);
+		return NULL;
 	}
 
 	tree = btree_create(tree_tokens);
@@ -252,10 +261,10 @@ void    tokens_check(t_token_list *tokens, char **envp, char *user_input, t_btre
 
 	*node = tree;
 	printf("\n");
+	return (ret);
 }
 
 // TESTING AREA END
-
 void    minishell_loop(char **envp)
 {
     char *user_input;

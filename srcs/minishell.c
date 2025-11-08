@@ -304,6 +304,8 @@ int main(int argc, char **argv, char **envp)
 
 	if (argc != 1)
 		error_exit_argv(argv[1]);
-	draw_from_file(FILE_LOGO);
-	minishell_loop(envp);
+//	draw_from_file(FILE_LOGO);
+//	minishell_loop(envp);
+	char	*args[] = {"exit", "2147483648", 0};
+	builtins_exit(args);
 }

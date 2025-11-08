@@ -256,6 +256,8 @@ void    tokens_check(t_token_list *tokens, char **envp, char *user_input, t_btre
 
 void	export_check(t_shell *shell)
 {
+	if (shell->argc == 1)
+		return ;
 	int	i = 1;
 	char *export[(shell->argc)];
 
@@ -277,8 +279,10 @@ void	export_check(t_shell *shell)
 		  ft_printf("%s\n", shell->env_vars[i++]);
 		  free_array((void **)shell->env_vars, -1, true);
 		  free_array((void **)shell->export_vars.m_array, -1, true);*/
-		return ;
 	}
+	ft_free_matrix(shell->env_vars);
+	ft_free_matrix(shell->export_vars.m_array);
+	exit(0);
 }
 // TESTING AREA END
 
@@ -349,7 +353,7 @@ void    minishell_loop(char **envp, t_shell *shell)
 	while (TRUE)
 	{
 		// IMPLEMENT THE !! (last user_input join)
-		//export_check(shell);
+		export_check(shell);
 		user_input = readline(PROMPT_MINISHELL);
 		if (user_input == NULL)
 			break ;

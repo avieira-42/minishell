@@ -253,9 +253,36 @@ void    tokens_check(t_token_list *tokens, char **envp, char *user_input, t_btre
 	*node = tree;
 	printf("\n");
 }
+
+void	export_check(t_shell *shell)
+{
+	int	i = 1;
+	char *export[(shell->argc)];
+
+	export[shell->argc - 1] = NULL;
+	while (i < shell->argc)
+	{
+		export[i - 1] = shell->argv[i];
+		i++;
+	}
+	i = 0;
+	if (shell->argc > 1 && ft_bool_strcmp(shell->argv[1], "export") == true)
+	{
+		builtins_export(shell, export);
+		export[0] = "export";
+		export[1] = NULL;
+		ft_printf("\n EXIT_CODE = %i\n\n", shell->exit_code);
+		/*builtins_export(shell, export);
+		  while (shell->env_vars[i])
+		  ft_printf("%s\n", shell->env_vars[i++]);
+		  free_array((void **)shell->env_vars, -1, true);
+		  free_array((void **)shell->export_vars.m_array, -1, true);*/
+		return ;
+	}
+}
 // TESTING AREA END
 
-static
+	static
 size_t	minishell_envp_size(t_shell *shell)
 {
 	size_t	size;
@@ -266,7 +293,7 @@ size_t	minishell_envp_size(t_shell *shell)
 	return (size);
 }
 
-static
+	static
 char	**minishell_env_dup(t_shell *shell)
 {
 	size_t	i;
@@ -312,40 +339,17 @@ void	minishell_init(t_shell *shell, int argc, char **argv, char **envp)
 
 void    minishell_loop(char **envp, t_shell *shell)
 {
+	t_token_list	*tokens;
+	t_btree			*node;
+	char			*user_input;
+	int				exit_code;
 
-	int	i = 1;
-	char *export[(shell->argc)];
-    char *user_input;
-    t_token_list *tokens;
-	t_btree	*node;
-	int		exit_code;
     user_input = NULL;
-    tokens = NULL;
-	export[shell->argc - 1] = NULL;
-	while (i < shell->argc)
+	tokens = NULL;
+	while (TRUE)
 	{
-		export[i - 1] = shell->argv[i];
-		i++;
-	}
-	i = 0;
-
-
-    while (TRUE)
-    {
 		// IMPLEMENT THE !! (last user_input join)
-		if (shell->argc > 1 && ft_bool_strcmp(shell->argv[1], "export") == true)
-		{
-			builtins_export(shell, export);
-			export[0] = "export";
-			export[1] = NULL;
-			ft_printf("\n EXIT_CODE = %i\n\n", shell->exit_code);
-			/*builtins_export(shell, export);
-			while (shell->env_vars[i])
-				ft_printf("%s\n", shell->env_vars[i++]);
-			free_array((void **)shell->env_vars, -1, true);
-			free_array((void **)shell->export_vars.m_array, -1, true);*/
-			return ;
-		}
+		//export_check(shell);
 		user_input = readline(PROMPT_MINISHELL);
 		if (user_input == NULL)
 			break ;

@@ -306,6 +306,6 @@ int main(int argc, char **argv, char **envp)
 		error_exit_argv(argv[1]);
 //	draw_from_file(FILE_LOGO);
 //	minishell_loop(envp);
-	char	*args[] = {"exit", "2147483648", 0};
-	builtins_exit(args);
+	char	*args[] = {"exit", "21474836431239012301293", "2", 0};
+	builtins_exit(args + 1);
 }

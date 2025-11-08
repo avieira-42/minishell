@@ -1,6 +1,11 @@
 #include "../minishell.h"
-#include <stdlib.h>
-#include <unistd.h>
+
+static
+int	ft_error(int exit_code, char *error_msg)
+{
+	ft_printf_fd(STDERR_FILENO, "minishell: cd: %s\n", error_msg);
+	return (exit_code);
+}
 
 char	*env_get(char *var_name, char **envp)
 {
@@ -24,24 +29,17 @@ char	*env_get(char *var_name, char **envp)
 int	builtins_cd(char **argv, char **envp)
 {
 	char	*var_home;
-	char	*var_old_pwd;
 
-	(void)envp;
 	if (*argv == NULL)
 	{
 		var_home = env_get("HOME", envp);
 		if (var_home == NULL)
-		{
-			ft_putendl_fd("minishell: cd: HOME not set", STDERR_FILENO);	
-			return (EXIT_FAILURE);
-		}
+			return (ft_error(EXIT_FAILURE, "HOME not set"));
 		*argv = var_home;
 	}
-	var_old_pwd = env_get("OLDPWD", envp);
+	else if (argv[1] != NULL)
+		return (ft_error(EXIT_FAILURE, "too many arguments"));
 	if (chdir(*argv) == -1)
-	{
-		ft_printf_fd(STDERR_FILENO, "minishell: cd: %s\n", strerror(errno));
-		return (EXIT_FAILURE);
-	}
-	return (0);
+		return (ft_error(EXIT_FAILURE, strerror(errno)));
+	return (EXIT_SUCCESS);
 }

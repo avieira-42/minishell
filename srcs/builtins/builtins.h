@@ -1,5 +1,6 @@
 #ifndef BUILTINS_H
 # define BUILTINS_H
+# define PATH_MAX 4096
 
 int	builtins_echo(char **user_input);
 int	builtins_exec(char **argv, char **envp);

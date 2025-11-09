@@ -1,22 +1,48 @@
 #include "builtins.h"
 
-void	builtins_unset_from_matrix(t_shell *shell, char *variable)
+static inline
+size_t	builtins_unset_var_len(char *var)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
-	while (shell->env_vars[i] != NULL)
+	while (var[i] != '=' && var[i] != '\0')
+		i++;
+	return (i);
+}
+
+static
+void	builtins_unset_from_matrix(char **vars, size_t size, char *variable)
+{
+	size_t	i;
+	size_t	var_len;
+
+	i = 0;
+	while (vars[i] != NULL)
 	{
-		if (shell->env_vars[i] == variable)
+		var_len = builtins_unset_var_len(vars[i]);
+		if (ft_bool_strncmp(vars[i], variable, var_len) == true)
 		{
+			free(vars[i]);
+			ft_memmove(&vars[i], &vars[i + 1], size - i);
 		}
 		i++;
 	}
 }
 
-int	builtin_unset(t_shell *shell, char *variables)
+int	builtins_unset(t_shell *shell, char **vars)
 {
-	builtins_unset_from_vars();
-	builtins_unset_from_env();
+	t_str_array	*export;
+	size_t		i;
+
+	i = 0;
+	export = &shell->export_vars;
+	while (vars[i] != NULL)
+	{
+		builtins_unset_from_matrix(shell->env_vars, shell->env_size, vars[i]);
+		builtins_unset_from_matrix(export->m_array, export->length, vars[i]);
+		return (0);
+		i++;
+	}
 	return (0);
 }

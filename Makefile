@@ -38,7 +38,8 @@ BUILTINS_SRCS = srcs/builtins/builtins_echo.c \
 				srcs/builtins/builtins_cd.c \
 				srcs/builtins/builtins_env.c \
 				srcs/builtins/builtins_export.c \
-				srcs/builtins/builtins_export_utils.c
+				srcs/builtins/builtins_export_utils.c \
+				srcs/builtins/builtins_unset.c
 
 EXECUTION_SRCS = srcs/execution/program_path_find.c \
 				 srcs/execution/command_execute.c \

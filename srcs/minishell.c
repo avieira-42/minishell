@@ -267,8 +267,6 @@ t_token_list    *tokens_check(t_token_list *tokens, char **envp, char *user_inpu
 
 void	export_check(t_shell *shell)
 {
-	if (shell->argc == 1)
-		return ;
 	int	i = 1;
 	char *export[(shell->argc)];
 
@@ -294,6 +292,43 @@ void	export_check(t_shell *shell)
 	ft_free_matrix(shell->env_vars);
 	ft_free_matrix(shell->export_vars.m_array);
 	exit(0);
+}
+
+void	unset_check(t_shell *shell)
+{
+	int		i = 2;
+	char	*unset[(shell->argc - 1)];
+	char	*export[2];
+
+	unset[shell->argc - 2] = NULL;
+	while (i < shell->argc)
+	{
+		unset[i - 2] = shell->argv[i];
+		i++;
+	}
+	i = 0;
+	if (shell->argc > 1 && ft_bool_strcmp(shell->argv[1], "unset") == true)
+	{
+		builtins_unset(shell, unset);
+		export[0] = "export";
+		export[1] = NULL;
+		ft_printf("\n EXIT_CODE = %i\n\n", shell->exit_code);
+		builtins_export(shell, export);
+		  while (shell->env_vars[i])
+			ft_printf("%s\n", shell->env_vars[i++]);
+		free_array((void **)shell->env_vars, -1, true);
+		free_array((void **)shell->export_vars.m_array, -1, true);
+	}
+	exit(0);
+}
+void	builtins_check(t_shell *shell)
+{
+	if (shell->argc == 1)
+		return ;
+	if (ft_bool_strcmp(shell->argv[1], "export") == true)
+		export_check(shell);
+	if (ft_bool_strcmp(shell->argv[1], "unset") == true)
+		unset_check(shell);
 }
 // TESTING AREA END
 
@@ -365,7 +400,7 @@ void    minishell_loop(char **envp, t_shell *shell)
 	while (TRUE)
 	{
 		// IMPLEMENT THE !! (last user_input join)
-		export_check(shell);
+		builtins_check(shell);
 		user_input = readline(PROMPT_MINISHELL);
 		if (user_input == NULL)
 			break ;

@@ -49,9 +49,10 @@ void	pipe_execute(t_btree *node, int *exit_code)
 static
 int	redirect_execute(t_btree *node)
 {
-	char	*filename;
-	int		fd;
-	int		open_flags;
+	char		*filename;
+	int			fd;
+	int			open_flags;
+	t_redirect	*tmp;
 
 	filename = node->command->redirects->filename;
 	fd = node->command->redirects->fd;
@@ -72,7 +73,10 @@ int	redirect_execute(t_btree *node)
 		safe_dup2(fd, STDIN_FILENO);
 		safe_close(&fd);
 	}
-	node->command->redirects = node->command->redirects->next;
+	tmp = node->command->redirects->next;
+	free(node->command->redirects->filename);
+	free(node->command->redirects);
+	node->command->redirects = tmp;
 	return (traverse_btree(node));
 }
 

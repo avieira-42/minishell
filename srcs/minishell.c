@@ -407,15 +407,16 @@ void    minishell_loop(char **envp, t_shell *shell)
 		add_history(user_input);
 		special_user_input_check(user_input);
 		// tokenize command
-		tokens_check(tokens, envp, user_input, &node);
+		tokens = tokens_check(tokens, envp, user_input, &node);
+		token_lst_clear_safe(&tokens);
 		heredoc_find(node, envp);
 		stdfd = stdfd_save();
 		exit_code = traverse_btree(node);
 		stdfd_restore(stdfd);
 		ft_printf("exit status: %d\n", exit_code);
 		free(user_input);
-    if (node != NULL)
-      btree_clear(node);
+		if (node != NULL)
+			btree_clear(node);
 		if (tokens != NULL)
 			ft_token_lst_clear(&tokens);
 

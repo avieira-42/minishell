@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:40:52 by avieira-          #+#    #+#             */
-/*   Updated: 2025/11/07 15:01:17 by avieira-         ###   ########.fr       */
+/*   Updated: 2025/11/10 10:55:06 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ typedef int	t_bool;
 typedef struct s_str_array
 {
 	char			**m_array;
-	int				length;
+	size_t			length;
 }	t_str_array;
 
 typedef struct s_list

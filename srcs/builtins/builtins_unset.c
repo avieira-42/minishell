@@ -12,7 +12,7 @@ size_t	builtins_unset_var_len(char *var)
 }
 
 static
-void	builtins_unset_from_matrix(char **vars, size_t size, char *variable)
+void	builtins_unset_from_matrix(char **vars, size_t *size, char *variable)
 {
 	size_t	i;
 	size_t	var_len;
@@ -24,7 +24,9 @@ void	builtins_unset_from_matrix(char **vars, size_t size, char *variable)
 		if (ft_bool_strncmp(vars[i], variable, var_len) == true)
 		{
 			free(vars[i]);
-			ft_memmove(&vars[i], &vars[i + 1], size - i);
+			ft_memmove(&vars[i], &vars[i + 1], sizeof(char **) * ((*size) - i));
+			(*size)--;
+			return ;
 		}
 		i++;
 	}
@@ -39,9 +41,8 @@ int	builtins_unset(t_shell *shell, char **vars)
 	export = &shell->export_vars;
 	while (vars[i] != NULL)
 	{
-		builtins_unset_from_matrix(shell->env_vars, shell->env_size, vars[i]);
-		builtins_unset_from_matrix(export->m_array, export->length, vars[i]);
-		return (0);
+		builtins_unset_from_matrix(shell->env_vars, &shell->env_size, vars[i]);
+		builtins_unset_from_matrix(export->m_array, &export->length, vars[i]);
 		i++;
 	}
 	return (0);

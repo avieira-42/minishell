@@ -295,14 +295,14 @@ void	export_check(t_shell *shell)
 
 void	unset_check(t_shell *shell)
 {
-	int		i = 1;
+	int		i = 2;
 	char	*unset[(shell->argc - 1)];
 	char	*export[2];
 
 	unset[shell->argc - 2] = NULL;
-	while (i < shell->argc - 1)
+	while (i < shell->argc)
 	{
-		unset[i - 1] = shell->argv[2];
+		unset[i - 2] = shell->argv[i];
 		i++;
 	}
 	i = 0;

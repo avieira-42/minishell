@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 08:58:36 by avieira-          #+#    #+#             */
-/*   Updated: 2025/11/06 18:43:41 by avieira-         ###   ########.fr       */
+/*   Updated: 2025/11/10 10:54:32 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ void	str_merge_sort(t_str_array middle, int *ret)
 {
 	t_str_array	left;
 	t_str_array	right;
-	int		i;
-	int		j;
+	size_t		i;
+	size_t		j;
 
 	i = 0;
 	j = 0;
@@ -58,9 +58,9 @@ void	str_merge_sort(t_str_array middle, int *ret)
 
 void	str_merge(t_str_array left, t_str_array middle, t_str_array right)
 {
-	int		l;
-	int		m;
-	int		r;
+	size_t		l;
+	size_t		m;
+	size_t		r;
 
 	l = 0;
 	m = 0;

@@ -1,4 +1,5 @@
 #include "minishell.h"
+#include "execution/execution.h"
 
 // TESTING AREA START
 void	btree_print(t_btree *btree, int indent, bool tree_top, int cmd_count);
@@ -264,48 +265,171 @@ t_token_list    *tokens_check(t_token_list *tokens, char **envp, char *user_inpu
 	return (ret);
 }
 
-// TESTING AREA END
-void    minishell_loop(char **envp)
+void	export_check(t_shell *shell)
 {
-    char *user_input;
-    t_token_list *tokens;
-	  t_btree	*node;
-	  int		exit_code;
+	int	i = 1;
+	char *export[(shell->argc)];
+
+	export[shell->argc - 1] = NULL;
+	while (i < shell->argc)
+	{
+		export[i - 1] = shell->argv[i];
+		i++;
+	}
+	i = 0;
+	if (shell->argc > 1 && ft_bool_strcmp(shell->argv[1], "export") == true)
+	{
+		builtins_export(shell, export);
+		export[0] = "export";
+		export[1] = NULL;
+		ft_printf("\n EXIT_CODE = %i\n\n", shell->exit_code);
+		/*builtins_export(shell, export);
+		  while (shell->env_vars[i])
+		  ft_printf("%s\n", shell->env_vars[i++]);
+		  free_array((void **)shell->env_vars, -1, true);
+		  free_array((void **)shell->export_vars.m_array, -1, true);*/
+	}
+	ft_free_matrix(shell->env_vars);
+	ft_free_matrix(shell->export_vars.m_array);
+	exit(0);
+}
+
+void	unset_check(t_shell *shell)
+{
+	int		i = 2;
+	char	*unset[(shell->argc - 1)];
+	char	*export[2];
+
+	unset[shell->argc - 2] = NULL;
+	while (i < shell->argc)
+	{
+		unset[i - 2] = shell->argv[i];
+		i++;
+	}
+	i = 0;
+	if (shell->argc > 1 && ft_bool_strcmp(shell->argv[1], "unset") == true)
+	{
+		builtins_unset(shell, unset);
+		export[0] = "export";
+		export[1] = NULL;
+		ft_printf("\n EXIT_CODE = %i\n\n", shell->exit_code);
+		builtins_export(shell, export);
+		  while (shell->env_vars[i])
+			ft_printf("%s\n", shell->env_vars[i++]);
+		free_array((void **)shell->env_vars, -1, true);
+		free_array((void **)shell->export_vars.m_array, -1, true);
+	}
+	exit(0);
+}
+void	builtins_check(t_shell *shell)
+{
+	if (shell->argc == 1)
+		return ;
+	if (ft_bool_strcmp(shell->argv[1], "export") == true)
+		export_check(shell);
+	if (ft_bool_strcmp(shell->argv[1], "unset") == true)
+		unset_check(shell);
+}
+// TESTING AREA END
+
+	static
+size_t	minishell_envp_size(t_shell *shell)
+{
+	size_t	size;
+
+	size = 0;
+	while (shell->envp[size])
+		size++;
+	return (size);
+}
+
+	static
+char	**minishell_env_dup(t_shell *shell)
+{
+	size_t	i;
+	char	**dup;
+
+	dup = malloc(sizeof(char *) * (shell->env_size + 1));
+	if (dup == NULL)
+		return NULL; // SAFE EXIT
+	dup[shell->env_size] = NULL;
+	i = 0;
+	while (i < shell->env_size)
+	{
+		dup[i] = ft_strdup(shell->envp[i]);
+		if (dup[i] == NULL)
+		{
+			free_array((void **)dup, -1, true);
+			return (NULL); // SAFE EXIT
+		}
+		i++;
+	}
+	return (dup);
+}
+
+void	minishell_init(t_shell *shell, int argc, char **argv, char **envp)
+{
+	shell->argc = argc;
+	shell->argv = argv;
+	shell->envp = envp;
+	shell->user_input = NULL;
+	shell->exit_code = 0;
+	shell->merge_ret = 0;
+	shell->env_size = minishell_envp_size(shell);
+	shell->env_vars = minishell_env_dup(shell);
+	shell->export_vars.length = shell->env_size;
+	shell->export_vars.m_array = minishell_env_dup(shell);
+	str_merge_sort(shell->export_vars, &shell->merge_ret);
+	if (shell->merge_ret == -1)
+		return ; // SAFE EXIT
+	shell->tokens = NULL;
+	shell->tree = NULL;
+}
+
+
+void    minishell_loop(char **envp, t_shell *shell)
+{
+	t_token_list	*tokens;
+	t_btree			*node;
+	char			*user_input;
+  int       *stdfd;
+	int				exit_code;
 
     user_input = NULL;
-    tokens = NULL;
-    while (TRUE)
-    {
-        user_input = readline(PROMPT_MINISHELL);
-        if (user_input == NULL)
-            break ;
-        add_history(user_input);
-        special_user_input_check(user_input);
-        // tokenize command
-        tokens_check(tokens, envp, user_input, &node);
-		    heredoc_find(node, envp);
-		    int pid = safe_fork();
-		    if (pid == 0)
-			    traverse_btree(node);
-		    waitpid(pid, &exit_code, 0);
-		    ft_printf("exit status: %d\n", WEXITSTATUS(exit_code));
-        free(user_input);
-        if (tokens != NULL)
-            ft_token_lst_clear(&tokens);
-        // >> alongside builtins >> (special_user_input_check(user_input)); <<
-    }
-    rl_clear_history();
+	tokens = NULL;
+	while (TRUE)
+	{
+		// IMPLEMENT THE !! (last user_input join)
+		builtins_check(shell);
+		user_input = readline(PROMPT_MINISHELL);
+		if (user_input == NULL)
+			break ;
+		add_history(user_input);
+		special_user_input_check(user_input);
+		// tokenize command
+		tokens_check(tokens, envp, user_input, &node);
+		heredoc_find(node, envp);
+		stdfd = stdfd_save();
+		exit_code = traverse_btree(node);
+		stdfd_restore(stdfd);
+		ft_printf("exit status: %d\n", exit_code);
+		free(user_input);
+		if (tokens != NULL)
+			ft_token_lst_clear(&tokens);
+		// >> alongside builtins >> (special_user_input_check(user_input)); <<
+	}
+	rl_clear_history();
+	ft_free_matrix(shell->env_vars);
+	ft_free_matrix(shell->export_vars.m_array);
 }
 
 int main(int argc, char **argv, char **envp)
 {
-	(void)argv;
-	(void)envp;
+	t_shell	shell;
 
-	if (argc != 1)
+	if (argc > 20)
 		error_exit_argv(argv[1]);
-//	draw_from_file(FILE_LOGO);
-//	minishell_loop(envp);
-	char	*args[] = {"exit", "21474836431239012301293", "2", 0};
-	builtins_exit(args + 1);
+	minishell_init(&shell, argc, argv, envp);
+	draw_from_file(FILE_LOGO);
+	minishell_loop(envp, &shell);
 }

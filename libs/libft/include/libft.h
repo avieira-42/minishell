@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:40:52 by avieira-          #+#    #+#             */
-/*   Updated: 2025/10/23 01:02:33 by avieira-         ###   ########.fr       */
+/*   Updated: 2025/11/10 10:55:06 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,11 @@
 
 typedef int	t_bool;
 
-typedef struct s_array
+typedef struct s_str_array
 {
-	int				*i_array;
-	char			*c_array;
-	int				length;
-}	t_array;
+	char			**m_array;
+	size_t			length;
+}	t_str_array;
 
 typedef struct s_list
 {
@@ -86,8 +85,8 @@ void		ft_removeline(char *buf);
 
 /* SORTING */
 
-void		i_merge_sort(t_array middle);
-void		i_merge(t_array left, t_array middle, t_array right);
+void		str_merge_sort(t_str_array middle, int *ret);
+void		str_merge(t_str_array left, t_str_array middle, t_str_array right);
 
 /* MEMORY */
 void		ft_free_matrix(char **matrix);
@@ -97,7 +96,7 @@ void		*ft_memmove(void *dest, const void *src, size_t n);
 void		*ft_memchr(const void *s, int c, size_t n);
 void		*ft_calloc(size_t nmemb, size_t size);
 void		ft_bzero(void *s, size_t n);
-void        *ft_realloc(void *old_ptr, size_t size);
+void		*ft_realloc(void *old_ptr, size_t size, size_t old);
 
 /* STRING MANIPULATION */
 

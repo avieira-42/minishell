@@ -15,6 +15,7 @@ bool    is_variable(char *token_string, int i)
     return (false);
 }
 
+inline
 int     environment_variable_len(char *variable_name)
 {
     int i;
@@ -23,7 +24,7 @@ int     environment_variable_len(char *variable_name)
     if (ft_isdigit(variable_name[i]))
             return (1);
     i++;
-    while (ft_isalnum(variable_name[i]))
+    while (ft_isalnum(variable_name[i]) && variable_name[i] != '\0')
         i++;
     return (i);
 } 

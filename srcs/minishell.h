@@ -7,6 +7,7 @@
 # include <sys/wait.h>
 # include <errno.h>
 # include <string.h>
+# include "../libs/libft/include/libft.h"
 # include "binary_tree/binary_tree.h"
 # include "parsing/parsing.h"
 # include "tty_drawing/tty_drawing.h"
@@ -14,6 +15,7 @@
 # include "builtins/builtins.h"
 # include "execution/execution.h"
 # include "cleaning/cleaning.h"
+# include "types.h"
 
 # define COLOR_GREEN "\e[0;32m"
 # define COLOR_RESET "\e[0m"

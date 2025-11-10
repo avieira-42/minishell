@@ -265,19 +265,107 @@ t_token_list    *tokens_check(t_token_list *tokens, char **envp, char *user_inpu
 	return (ret);
 }
 
-// TESTING AREA END
-void    minishell_loop(char **envp)
+void	export_check(t_shell *shell)
 {
-	char *user_input;
-	t_token_list *tokens;
-	t_btree	*node;
-	int		exit_code;
-	int		*stdfd;
+	if (shell->argc == 1)
+		return ;
+	int	i = 1;
+	char *export[(shell->argc)];
 
-	user_input = NULL;
+	export[shell->argc - 1] = NULL;
+	while (i < shell->argc)
+	{
+		export[i - 1] = shell->argv[i];
+		i++;
+	}
+	i = 0;
+	if (shell->argc > 1 && ft_bool_strcmp(shell->argv[1], "export") == true)
+	{
+		builtins_export(shell, export);
+		export[0] = "export";
+		export[1] = NULL;
+		ft_printf("\n EXIT_CODE = %i\n\n", shell->exit_code);
+		/*builtins_export(shell, export);
+		  while (shell->env_vars[i])
+		  ft_printf("%s\n", shell->env_vars[i++]);
+		  free_array((void **)shell->env_vars, -1, true);
+		  free_array((void **)shell->export_vars.m_array, -1, true);*/
+	}
+	ft_free_matrix(shell->env_vars);
+	ft_free_matrix(shell->export_vars.m_array);
+	exit(0);
+}
+// TESTING AREA END
+
+	static
+size_t	minishell_envp_size(t_shell *shell)
+{
+	size_t	size;
+
+	size = 0;
+	while (shell->envp[size])
+		size++;
+	return (size);
+}
+
+	static
+char	**minishell_env_dup(t_shell *shell)
+{
+	size_t	i;
+	char	**dup;
+
+	dup = malloc(sizeof(char *) * (shell->env_size + 1));
+	if (dup == NULL)
+		return NULL; // SAFE EXIT
+	dup[shell->env_size] = NULL;
+	i = 0;
+	while (i < shell->env_size)
+	{
+		dup[i] = ft_strdup(shell->envp[i]);
+		if (dup[i] == NULL)
+		{
+			free_array((void **)dup, -1, true);
+			return (NULL); // SAFE EXIT
+		}
+		i++;
+	}
+	return (dup);
+}
+
+void	minishell_init(t_shell *shell, int argc, char **argv, char **envp)
+{
+	shell->argc = argc;
+	shell->argv = argv;
+	shell->envp = envp;
+	shell->user_input = NULL;
+	shell->exit_code = 0;
+	shell->merge_ret = 0;
+	shell->env_size = minishell_envp_size(shell);
+	shell->env_vars = minishell_env_dup(shell);
+	shell->export_vars.length = shell->env_size;
+	shell->export_vars.m_array = minishell_env_dup(shell);
+	str_merge_sort(shell->export_vars, &shell->merge_ret);
+	if (shell->merge_ret == -1)
+		return ; // SAFE EXIT
+	shell->tokens = NULL;
+	shell->tree = NULL;
+}
+
+
+void    minishell_loop(char **envp, t_shell *shell)
+{
+	t_token_list	*tokens;
+	t_btree			*node;
+	char			*user_input;
+  int       *stdfd;
+	int				exit_code;
+
+    user_input = NULL;
 	tokens = NULL;
 	while (TRUE)
 	{
+		// IMPLEMENT THE !! (last user_input join)
+		export_check(shell);
 		user_input = readline(PROMPT_MINISHELL);
 		if (user_input == NULL)
 			break ;
@@ -296,35 +384,17 @@ void    minishell_loop(char **envp)
 		// >> alongside builtins >> (special_user_input_check(user_input)); <<
 	}
 	rl_clear_history();
-}
-
-char	*test_env_get(char *var_name, char **envp)
-{
-	int	var_len;
-	int	i;
-
-	if (envp == NULL)
-		return (NULL);
-	var_len = ft_strlen(var_name);
-	i = 0;
-	while (envp[i] != NULL)
-	{
-		if (ft_strncmp(var_name, envp[i], var_len) == 0
-	  		&& envp[i][var_len] == '=')
-			return (envp[i] + var_len + 1);
-		++i;
-	}
-	return (NULL);
+	ft_free_matrix(shell->env_vars);
+	ft_free_matrix(shell->export_vars.m_array);
 }
 
 int main(int argc, char **argv, char **envp)
 {
-	(void)argv;
-	(void)envp;
-	(void)argc;
+	t_shell	shell;
 
-	if (argc != 1)
+	if (argc > 20)
 		error_exit_argv(argv[1]);
+	minishell_init(&shell, argc, argv, envp);
 	draw_from_file(FILE_LOGO);
-	minishell_loop(envp);
+	minishell_loop(envp, &shell);
 }

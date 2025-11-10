@@ -15,12 +15,12 @@ void	free_null_array(void **array)
 	while (*array != NULL)
 	{
 		free(*array);
-		array++;
+		*(array++) = NULL;
 	}
 	free(*array);
 }
 
-static
+	static
 void	free_sized_array(void **array, int size)
 {
 	int	i;
@@ -28,8 +28,12 @@ void	free_sized_array(void **array, int size)
 	i = 0;
 	while (i < size)
 	{
-		free(array[i]);
-		array[i++] = NULL;
+		if (array[i] != NULL)
+		{
+			free(array[i]);
+			array[i++] = NULL;
+		}
+		i++;
 	}
 }
 

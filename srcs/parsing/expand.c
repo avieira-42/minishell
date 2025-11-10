@@ -40,22 +40,22 @@ void    buffer_fill(char *buffer, char *token_string, t_iter *iter)
     iter->j++;
 }
 
-char    *token_expanded_create(char *token_string, char **envp)
-{
+char    *token_expanded_create(char *token_string, t_shell *shell)
+{ 
     t_iter  iter;
     char    *buffer;
     int     is_double_quoted;
 
     token_expansion_init(&iter, &buffer, &is_double_quoted);
     if (buffer == NULL)
-        return (NULL);
+        return (NULL); // SAFE EXIT
     while (token_string[iter.i] != '\0')
     {
         quoted_text_check(token_string[iter.i], &is_double_quoted, DQUOTE_LITERAL);
         if (token_string[iter.i] == SQUOTE_LITERAL && is_double_quoted == -1)
             single_quotation_skip(buffer, token_string, &iter);
         else if (is_variable(token_string, iter.i) == true)
-            expansion_vars_handle(buffer, token_string, &iter, envp);
+            expansion_vars_handle(buffer, token_string, &iter, shell->env_vars);
         else
             buffer_fill(buffer, token_string, &iter);
     }
@@ -63,16 +63,19 @@ char    *token_expanded_create(char *token_string, char **envp)
     free(token_string);
     token_string = ft_strdup(buffer);
     if (token_string == NULL)
-        return (NULL);
+        return (NULL); // SAFE EXIT
     free(buffer);
     return (token_string);
 }
 
-void    token_expand(t_token_list *tokens, char **envp)
+void    token_expand(t_shell *sh)
 {
+	t_token_list	*tokens;
+
+	tokens = sh->tokens;
     while (tokens != NULL)
     {
-        tokens->token_string = token_expanded_create(tokens->token_string, envp);
+        tokens->token_string = token_expanded_create(tokens->token_string, sh);
         tokens = tokens->next;
     }
 }

@@ -44,7 +44,7 @@ char	*environment_variable_get(char **envp, char *variable_name, int *j);
 int     environment_variable_len(char *variable_name);
 
 // tokenize
-void tokenize_user_input(t_token_list **tokens, char *user_input);
+void tokenize_user_input(t_shell *shell);
 void tokenize_squoted_text(t_token_list **tokens, char *user_input, int *i);
 
 //quotation

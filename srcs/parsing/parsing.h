@@ -76,6 +76,7 @@ bool    is_operator(char *c);
 
 // TOKEN_LIST
 void	        ft_token_lst_clear(t_token_list **lst);
+void			token_lst_clear_safe(t_token_list **lst);
 void	        ft_token_lst_add_back(t_token_list **lst, t_token_list *new_node);
 t_token_list	*ft_token_lst_new(char *token);
 t_token_list	*ft_token_lst_last(t_token_list *lst);
@@ -83,6 +84,7 @@ t_token_list	*ft_token_lst_last(t_token_list *lst);
 // TOKENIZE
 void    tokenize_user_input(t_token_list **tokens, char *user_input);
 void    tokenize_squoted_text(t_token_list **tokens, char *user_input, int *i);
+bool    is_redirect(t_token_list *token);
 
 // QUOTATION
 void    quotation_check(t_token_list *tokens);

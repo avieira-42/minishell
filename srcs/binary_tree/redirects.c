@@ -1,4 +1,5 @@
 #include "binary_tree.h"
+#include "../cleaning/cleaning.h"
 
 static
 void	redirect_set(t_redirect *node, int fd, int open_flags)
@@ -45,5 +46,22 @@ void	redirect_add_back(t_redirect **redirs, t_redirect *node_new)
 	{
 		node_last = redirect_last(*redirs);
 		node_last->next = node_new;
+	}
+}
+
+void	redirect_clear(t_redirect *redirs)
+{
+	t_redirect	*tmp;
+
+	tmp = NULL;
+	while (redirs != NULL)
+	{
+		if (redirs->redir_type == TOKEN_HEREDOC)
+			safe_close(&(redirs->fd));
+		if (redirs->filename != NULL)
+			free (redirs->filename);
+		tmp = redirs->next;
+		free(redirs);
+		redirs = tmp;
 	}
 }

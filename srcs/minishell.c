@@ -414,8 +414,11 @@ void    minishell_loop(char **envp, t_shell *shell)
 		stdfd_restore(stdfd);
 		ft_printf("exit status: %d\n", exit_code);
 		free(user_input);
+    if (node != NULL)
+      btree_clear(node);
 		if (tokens != NULL)
 			ft_token_lst_clear(&tokens);
+
 		// >> alongside builtins >> (special_user_input_check(user_input)); <<
 	}
 	rl_clear_history();

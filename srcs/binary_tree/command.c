@@ -1,5 +1,16 @@
 #include "binary_tree.h"
+#include "../cleaning/cleaning.h"
 
+void	command_clear(t_command *command)
+{
+	if (command->redirects != NULL)
+		redirect_clear(command->redirects);
+	if (command->argv != NULL)
+		free_array((void **)command->argv, -1, true);
+	free (command);
+}
+
+static
 int	command_count(t_token_list *tokens)
 {
 	int	count;
@@ -14,6 +25,7 @@ int	command_count(t_token_list *tokens)
 	return (count);
 }
 
+static
 void	command_init(int *i, int *cmd_size, t_token_list **tokens, t_btree *node)
 {
 	*i = 0;

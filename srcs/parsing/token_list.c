@@ -42,6 +42,23 @@ void	ft_token_lst_clear(t_token_list **lst)
 	*lst = NULL;
 }
 
+void	token_lst_clear_safe(t_token_list **lst)
+{
+	t_token_list	*node;
+	t_token_list	*tmp;
+
+	node = *lst;
+	while (node)
+	{
+		if (is_operator(node->token_string))
+			free(node->token_string);
+		tmp = node->next;
+        free(node);
+		node = tmp;
+	}
+	*lst = NULL;
+}
+
 t_token_list	*ft_token_lst_new(char *token)
 {
 	t_token_list	*new_node;

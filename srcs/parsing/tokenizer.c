@@ -1,4 +1,5 @@
 #include "parsing.h"
+#include "../types.h"
 
 bool    is_operator(char *c)
 {
@@ -50,18 +51,20 @@ void    tokenize_quoted_text(t_token_list **tokens, char *user_input, int *i/*, 
         tokenize_squoted_text(tokens, user_input, i);
 }
 
-int    tokenize_operator(char *c, t_token_list **tokens, int *i)
+void
+tokenize_operator(t_shell *shell, char *c, t_token_list **tokens, int *i)
 {
+	(void)shell;
     t_token_list    *token_node_new;
 
     if (*c == SPACE)
     {
         (*i)++;
-        return (0);
+        return ;
     }
     token_node_new = ft_token_lst_new(NULL);
 	if (token_node_new == NULL)
-		return (-1);
+		return ; // SAFE EXIT
     ft_token_lst_add_back(tokens, token_node_new);
 	if (ft_bool_strncmp(c, HEREDOC, 2) == true)
 		(token_node_new->token_string = ft_strdup(HEREDOC), (*i)++);
@@ -74,52 +77,47 @@ int    tokenize_operator(char *c, t_token_list **tokens, int *i)
 	else if (*c == REDIRECT_OUT)
 		token_node_new->token_string = ft_strdup(STRING_REDIRECT_OUT);
 	if (token_node_new->token_string == NULL)
-		return (-1);
+		return ; // SAFE EXIT
     (*i)++;
-	return (0);
 }
 
-int    tokenize_word(t_token_list **tokens, char *user_input, int i, int j)
+void    tokenize_word(t_shell *shell, int i, int j)
 {
     char            *token_new;
     t_token_list    *token_node_new;
 
     if (i == j)
-        return (0);
-    token_new = ft_substr(user_input, j, i - j);
+        return ;
+    token_new = ft_substr(shell->user_input, j, i - j);
 	if (token_new == NULL)
-		return (-1);
+		return ; // SAFE EXIT
     token_node_new = ft_token_lst_new(token_new);
 	if (token_node_new == NULL)
-		return (-1);
-    ft_token_lst_add_back(tokens, token_node_new);
-	return (0);
+		return ; // SAFE EXIT
+    ft_token_lst_add_back(&shell->tokens, token_node_new);
 }
 
-void    tokenize_user_input(t_token_list **tokens, char *user_input)
+void    tokenize_user_input(t_shell *shell)
 {
     int             i;
     int             j;
 
     i = 0;
     j = 0;
-    while(user_input[i] != '\0')
+    while(shell->user_input[i] != '\0')
     {
-        tokenize_quoted_text(tokens, user_input, &i);
-        if (is_operator(&user_input[i]) == true)
+        tokenize_quoted_text(&shell->tokens, shell->user_input, &i);
+        if (is_operator(&shell->user_input[i]) == true)
         {
-            if (tokenize_word(tokens, user_input, i, j) == -1)
-				error_exit_tokens(user_input, *tokens, 1);
-            if (tokenize_operator(&user_input[i], tokens, &i) == -1)
-				error_exit_tokens(user_input, *tokens, 1);
+            tokenize_word(shell,i, j);
+            tokenize_operator(shell, &shell->user_input[i], &shell->tokens, &i);
             j = i;
         }
-        else if (user_input[i] != '\0')
+        else if (shell->user_input[i] != '\0')
             i++;
-
     }
     if (i > j)
-        tokenize_word(tokens, user_input, i, j);
-	// free(*user_input);
-	// *user_input == NULL;
+		tokenize_word(shell, i, j);
+	free(shell->user_input);
+	shell->user_input = NULL;
 }

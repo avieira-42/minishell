@@ -2,29 +2,7 @@
 # define BINARY_TREE_H
 
 # include "../parsing/parsing.h"
-
-typedef struct s_redirect
-{
-	t_token_type		redir_type;
-	int					fd;
-	int					open_flags;
-	char				*filename;
-	struct s_redirect	*next;
-}	t_redirect;
-
-typedef struct s_command
-{
-	t_redirect		*redirects;
-	char			**argv;
-}	t_command;
-
-typedef struct s_btree
-{
-	t_token_type	node_type;
-	t_command		*command;
-	struct s_btree	*left;
-	struct s_btree	*right;
-}	t_btree;
+# include "../types.h"
 
 //binary_tree
 t_btree	*btree_create(t_token_list *tokens);

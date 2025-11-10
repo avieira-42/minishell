@@ -142,16 +142,17 @@ void	btree_print(t_btree *btree, int indent, bool tree_top, int cmd_count)
 	}
 }
 
-t_token_list    *tokens_check(t_token_list *tokens, char **envp, char *user_input, t_btree **node)
+void
+tokens_check(t_shell *shell, t_btree **node)
 {
 	char            *token_type;
+	t_token_list	*tokens;
     t_token_list    *quotation_tokens;
     t_token_list    *expanded_tokens;
     t_token_list    *unquoted_tokens;
     t_token_list    *identified_tokens;
     t_token_list    *unidentified_tokens;
 	t_token_list	*tree_tokens;
-	t_token_list	*ret;
 	t_btree			*tree;
 	int				node_count;
 	int				cmd_count;
@@ -159,14 +160,14 @@ t_token_list    *tokens_check(t_token_list *tokens, char **envp, char *user_inpu
 
     //check token speration
     printf("\nTOKENS_CHECK\n");
-    tokenize_user_input(&tokens, user_input);
-    quotation_tokens = tokens;
-    expanded_tokens = tokens;
-    unquoted_tokens = tokens;
-    identified_tokens = tokens;
-    unidentified_tokens = tokens;
-	ret = tokens;
-    tree_tokens = tokens;
+    tokenize_user_input(shell);
+	tokens = shell->tokens;
+    quotation_tokens = shell->tokens;
+    expanded_tokens = shell->tokens;
+    unquoted_tokens = shell->tokens;
+    identified_tokens = shell->tokens;
+    unidentified_tokens = shell->tokens;
+    tree_tokens = shell->tokens;
     while (tokens != NULL)
     {
         printf("[%s] ", tokens->token_string);
@@ -229,7 +230,8 @@ t_token_list    *tokens_check(t_token_list *tokens, char **envp, char *user_inpu
 
     // check expansion
     printf("\nEXPANSION_CHECK\n");
-    token_expand(expanded_tokens, envp);
+    token_expand(shell);
+	expanded_tokens = shell->tokens;
     while (expanded_tokens != NULL)
     {
         printf("[%s]\n", expanded_tokens->token_string);
@@ -250,8 +252,8 @@ t_token_list    *tokens_check(t_token_list *tokens, char **envp, char *user_inpu
 	if (user_input_parse(NULL, &tree_tokens) == -1)
 	{
 		printf("invalid_user_input\n");
-		ft_token_lst_clear(&ret);
-		return NULL;
+		ft_token_lst_clear(&shell->tokens);
+		return ;
 	}
 
 	tree = btree_create(tree_tokens);
@@ -262,7 +264,6 @@ t_token_list    *tokens_check(t_token_list *tokens, char **envp, char *user_inpu
 
 	*node = tree;
 	printf("\n");
-	return (ret);
 }
 
 void	export_check(t_shell *shell)
@@ -386,39 +387,32 @@ void	minishell_init(t_shell *shell, int argc, char **argv, char **envp)
 	shell->tree = NULL;
 }
 
-
 void    minishell_loop(char **envp, t_shell *shell)
 {
-	t_token_list	*tokens;
 	t_btree			*node;
-	char			*user_input;
-  int       *stdfd;
+	int				*stdfd;
 	int				exit_code;
 
-    user_input = NULL;
-	tokens = NULL;
 	while (TRUE)
 	{
 		// IMPLEMENT THE !! (last user_input join)
 		builtins_check(shell);
-		user_input = readline(PROMPT_MINISHELL);
-		if (user_input == NULL)
+		shell->user_input = readline(PROMPT_MINISHELL);
+		if (shell->user_input == NULL)
 			break ;
-		add_history(user_input);
-		special_user_input_check(user_input);
-		// tokenize command
-		tokens = tokens_check(tokens, envp, user_input, &node);
-		token_lst_clear_safe(&tokens);
+		add_history(shell->user_input);
+		special_user_input_check(shell->user_input);
+		tokens_check(shell, &node);
+		token_lst_clear_safe(&shell->tokens);
 		heredoc_find(node, envp);
 		stdfd = stdfd_save();
 		exit_code = traverse_btree(node);
 		stdfd_restore(stdfd);
 		ft_printf("exit status: %d\n", exit_code);
-		free(user_input);
 		if (node != NULL)
 			btree_clear(node);
-		if (tokens != NULL)
-			ft_token_lst_clear(&tokens);
+		if (shell->tokens != NULL)
+			ft_token_lst_clear(&shell->tokens);
 
 		// >> alongside builtins >> (special_user_input_check(user_input)); <<
 	}

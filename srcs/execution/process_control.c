@@ -39,6 +39,6 @@ int	*stdfd_save(void)
 
 void	stdfd_restore(int fd[2])
 {
-	safe_dup2(STDIN_FILENO, fd[0]);
-	safe_dup2(STDOUT_FILENO, fd[1]);
+	safe_dup2(fd[0], STDIN_FILENO);
+	safe_dup2(fd[1], STDOUT_FILENO);
 }

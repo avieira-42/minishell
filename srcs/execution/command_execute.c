@@ -47,7 +47,7 @@ void	pipe_execute(t_btree *node, int *exit_code)
 }
 
 static
-void	redirect_execute(t_btree *node)
+int	redirect_execute(t_btree *node)
 {
 	char	*filename;
 	int		fd;
@@ -73,7 +73,7 @@ void	redirect_execute(t_btree *node)
 		safe_close(&fd);
 	}
 	node->command->redirects = node->command->redirects->next;
-	traverse_btree(node);
+	return (traverse_btree(node));
 }
 
 static
@@ -109,7 +109,7 @@ int	traverse_btree(t_btree *node)
 	if (node == NULL)
 		exit(exit_status);
 	if (node->node_type != TOKEN_PIPE && node->command->redirects != NULL)
-		redirect_execute(node);
+		return (redirect_execute(node));
 	if (node->node_type == TOKEN_PIPE)
 		pipe_execute(node, &exit_status);
 	else

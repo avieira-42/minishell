@@ -101,6 +101,7 @@ int	command_execute(t_command *command, char **envp)
 		exit(EXIT_FAILURE);
 	}
 	waitpid(pid, &exit_status, 0);
+	free(command_path);
 	exit_status = WEXITSTATUS(exit_status);
 	return(exit_status);
 }

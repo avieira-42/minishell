@@ -11,7 +11,7 @@ void	pipe_parent(int fd[2], int *exit_code, int pid_left, int pid_right)
 		*exit_code = WEXITSTATUS(*exit_code);
 }
 
-int	pipe_child(int fd[2], t_btree *node, int oldfd, int newfd)
+int	pipe_child(int fd[2], t_btree *node, int oldfd, int newfd, t_btree *head)
 {
 	int	pid;
 	int	exit_status;
@@ -23,6 +23,7 @@ int	pipe_child(int fd[2], t_btree *node, int oldfd, int newfd)
 		safe_close(&fd[1]);
 		safe_close(&fd[0]);
 		exit_status = traverse_btree(node);
+		btree_clear(head);
 		exit(exit_status);
 	}
 	return (pid);

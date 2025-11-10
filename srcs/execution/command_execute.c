@@ -34,15 +34,15 @@ int	command_exists(t_command *command, char **command_path)
 }
 
 static
-void	pipe_execute(t_btree *node, int *exit_code)
+void	pipe_execute(t_btree *node, int *exit_code, t_btree *head)
 {
 	int	pipefd[2];
 	int	pid_left;
 	int	pid_right;
 
 	safe_pipe(pipefd);
-	pid_left = pipe_child(pipefd, node->left, pipefd[1], STDOUT_FILENO);
-	pid_right = pipe_child(pipefd, node->right, pipefd[0], STDIN_FILENO);
+	pid_left = pipe_child(pipefd, node->left, pipefd[1], STDOUT_FILENO, head);
+	pid_right = pipe_child(pipefd, node->right, pipefd[0], STDIN_FILENO, head);
 	pipe_parent(pipefd, exit_code, pid_left, pid_right);
 }
 
@@ -108,15 +108,17 @@ int	command_execute(t_command *command, char **envp)
 
 int	traverse_btree(t_btree *node)
 {
+	t_btree	*test;
 	int	exit_status;
 
+	test = node;
 	exit_status = 0;
 	if (node == NULL)
 		exit(exit_status);
 	if (node->node_type != TOKEN_PIPE && node->command->redirects != NULL)
 		return (redirect_execute(node));
 	if (node->node_type == TOKEN_PIPE)
-		pipe_execute(node, &exit_status);
+		pipe_execute(node, &exit_status, test);
 	else
 		exit_status = command_execute(node->command, NULL);
 	return(exit_status);

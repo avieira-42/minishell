@@ -1,8 +1,12 @@
 #include "../minishell.h"
+#include "execution.h"
 #include <errno.h>
+#include <stdlib.h>
+#include <sys/wait.h>
+#include <unistd.h>
 
 static
-void	command_exists(t_command *command, char **command_path)
+int	command_exists(t_command *command, char **command_path)
 {
 	char	**path_env;
 	int		exit_code;
@@ -14,18 +18,19 @@ void	command_exists(t_command *command, char **command_path)
 	if (exit_code == ALLOC_FAILURE)
 	{
 		ft_printf_fd(STDERR_FILENO, ALLOC_ERROR);
-		exit(EXIT_FAILURE);
+		return(EXIT_FAILURE);
 	}
 	else if (exit_code == NOT_FOUND_FAILURE)
 	{
 		ft_printf_fd(STDERR_FILENO, NOT_FOUND_ERROR, command->argv[0]);
-		exit(EXIT_NOT_FOUND);
+		return(EXIT_NOT_FOUND);
 	}
 	else if (exit_code == NO_FILE_FAILURE)
 	{
 		ft_printf_fd(STDERR_FILENO, NO_FILE_ERROR, command->argv[0]);
-		exit(EXIT_NOT_FOUND);
+		return(EXIT_NOT_FOUND);
 	}
+	return (EXIT_SUCCESS);
 }
 
 static
@@ -75,14 +80,28 @@ static
 int	command_execute(t_command *command, char **envp)
 {
 	char	*command_path;
+	int		exit_status;
+	int		pid;
 
-	command_exists(command, &command_path);
-	execve(command_path, command->argv, envp);
-	perror("execve");
-	exit(EXIT_FAILURE);
+	exit_status = builtins_exec(command->argv, envp);
+	if (exit_status != -1)
+		return (exit_status);
+	exit_status = command_exists(command, &command_path);
+	if (exit_status != EXIT_SUCCESS)
+		return (exit_status);
+	pid = safe_fork();
+	if (pid == 0)
+	{
+		execve(command_path, command->argv, envp);
+		perror("execve");
+		exit(EXIT_FAILURE);
+	}
+	waitpid(pid, &exit_status, 0);
+	exit_status = WEXITSTATUS(exit_status);
+	return(exit_status);
 }
 
-void	traverse_btree(t_btree *node)
+int	traverse_btree(t_btree *node)
 {
 	int	exit_status;
 
@@ -94,6 +113,6 @@ void	traverse_btree(t_btree *node)
 	if (node->node_type == TOKEN_PIPE)
 		pipe_execute(node, &exit_status);
 	else
-		command_execute(node->command, NULL);
-	exit(exit_status);
+		exit_status = command_execute(node->command, NULL);
+	return(exit_status);
 }

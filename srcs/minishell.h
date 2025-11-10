@@ -5,6 +5,8 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <sys/wait.h>
+# include <errno.h>
+# include <string.h>
 # include "../libs/libft/include/libft.h"
 # include "binary_tree/binary_tree.h"
 # include "parsing/parsing.h"

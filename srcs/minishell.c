@@ -1,4 +1,5 @@
 #include "minishell.h"
+#include "execution/execution.h"
 
 // TESTING AREA START
 void	btree_print(t_btree *btree, int indent, bool tree_top, int cmd_count);
@@ -356,6 +357,7 @@ void    minishell_loop(char **envp, t_shell *shell)
 	t_token_list	*tokens;
 	t_btree			*node;
 	char			*user_input;
+  int       *stdfd;
 	int				exit_code;
 
     user_input = NULL;
@@ -372,11 +374,10 @@ void    minishell_loop(char **envp, t_shell *shell)
 		// tokenize command
 		tokens_check(tokens, envp, user_input, &node);
 		heredoc_find(node, envp);
-		int pid = safe_fork();
-		if (pid == 0)
-			traverse_btree(node);
-		waitpid(pid, &exit_code, 0);
-		ft_printf("exit status: %d\n", WEXITSTATUS(exit_code));
+		stdfd = stdfd_save();
+		exit_code = traverse_btree(node);
+		stdfd_restore(stdfd);
+		ft_printf("exit status: %d\n", exit_code);
 		free(user_input);
 		if (tokens != NULL)
 			ft_token_lst_clear(&tokens);

@@ -1,5 +1,6 @@
 #ifndef BUILTINS_H
 # define BUILTINS_H
+# define PATH_MAX 4096
 
 # include "../../libs/libft/include/libft.h"
 # include "../types.h"
@@ -11,6 +12,7 @@ int		builtins_echo(char **user_input);
 int		builtins_exec(char **argv);
 int		builtins_pwd(void);
 int		builtins_env(char **argv, char **envp);
+int   builtins_cd(char **argv, char **envp);
 int		builtins_export(t_shell *shell, char **argv);
 int		builtins_export_addvar(t_shell *shell, char *var, char *argv, char *end);
 

@@ -27,11 +27,16 @@ expansion_vars_handle(char *buf, char *token, t_iter *iter, t_shell *shell)
 		if (exp == NULL)
 			return ; // SAFE EXIT
 		iter->i += 2;
+		ft_memcpy(&buf[iter->j], exp, ft_strlen(exp));
+		iter->j += ft_strlen(exp);
+		free(exp);
 	}
 	else
+	{
 		exp = environment_variable_get(shell->env_vars, &token[iter->i], &(iter->i));
-	ft_memcpy(&buf[iter->j], exp, ft_strlen(exp));
-	iter->j += ft_strlen(exp);
+		ft_memcpy(&buf[iter->j], exp, ft_strlen(exp));
+		iter->j += ft_strlen(exp);
+	}
 }
 
 void    token_expansion_init(t_iter *iter, char **buffer, int *double_quoted)

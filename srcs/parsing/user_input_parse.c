@@ -8,6 +8,9 @@ bool	is_valid_token(t_token_type previous_token, t_token_type current_token)
 	if (is_enum_redirect_token(previous_token) == true
 			&& is_enum_redirect_token(current_token) == true)
 		return (false);
+	if (is_enum_redirect_token(previous_token) == true
+			&& current_token == TOKEN_PIPE)
+		return (false);
 	if (previous_token == TOKEN_PIPE && current_token == TOKEN_PIPE)
 		return (false);
 	return (true);

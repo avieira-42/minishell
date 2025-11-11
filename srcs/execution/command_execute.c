@@ -67,7 +67,7 @@ int	redirect_execute(t_btree *node, t_shell *shell)
 			ft_printf_fd(
 				STDERR_FILENO, "%s: %s\n",
 				filename, strerror(errno));
-			exit(EXIT_FAILURE);
+			return (EXIT_FAILURE);
 		}
 	}
 	else

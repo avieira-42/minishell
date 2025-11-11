@@ -393,9 +393,9 @@ void    minishell_loop(char **envp, t_shell *shell)
 	int				*stdfd;
 	int				exit_code;
 
+	node = NULL;
 	while (TRUE)
 	{
-		// IMPLEMENT THE !! (last user_input join)
 		builtins_check(shell);
 		shell->user_input = readline(PROMPT_MINISHELL);
 		if (shell->user_input == NULL)
@@ -404,11 +404,14 @@ void    minishell_loop(char **envp, t_shell *shell)
 		special_user_input_check(shell->user_input);
 		tokens_check(shell, &node);
 		token_lst_clear_safe(&shell->tokens);
-		heredoc_find(node, envp);
-		stdfd = stdfd_save();
-		exit_code = traverse_btree(node, shell);
-		stdfd_restore(stdfd);
-		ft_printf("exit status: %d\n", exit_code);
+		if (node != NULL)
+		{
+			heredoc_find(node, envp);
+			stdfd = stdfd_save();
+			exit_code = traverse_btree(node, shell);
+			stdfd_restore(stdfd);
+			ft_printf("exit status: %d\n", exit_code);
+		}
 		if (node != NULL)
 			btree_clear(node);
 		if (shell->tokens != NULL)

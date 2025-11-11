@@ -1,5 +1,7 @@
 #include "../minishell.h"
 #include "execution.h"
+#include <sys/types.h>
+#include <sys/stat.h>
 #include <errno.h>
 #include <stdlib.h>
 #include <sys/wait.h>
@@ -34,20 +36,20 @@ int	command_exists(t_command *command, char **command_path)
 }
 
 static
-void	pipe_execute(t_btree *node, int *exit_code, t_btree *head)
+void	pipe_execute(t_btree *node, int *exit_code, t_btree *head, t_shell *shell)
 {
 	int	pipefd[2];
 	int	pid_left;
 	int	pid_right;
 
 	safe_pipe(pipefd);
-	pid_left = pipe_child(pipefd, node->left, pipefd[1], STDOUT_FILENO, head);
-	pid_right = pipe_child(pipefd, node->right, pipefd[0], STDIN_FILENO, head);
+	pid_left = pipe_child(pipefd, node->left, pipefd[1], STDOUT_FILENO, head, shell);
+	pid_right = pipe_child(pipefd, node->right, pipefd[0], STDIN_FILENO, head, shell);
 	pipe_parent(pipefd, exit_code, pid_left, pid_right);
 }
 
 static
-int	redirect_execute(t_btree *node)
+int	redirect_execute(t_btree *node, t_shell *shell)
 {
 	char		*filename;
 	int			fd;
@@ -77,25 +79,36 @@ int	redirect_execute(t_btree *node)
 	free(node->command->redirects->filename);
 	free(node->command->redirects);
 	node->command->redirects = tmp;
-	return (traverse_btree(node));
+	return (traverse_btree(node, shell));
 }
 
 static
-int	command_execute(t_command *command, char **envp)
+int	command_execute(t_command *command, char **envp, t_shell *shell)
 {
 	char	*command_path;
 	int		exit_status;
 	int		pid;
+	struct stat	status;
 
+	(void)shell;
 	exit_status = builtins_exec(command->argv, envp);
 	if (exit_status != -1)
 		return (exit_status);
+	status = (struct stat){};
+	lstat(command->argv[0], &status);
+	if ((status.st_mode & S_IFMT) == S_IFDIR)
+	{
+		ft_printf_fd(STDERR_FILENO, DIR_ERR, command->argv[0]);
+		return (EXIT_FAILURE);
+	}
 	exit_status = command_exists(command, &command_path);
 	if (exit_status != EXIT_SUCCESS)
 		return (exit_status);
 	pid = safe_fork();
 	if (pid == 0)
 	{
+		free_array((void **)shell->env_vars, -1, true);
+		free_array((void **)shell->export_vars.m_array, -1, true);
 		execve(command_path, command->argv, envp);
 		perror("execve");
 		exit(EXIT_FAILURE);
@@ -106,7 +119,7 @@ int	command_execute(t_command *command, char **envp)
 	return(exit_status);
 }
 
-int	traverse_btree(t_btree *node)
+int	traverse_btree(t_btree *node, t_shell *shell)
 {
 	t_btree	*test;
 	int	exit_status;
@@ -116,10 +129,10 @@ int	traverse_btree(t_btree *node)
 	if (node == NULL)
 		exit(exit_status);
 	if (node->node_type != TOKEN_PIPE && node->command->redirects != NULL)
-		return (redirect_execute(node));
+		return (redirect_execute(node, shell));
 	if (node->node_type == TOKEN_PIPE)
-		pipe_execute(node, &exit_status, test);
+		pipe_execute(node, &exit_status, test, shell);
 	else
-		exit_status = command_execute(node->command, NULL);
+		exit_status = command_execute(node->command, NULL, shell);
 	return(exit_status);
 }

@@ -406,7 +406,7 @@ void    minishell_loop(char **envp, t_shell *shell)
 		token_lst_clear_safe(&shell->tokens);
 		heredoc_find(node, envp);
 		stdfd = stdfd_save();
-		exit_code = traverse_btree(node);
+		exit_code = traverse_btree(node, shell);
 		stdfd_restore(stdfd);
 		ft_printf("exit status: %d\n", exit_code);
 		if (node != NULL)

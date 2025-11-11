@@ -3,10 +3,11 @@
 #ifndef TYPES_H
 #define TYPES_H
 
-// COMMAND
+// MACROS
 # define CMD "command"
-
-// OPERATORS AND SPECIAL CHARACTERS
+# define STRING "string"
+# define FILE "file"
+# define BACK_SLASH '\\'
 # define SPACE ' '
 # define STRING_SPACE " "
 # define REDIRECT_IN '<'
@@ -25,6 +26,7 @@
 # define EXPANSION_EXIT "?"
 # define OPEN_PAREN '('
 # define CLOSE_PAREN ')'
+# define DIR_ERR "minishell: %s: Is a directory\n"
 
 // TOKENS
 typedef enum e_token_type
@@ -45,15 +47,6 @@ typedef enum e_token_type
     TOKEN_EXPANSION_EXIT,
     TOKEN_LIMITER,
 }   t_token_type;
-
-// STRING_LITERAL
-# define STRING "string"
-
-// FILE
-# define FILE "file"
-
-// CHARACTER
-# define BACK_SLASH '\\'
 
 typedef struct s_token_list
 {

@@ -91,7 +91,7 @@ int	command_execute(t_command *command, char **envp, t_shell *shell)
 	struct stat	status;
 
 	(void)shell;
-	exit_status = builtins_exec(command->argv, envp);
+	exit_status = builtins_exec(command->argv, envp, shell);
 	if (exit_status != -1)
 		return (exit_status);
 	status = (struct stat){};

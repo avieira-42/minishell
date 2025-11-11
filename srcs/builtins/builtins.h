@@ -11,10 +11,10 @@
 typedef unsigned char	t_byte;
 
 int		builtins_echo(char **user_input);
-int		builtins_exec(char **argv, char **envp);
+int		builtins_exec(char **argv, char **envp, t_shell *shell);
 int		builtins_pwd(void);
 int		builtins_env(char **argv, char **envp);
-int   builtins_exit(char **argv);
+int		builtins_exit(char **argv);
 int		builtins_cd(char **argv, char **envp);
 int		builtins_export(t_shell *shell, char **argv);
 int		builtins_export_addvar(t_shell *shell, char *var, char *argv, char *end);

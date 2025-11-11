@@ -391,7 +391,6 @@ void    minishell_loop(char **envp, t_shell *shell)
 {
 	t_btree			*node;
 	int				*stdfd;
-	int				exit_code;
 
 	node = NULL;
 	while (TRUE)
@@ -408,15 +407,17 @@ void    minishell_loop(char **envp, t_shell *shell)
 		{
 			heredoc_find(node, envp);
 			stdfd = stdfd_save();
-			exit_code = traverse_btree(node, shell);
+			shell->exit_code = traverse_btree(node, shell);
 			stdfd_restore(stdfd);
-			ft_printf("exit status: %d\n", exit_code);
+			//ft_printf("exit status: %d\n", shell->exit_code);
 		}
 		if (node != NULL)
 			btree_clear(node);
 		if (shell->tokens != NULL)
 			ft_token_lst_clear(&shell->tokens);
-
+		str_merge_sort(shell->export_vars, &shell->merge_ret);
+		if (shell->merge_ret == -1)
+			return ; // SAFE EXIT
 		// >> alongside builtins >> (special_user_input_check(user_input)); <<
 	}
 	rl_clear_history();

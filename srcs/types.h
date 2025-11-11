@@ -1,4 +1,4 @@
-#include "../../libs/libft/include/libft.h"
+#include "../libs/libft/include/libft.h"
 
 #ifndef TYPES_H
 #define TYPES_H

@@ -86,6 +86,14 @@ typedef struct s_btree
 	struct s_btree	*right;
 }	t_btree;
 
+typedef struct s_command_get
+{
+	int				i;
+	int				count;
+	t_token_type	toktype;
+	t_redirect		*node_red;
+} t_command_get;
+
 typedef struct s_shell
 {
 	int				argc;

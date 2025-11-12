@@ -15,11 +15,13 @@ void	btree_node_clear(t_btree *btree_node)
 	}
 }
 
-void	btree_clear(t_btree *btree_node)
+void	btree_clear(t_btree **btree)
 {
 	t_btree	*tmp;
+	t_btree	*btree_node;
 
 	tmp = NULL;
+	btree_node = *btree;
 	while (btree_node != NULL)
 	{
 		if (btree_node != NULL)
@@ -35,4 +37,5 @@ void	btree_clear(t_btree *btree_node)
 		free(btree_node);
 		btree_node = tmp;
 	}
+	*btree = NULL;
 }

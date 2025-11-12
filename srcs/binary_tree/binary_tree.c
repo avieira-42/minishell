@@ -53,20 +53,22 @@ t_btree	*btree_last(t_btree *btree)
 	return (btree_last(btree->right));
 }
 
-t_btree	*btree_create(t_token_list *tokens)
+void	btree_create(t_shell *shell)
 {
-	t_btree			*btree;
+	t_token_list	*tokens;
 	t_btree			*node_new;
 
-	btree = NULL;
+	tokens = shell->tokens;
 	while (tokens != NULL)
 	{
 		node_new = btree_add_new();
+		if (node_new == NULL)
+			return ; // SAFE EXIT
 		if (tokens->token_type == TOKEN_CMD
 				|| is_enum_redirect_token(tokens->token_type) == true)
 		{
 			node_new->node_type = TOKEN_CMD;
-			command_get(&tokens, node_new);
+			command_get(shell, &tokens, node_new);
 		}
 		else if (tokens->token_type == TOKEN_PIPE)
 		{
@@ -74,7 +76,6 @@ t_btree	*btree_create(t_token_list *tokens)
 			node_new->command = NULL;
 			tokens = tokens->next;
 		}
-		btree_add_leaf(&btree, node_new);
+		btree_add_leaf(&shell->tree, node_new);
 	}
-	return (btree);
 }

@@ -8,13 +8,15 @@ void	redirect_set(t_redirect *node, int fd, int open_flags)
 	node->open_flags = open_flags;
 }
 
-t_redirect	*redirect_add_new(t_token_type redir_type, char *filename)
+t_redirect	*
+redir_add_new(t_shell *shell, t_token_type redir_type, char *filename)
 {
+	(void)shell;
 	t_redirect *node_new;
 
 	node_new = malloc(sizeof(t_redirect));
 	if (node_new == NULL)
-		return (NULL);
+		return (NULL); // SAFE EXIT
 	if (redir_type == TOKEN_REDIRECT_IN)
 		redirect_set(node_new, STDIN_FILENO, O_RDONLY);
 	else if (redir_type == TOKEN_REDIRECT_OUT)

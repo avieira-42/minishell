@@ -25,43 +25,45 @@ int	command_count(t_token_list *tokens)
 	return (count);
 }
 
-static
-void	command_init(int *i, int *cmd_size, t_token_list **tokens, t_btree *node)
+static void
+command_init(t_shell *sh, t_command_get *cmd, t_token_list **tok, t_btree *node)
 {
-	*i = 0;
-	*cmd_size = command_count(*tokens);
+	(void)sh;
+
+	cmd->i = 0;
+	cmd->toktype = TOKEN_NULL;
+	cmd->count = command_count(*tok);
 	node->command = malloc(sizeof(t_command));
+	if (node->command == NULL)
+		return ; // SAFE EXIT
 	node->command->redirects = NULL;
 	// might need to set command to NULL when no commands
-	node->command->argv = malloc(sizeof(char *) * (*cmd_size + 1));
-	node->command->argv[*cmd_size] = NULL;
+	node->command->argv = malloc(sizeof(char *) * (cmd->count + 1));
+	if (node->command->argv == NULL)
+		return ; // SAFE EXIT
+	node->command->argv[cmd->count] = NULL;
 }
 
-void	command_get(t_token_list **tokens, t_btree *node)
+void	command_get(t_shell *sh, t_token_list **toks, t_btree *node)
 {
-	int				i;
-	int				cmd_count;
-	t_token_type	token_type;
-	t_redirect		*node_redir;
+	t_command_get	cmd;
 
-	token_type = TOKEN_NULL;
-	command_init(&i, &cmd_count, tokens, node);
-	while (*tokens != NULL && (*tokens)->token_type != TOKEN_PIPE)
+	command_init(sh, &cmd, toks, node);
+	while (*toks != NULL && (*toks)->token_type != TOKEN_PIPE)
 	{
-		token_type = (*tokens)->token_type;
-		if (token_type == TOKEN_CMD)
+		cmd.toktype = (*toks)->token_type;
+		if (cmd.toktype == TOKEN_CMD)
 		{
-			node->command->argv[i] = (*tokens)->token_string;
-			i++;
+			node->command->argv[cmd.i] = (*toks)->token_string;
+			cmd.i++;
 		}
-		else if (is_enum_redirect_token(token_type) == true)
+		else if (is_enum_redirect_token(cmd.toktype) == true)
 		{
-			(*tokens) = (*tokens)->next;
-			node_redir = redirect_add_new(token_type, (*tokens)->token_string);
-			node_redir->next = NULL;
-			redirect_add_back(&(node->command->redirects), node_redir);
-
+			(*toks) = (*toks)->next;
+			cmd.node_red = redir_add_new(sh, cmd.toktype, (*toks)->token_string);
+			cmd.node_red->next = NULL;
+			redirect_add_back(&(node->command->redirects), cmd.node_red);
 		}
-		(*tokens) = (*tokens)->next;
+		(*toks) = (*toks)->next;
 	}
 }

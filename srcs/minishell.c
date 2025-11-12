@@ -143,7 +143,7 @@ void	btree_print(t_btree *btree, int indent, bool tree_top, int cmd_count)
 }
 
 void
-tokens_check(t_shell *shell, t_btree **node)
+tokens_check(t_shell *shell)
 {
 	char            *token_type;
 	t_token_list	*tokens;
@@ -256,13 +256,13 @@ tokens_check(t_shell *shell, t_btree **node)
 		return ;
 	}
 
-	tree = btree_create(tree_tokens);
+	btree_create(shell);
+	tree = shell->tree;
 	node_count = btree_node_count(tree);
 	cmd_count = btree_cmd_count(tree);
 	btree_print(tree, 60, true, cmd_count);
 	btree_contents_print(tree, node_count, cmd_count);
 
-	*node = tree;
 	printf("\n");
 }
 
@@ -389,10 +389,8 @@ void	minishell_init(t_shell *shell, int argc, char **argv, char **envp)
 
 void    minishell_loop(char **envp, t_shell *shell)
 {
-	t_btree			*node;
 	int				*stdfd;
 
-	node = NULL;
 	while (TRUE)
 	{
 		signal(SIGQUIT, SIG_IGN);
@@ -402,18 +400,18 @@ void    minishell_loop(char **envp, t_shell *shell)
 			break ;
 		add_history(shell->user_input);
 		special_user_input_check(shell->user_input);
-		tokens_check(shell, &node);
+		tokens_check(shell);
 		token_lst_clear_safe(&shell->tokens);
-		if (node != NULL)
+		if (shell->tree != NULL)
 		{
-			heredoc_find(node, envp);
+			heredoc_find(shell->tree, envp);
 			stdfd = stdfd_save();
-			shell->exit_code = traverse_btree(node, shell);
+			shell->exit_code = traverse_btree(shell->tree, shell);
 			stdfd_restore(stdfd);
 			//ft_printf("exit status: %d\n", shell->exit_code);
 		}
-		if (node != NULL)
-			btree_clear(node);
+		if (shell->tree != NULL)
+			btree_clear(&shell->tree);
 		if (shell->tokens != NULL)
 			ft_token_lst_clear(&shell->tokens);
 		str_merge_sort(shell->export_vars, &shell->merge_ret);

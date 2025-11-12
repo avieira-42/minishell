@@ -107,6 +107,7 @@ int	command_execute(t_command *command, char **envp, t_shell *shell)
 	pid = safe_fork();
 	if (pid == 0)
 	{
+		signal(SIGQUIT, SIG_DFL);
 		free_array((void **)shell->env_vars, -1, true);
 		free_array((void **)shell->export_vars.m_array, -1, true);
 		execve(command_path, command->argv, envp);
@@ -116,6 +117,9 @@ int	command_execute(t_command *command, char **envp, t_shell *shell)
 	waitpid(pid, &exit_status, 0);
 	free(command_path);
 	exit_status = WEXITSTATUS(exit_status);
+	//exit_status = WTERMSIG(exit_status);
+	//if (exit_status + 128 == 131)
+	//	ft_printf_fd(2, "Quit (core dumped)\n");
 	return(exit_status);
 }
 

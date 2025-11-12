@@ -395,6 +395,7 @@ void    minishell_loop(char **envp, t_shell *shell)
 	node = NULL;
 	while (TRUE)
 	{
+		signal(SIGQUIT, SIG_IGN);
 		builtins_check(shell);
 		shell->user_input = readline(PROMPT_MINISHELL);
 		if (shell->user_input == NULL)

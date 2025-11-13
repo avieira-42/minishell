@@ -439,7 +439,6 @@ void    minishell_loop(char **envp, t_shell *shell)
 		if (shell->user_input == NULL)
 			break ;
 		add_history(shell->user_input);
-		special_user_input_check(shell->user_input);
 		tokens_check(shell);
 		token_lst_clear_safe(&shell->tokens);
 		signal(SIGINT, SIG_IGN);
@@ -490,6 +489,5 @@ int main(int argc, char **argv, char **envp)
 	if (argc > 20)
 		error_exit_argv(argv[1]);
 	minishell_init(&shell, argc, argv, envp);
-	draw_from_file(FILE_LOGO);
 	minishell_loop(envp, &shell);
 }

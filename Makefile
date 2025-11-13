@@ -17,8 +17,6 @@ BINARY_TREE_SRCS = srcs/binary_tree/binary_tree.c \
 				   srcs/binary_tree/redirects.c \
 				   srcs/binary_tree/binary_tree_clear.c
 
-TTY_DRAWING_SRCS = srcs/tty_drawing/tty_drawing.c
-
 PARSING_SRCS = srcs/parsing/tokenizer.c \
 				srcs/parsing/token_list.c \
 				srcs/parsing/quotation.c \
@@ -39,7 +37,9 @@ BUILTINS_SRCS = srcs/builtins/builtins_echo.c \
 				srcs/builtins/builtins_env.c \
 				srcs/builtins/builtins_export.c \
 				srcs/builtins/builtins_export_utils.c \
-				srcs/builtins/builtins_unset.c
+				srcs/builtins/builtins_unset.c \
+				srcs/builtins/builtins_logo.c \
+				srcs/builtins/builtins_authors.c
 
 EXECUTION_SRCS = srcs/execution/program_path_find.c \
 				 srcs/execution/command_execute.c \
@@ -50,7 +50,6 @@ EXECUTION_SRCS = srcs/execution/program_path_find.c \
 CLEANING_SRCS = srcs/cleaning/program_clean.c
 				
 SRCS = $(MINISHELL_SRCS) \
-		$(TTY_DRAWING_SRCS) \
 		$(ERROR_SRCS) \
 		$(BUILTINS_SRCS) \
 		$(EXECUTION_SRCS) \

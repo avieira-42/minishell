@@ -4,6 +4,8 @@
 #define TYPES_H
 
 // MACROS
+# define CMD_AUTHORS "authors"
+# define CMD_LOGO "logo"
 # define CMD "command"
 # define STRING "string"
 # define FILE "file"

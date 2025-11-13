@@ -10,7 +10,6 @@
 # include "../libs/libft/include/libft.h"
 # include "binary_tree/binary_tree.h"
 # include "parsing/parsing.h"
-# include "tty_drawing/tty_drawing.h"
 # include "error/error.h"
 # include "builtins/builtins.h"
 # include "execution/execution.h"
@@ -52,9 +51,5 @@ void    quotation_check(t_token_list *tokens);
 
 //token_verification
 int	user_input_parse(char *readline, t_token_list **tokens);
-
-//TTY_DRAWING_H
-void    draw_from_file(char *file_name);
-void    special_user_input_check(char *command);
 
 #endif

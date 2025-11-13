@@ -344,12 +344,14 @@ size_t	minishell_envp_size(t_shell *shell)
 	return (size);
 }
 
-	static
+static
 char	**minishell_env_dup(t_shell *shell)
 {
 	size_t	i;
 	char	**dup;
+	char	*lvl;
 
+	lvl = NULL;
 	dup = malloc(sizeof(char *) * (shell->env_size + 1));
 	if (dup == NULL)
 		return NULL; // SAFE EXIT
@@ -357,7 +359,13 @@ char	**minishell_env_dup(t_shell *shell)
 	i = 0;
 	while (i < shell->env_size)
 	{
-		dup[i] = ft_strdup(shell->envp[i]);
+		if (ft_bool_strncmp(shell->envp[i], "SHLVL", 5) == true)
+		{
+			lvl = ft_itoa(ft_atoi(shell->envp[i] + 6) + 1);
+			dup[i] = ft_strjoin("SHLVL=", lvl);
+		}
+		else
+			dup[i] = ft_strdup(shell->envp[i]);
 		if (dup[i] == NULL)
 		{
 			free_array((void **)dup, -1, true);

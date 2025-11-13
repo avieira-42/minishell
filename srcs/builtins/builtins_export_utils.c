@@ -26,7 +26,7 @@ builtins_export_to_vars(t_shell *shell, char *var, char *var_end, size_t len)
 	while (vars->m_array[i] != NULL)
 	{
 		if (ft_bool_strncmp(vars->m_array[i], var, len) == true
-            && vars->m_array[i][len] == '=')
+            /*&& vars->m_array[i][len] == '='*/)
         {
 			if (*var_end == '=')
 			{

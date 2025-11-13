@@ -48,6 +48,8 @@ typedef enum e_token_type
     TOKEN_LIMITER,
 }   t_token_type;
 
+extern int	g_last_signal;
+
 typedef struct s_token_list
 {
     t_token_type        token_type;

@@ -1,5 +1,6 @@
 #include "../minishell.h"
 #include <readline/history.h>
+#include "../types.h"
 
 static
 void	heredoc_write_bytes_to_file(char *line, char **envp, int fd)
@@ -24,15 +25,28 @@ void	heredoc_write_bytes_to_file(char *line, char **envp, int fd)
 	ft_putchar_fd('\n', fd);
 }
 
+void	signal_heredoc(int signal)
+{
+	ft_putchar_fd('\n', 2);
+	close(0);
+	g_last_signal = signal + 128;
+}
+
 static
 void	heredoc_execute(char *limiter, t_redirect *redir, char **envp)
 {
 	char	*line;
 	int		pipefd[2];
 
+	signal(SIGINT, signal_heredoc);
 	safe_pipe(pipefd);
 	while (true)
 	{
+		if (g_last_signal == 130)
+		{
+			safe_close(&pipefd[0]);
+			break ;
+		}
 		line = readline("> ");
 		if (line == NULL || ft_strcmp(line, limiter) == 0)
 			break ;
@@ -57,12 +71,12 @@ void	heredoc_iterate(t_btree *node, char **envp)
 	heredoc_find(node, envp);
 }
 
-void	heredoc_find(t_btree *node, char **envp)
+int	heredoc_find(t_btree *node, char **envp)
 {
 	t_redirect	*redir_save;
 
 	if (node == NULL)
-		return ;
+		return -1;
 	if (node->node_type == TOKEN_PIPE)
 	{
 		heredoc_find(node->left, envp);
@@ -74,4 +88,5 @@ void	heredoc_find(t_btree *node, char **envp)
 		heredoc_iterate(node, envp);
 		node->command->redirects = redir_save;
 	}
+	return (g_last_signal);
 }

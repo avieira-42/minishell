@@ -82,6 +82,22 @@ int	redirect_execute(t_btree *node, t_shell *shell)
 	return (traverse_btree(node, shell));
 }
 
+int	ft_wait(int pid)
+{
+	int	exit_code;
+
+	waitpid(pid, &exit_code, 0);
+	if (WIFEXITED(exit_code) == TRUE)
+		return (WEXITSTATUS(exit_code));
+	else if (WIFSIGNALED(exit_code) == TRUE)
+		exit_code = WTERMSIG(exit_code) + 128;
+	if (exit_code == 131)
+		ft_printf_fd(2, "quit (core dumped)\n");
+	else if (exit_code == 130)
+		ft_printf_fd(2, "\n");
+	return (exit_code);
+}
+
 static
 int	command_execute(t_command *command, char **envp, t_shell *shell)
 {
@@ -108,19 +124,14 @@ int	command_execute(t_command *command, char **envp, t_shell *shell)
 	if (pid == 0)
 	{
 		signal(SIGQUIT, SIG_DFL);
+		signal(SIGINT, SIG_DFL);
 		free_array((void **)shell->env_vars, -1, true);
 		free_array((void **)shell->export_vars.m_array, -1, true);
 		execve(command_path, command->argv, envp);
 		perror("execve");
 		exit(EXIT_FAILURE);
 	}
-	waitpid(pid, &exit_status, 0);
-	free(command_path);
-	exit_status = WEXITSTATUS(exit_status);
-	//exit_status = WTERMSIG(exit_status);
-	//if (exit_status + 128 == 131)
-	//	ft_printf_fd(2, "Quit (core dumped)\n");
-	return(exit_status);
+	return(ft_wait(pid));
 }
 
 int	traverse_btree(t_btree *node, t_shell *shell)

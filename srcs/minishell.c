@@ -1,5 +1,9 @@
 #include "minishell.h"
 #include "execution/execution.h"
+#include <readline/readline.h>
+#include "types.h"
+
+int	g_last_signal;
 
 // TESTING AREA START
 void	btree_print(t_btree *btree, int indent, bool tree_top, int cmd_count);
@@ -395,13 +399,26 @@ void	minishell_init(t_shell *shell, int argc, char **argv, char **envp)
 	shell->tree = NULL;
 }
 
+void	signal_prompt(int signal)
+{
+	ft_putchar_fd('\n', 2);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+	(void)signal;
+}
+
 void    minishell_loop(char **envp, t_shell *shell)
 {
 	int				*stdfd;
+	int				pid;
+	int				heredoc_exit;
 
+	heredoc_exit = 0;
 	while (TRUE)
 	{
 		signal(SIGQUIT, SIG_IGN);
+		signal(SIGINT, signal_prompt);
 		builtins_check(shell);
 		shell->user_input = readline(PROMPT_MINISHELL);
 		if (shell->user_input == NULL)
@@ -410,9 +427,25 @@ void    minishell_loop(char **envp, t_shell *shell)
 		special_user_input_check(shell->user_input);
 		tokens_check(shell);
 		token_lst_clear_safe(&shell->tokens);
+		signal(SIGINT, SIG_IGN);
 		if (shell->tree != NULL)
 		{
-			heredoc_find(shell->tree, envp);
+			pid = safe_fork();
+			if (pid == 0)
+				exit(heredoc_find(shell->tree, envp));
+			heredoc_exit = ft_wait(pid);
+			if (heredoc_exit == 130)
+			{
+				if (shell->tree != NULL)
+					btree_clear(&shell->tree);
+				if (shell->tokens != NULL)
+					ft_token_lst_clear(&shell->tokens);
+				str_merge_sort(shell->export_vars, &shell->merge_ret);
+				if (shell->merge_ret == -1)
+					return ; // SAFE EXIT
+				continue ;
+			}
+			//ft_printf("Im continuing\n");
 			stdfd = stdfd_save();
 			shell->exit_code = traverse_btree(shell->tree, shell);
 			stdfd_restore(stdfd);

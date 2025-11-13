@@ -8,12 +8,12 @@
 #include <unistd.h>
 
 static
-int	command_exists(t_command *command, char **command_path)
+int	command_exists(t_command *command, char **command_path, char **envp)
 {
 	char	**path_env;
 	int		exit_code;
 
-	path_env = ft_split(getenv("PATH"), ':');
+	path_env = ft_split(env_get("PATH", envp), ':');
 	*command_path = NULL;
 	exit_code = program_path_find(command->argv[0], path_env, command_path);
 	free_array((void **)path_env, -1, TRUE);
@@ -117,7 +117,7 @@ int	command_execute(t_command *command, char **envp, t_shell *shell)
 		ft_printf_fd(STDERR_FILENO, DIR_ERR, command->argv[0]);
 		return (EXIT_FAILURE);
 	}
-	exit_status = command_exists(command, &command_path);
+	exit_status = command_exists(command, &command_path, envp);
 	if (exit_status != EXIT_SUCCESS)
 		return (exit_status);
 	pid = safe_fork();
@@ -125,8 +125,8 @@ int	command_execute(t_command *command, char **envp, t_shell *shell)
 	{
 		signal(SIGQUIT, SIG_DFL);
 		signal(SIGINT, SIG_DFL);
-		free_array((void **)shell->env_vars, -1, true);
-		free_array((void **)shell->export_vars.m_array, -1, true);
+		//free_array((void **)shell->env_vars, -1, true);
+		//free_array((void **)shell->export_vars.m_array, -1, true);
 		execve(command_path, command->argv, envp);
 		perror("execve");
 		exit(EXIT_FAILURE);
@@ -146,6 +146,6 @@ int	traverse_btree(t_btree *node, t_shell *shell)
 	if (node->node_type == TOKEN_PIPE)
 		pipe_execute(node, &exit_status, shell);
 	else
-		exit_status = command_execute(node->command, NULL, shell);
+		exit_status = command_execute(node->command, shell->env_vars, shell);
 	return(exit_status);
 }

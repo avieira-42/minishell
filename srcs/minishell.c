@@ -352,6 +352,7 @@ static
 char	**minishell_env_dup(t_shell *shell)
 {
 	size_t	i;
+	size_t	lvl_int;
 	char	**dup;
 	char	*lvl;
 
@@ -365,8 +366,21 @@ char	**minishell_env_dup(t_shell *shell)
 	{
 		if (ft_bool_strncmp(shell->envp[i], "SHLVL", 5) == true)
 		{
-			lvl = ft_itoa(ft_atoi(shell->envp[i] + 6) + 1);
+			lvl_int	= ft_atoi(shell->envp[i] + 6) + 1;
+			if (lvl_int > 999)
+			{
+				if (shell->lvl_message == false)
+				{
+					shell->lvl_message = true;
+					ft_printf_fd(2, LVLERR, lvl_int);
+				}
+				lvl_int = 1;
+			}
+			lvl = ft_itoa(lvl_int);
+			if (lvl == NULL)
+				return (NULL); // SAFE EXIT
 			dup[i] = ft_strjoin("SHLVL=", lvl);
+			free (lvl);
 		}
 		else
 			dup[i] = ft_strdup(shell->envp[i]);
@@ -382,6 +396,7 @@ char	**minishell_env_dup(t_shell *shell)
 
 void	minishell_init(t_shell *shell, int argc, char **argv, char **envp)
 {
+	shell->lvl_message = false;
 	shell->argc = argc;
 	shell->argv = argv;
 	shell->envp = envp;
@@ -432,7 +447,10 @@ void    minishell_loop(char **envp, t_shell *shell)
 		{
 			pid = safe_fork();
 			if (pid == 0)
+			{
+				// SAFE EXIT
 				exit(heredoc_find(shell->tree, envp));
+			}
 			heredoc_exit = ft_wait(pid);
 			if (heredoc_exit == 130)
 			{

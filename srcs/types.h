@@ -26,6 +26,7 @@
 # define EXPANSION_EXIT "?"
 # define OPEN_PAREN '('
 # define CLOSE_PAREN ')'
+# define LVLERR "minishell: warning: shell level (%i) too high, resetting to 1\n"
 # define DIR_ERR "minishell: %s: Is a directory\n"
 
 // TOKENS
@@ -109,6 +110,7 @@ typedef struct s_shell
 	t_str_array		export_vars;
 	t_token_list	*tokens;
 	t_btree			*tree;
+	bool			lvl_message;
 }	t_shell;
 
 #endif

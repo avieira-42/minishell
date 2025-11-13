@@ -348,49 +348,64 @@ size_t	minishell_envp_size(t_shell *shell)
 	return (size);
 }
 
+static int
+shell_lvl_incr(t_shell *shell, char **new_var, char *old_var, char **tmp)
+{
+	int		lvl_int;
+
+	(void) dup;
+	lvl_int = ft_atoi(old_var + 6) + 1;
+	if (lvl_int > 999)
+	{
+		if (shell->lvl_message == false)
+		{
+			shell->lvl_message = true;
+			ft_printf_fd(2, LVLERR, lvl_int);
+		}
+		lvl_int = 1;
+	}
+	*tmp = ft_itoa(lvl_int);
+	if (tmp == NULL)
+		return (-1); // SAFE EXIT
+	*new_var = ft_strjoin("SHLVL=", *tmp);
+	free (*tmp);
+	return (0);
+}
+
 static
-char	**minishell_env_dup(t_shell *shell)
+void	shell_lvl_create(t_shell *shell, char **dup)
+{
+	dup[shell->env_size] = ft_strdup("SHLVL=1");
+	if (dup[shell->env_size] == NULL)
+		return ; // SAFE EXIT
+}
+
+	static
+char	**minishell_env_dup(t_shell *shell, char *lvl)
 {
 	size_t	i;
-	size_t	lvl_int;
 	char	**dup;
-	char	*lvl;
 
-	lvl = NULL;
-	dup = malloc(sizeof(char *) * (shell->env_size + 1));
+	dup = malloc(sizeof(char *) * (shell->env_size + 2));
 	if (dup == NULL)
 		return NULL; // SAFE EXIT
 	dup[shell->env_size] = NULL;
+	dup[shell->env_size + 1] = NULL;
 	i = 0;
 	while (i < shell->env_size)
 	{
 		if (ft_bool_strncmp(shell->envp[i], "SHLVL", 5) == true)
 		{
-			lvl_int	= ft_atoi(shell->envp[i] + 6) + 1;
-			if (lvl_int > 999)
-			{
-				if (shell->lvl_message == false)
-				{
-					shell->lvl_message = true;
-					ft_printf_fd(2, LVLERR, lvl_int);
-				}
-				lvl_int = 1;
-			}
-			lvl = ft_itoa(lvl_int);
-			if (lvl == NULL)
+			if (shell_lvl_incr(shell, &dup[i], shell->envp[i], &lvl) == -1)
 				return (NULL); // SAFE EXIT
-			dup[i] = ft_strjoin("SHLVL=", lvl);
-			free (lvl);
 		}
 		else
 			dup[i] = ft_strdup(shell->envp[i]);
-		if (dup[i] == NULL)
-		{
-			free_array((void **)dup, -1, true);
-			return (NULL); // SAFE EXIT
-		}
-		i++;
+		if (dup[i++] == NULL)
+			return (free_array((void **)dup, -1, true), NULL); // SAFE EXIT
 	}
+	if (lvl == NULL)
+		shell_lvl_create(shell, dup);
 	return (dup);
 }
 
@@ -404,9 +419,9 @@ void	minishell_init(t_shell *shell, int argc, char **argv, char **envp)
 	shell->exit_code = 0;
 	shell->merge_ret = 0;
 	shell->env_size = minishell_envp_size(shell);
-	shell->env_vars = minishell_env_dup(shell);
+	shell->env_vars = minishell_env_dup(shell, NULL);
 	shell->export_vars.length = shell->env_size;
-	shell->export_vars.m_array = minishell_env_dup(shell);
+	shell->export_vars.m_array = minishell_env_dup(shell, NULL);
 	str_merge_sort(shell->export_vars, &shell->merge_ret);
 	if (shell->merge_ret == -1)
 		return ; // SAFE EXIT
@@ -475,7 +490,7 @@ void    minishell_loop(char **envp, t_shell *shell)
 		str_merge_sort(shell->export_vars, &shell->merge_ret);
 		if (shell->merge_ret == -1)
 			return ; // SAFE EXIT
-		// >> alongside builtins >> (special_user_input_check(user_input)); <<
+					 // >> alongside builtins >> (special_user_input_check(user_input)); <<
 	}
 	rl_clear_history();
 	ft_free_matrix(shell->env_vars);

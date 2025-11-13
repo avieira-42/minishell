@@ -47,7 +47,8 @@ EXECUTION_SRCS = srcs/execution/program_path_find.c \
 				 srcs/execution/heredoc.c \
 				 srcs/execution/execution_utils.c
 
-CLEANING_SRCS = srcs/cleaning/program_clean.c
+CLEANING_SRCS = srcs/cleaning/program_clean.c \
+				srcs/cleaning/exit_clean.c
 				
 SRCS = $(MINISHELL_SRCS) \
 		$(ERROR_SRCS) \

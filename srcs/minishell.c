@@ -504,5 +504,6 @@ int main(int argc, char **argv, char **envp)
 	if (argc > 20)
 		error_exit_argv(argv[1]);
 	minishell_init(&shell, argc, argv, envp);
+	builtins_logo();
 	minishell_loop(envp, &shell);
 }

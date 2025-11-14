@@ -65,3 +65,13 @@ void    quote_remove(char *token)
         }
     }
 }
+
+void	quote_removal(t_token_list *tokens)
+{
+	while (tokens != NULL)
+	{
+		if (tokens->is_quoted == true)
+			quote_remove(tokens->token_string);
+		tokens = tokens->next;
+	}
+}

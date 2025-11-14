@@ -24,6 +24,7 @@ bool    is_redirect(t_token_list *token);
 void    quotation_check(t_token_list *tokens);
 void    quoted_text_check(char c, int *quoted, char quote);
 void    quote_remove(char *token);
+void	quote_removal(t_token_list *tokens);
 
 // EXPANSION
 void    token_expand(t_shell *shell);
@@ -33,7 +34,7 @@ void    token_identify(t_token_list *tokens);
 bool    is_enum_redirect_token(t_token_type token);
 
 //TOKEN_PARSE
-int		user_input_parse(char *readline, t_token_list **tokens);
+int	user_input_parse(t_shell *shell);
 
 // ENVIRONMENT_VARIABLES
 char	*environment_variable_get(char **envp, char *variable_name, int *j);

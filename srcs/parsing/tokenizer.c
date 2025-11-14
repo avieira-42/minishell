@@ -1,5 +1,6 @@
 #include "parsing.h"
 #include "../types.h"
+#include "../cleaning/cleaning.h"
 
 bool    is_operator(char *c)
 {
@@ -64,7 +65,7 @@ tokenize_operator(t_shell *shell, char *c, t_token_list **tokens, int *i)
     }
     token_node_new = ft_token_lst_new(NULL);
 	if (token_node_new == NULL)
-		return ; // SAFE EXIT
+		exit_clean(shell, 1, NULL);
     ft_token_lst_add_back(tokens, token_node_new);
 	if (ft_bool_strncmp(c, HEREDOC, 2) == true)
 		(token_node_new->token_string = ft_strdup(HEREDOC), (*i)++);
@@ -77,7 +78,7 @@ tokenize_operator(t_shell *shell, char *c, t_token_list **tokens, int *i)
 	else if (*c == REDIRECT_OUT)
 		token_node_new->token_string = ft_strdup(STRING_REDIRECT_OUT);
 	if (token_node_new->token_string == NULL)
-		return ; // SAFE EXIT
+		exit_clean(shell, 1, NULL);
     (*i)++;
 }
 
@@ -90,10 +91,13 @@ void    tokenize_word(t_shell *shell, int i, int j)
         return ;
     token_new = ft_substr(shell->user_input, j, i - j);
 	if (token_new == NULL)
-		return ; // SAFE EXIT
+		exit_clean(shell, 1, NULL);
     token_node_new = ft_token_lst_new(token_new);
 	if (token_node_new == NULL)
-		return ; // SAFE EXIT
+	{
+		free(token_new);
+		exit_clean(shell, 1, NULL);
+	}
     ft_token_lst_add_back(&shell->tokens, token_node_new);
 }
 

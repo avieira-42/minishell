@@ -78,7 +78,7 @@ OBJS = $(SRCS:.c=.o)
 	done; \
 	echo ""; \
 
-all: $(LIBFT) $(NAME) clean
+all: $(LIBFT) $(NAME)
 
 $(NAME): $(LIBFT) $(OBJS)
 	@echo "Building $(NAME) executable"; \

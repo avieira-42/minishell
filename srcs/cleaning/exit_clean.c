@@ -3,8 +3,10 @@
 #include "../parsing/parsing.h"
 #include "../binary_tree/binary_tree.h"
 
-void	exit_clean(t_shell *shell, int exit_code, char **array)
+void	exit_clean(t_shell *shell, int exit_code, char **array, char *string)
 {
+	if (string != NULL)
+		free(string);
 	if (array != NULL)
 		free_array((void *)array, -1, true);
 	if (shell->user_input != NULL)

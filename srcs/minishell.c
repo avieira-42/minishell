@@ -1,6 +1,7 @@
 #include "minishell.h"
 #include "execution/execution.h"
 #include <readline/readline.h>
+#include <unistd.h>
 #include "types.h"
 
 int	g_last_signal;
@@ -435,14 +436,15 @@ void	signal_prompt(int signal)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
-	(void)signal;
+	g_last_signal = signal + 128;
 }
 
 void    minishell_loop(char **envp, t_shell *shell)
 {
 	int				*stdfd;
-	int				pid;
 	int				heredoc_exit;
+	int				stdin_save;
+	//int				stdout_save;
 
 	heredoc_exit = 0;
 	while (TRUE)
@@ -451,23 +453,25 @@ void    minishell_loop(char **envp, t_shell *shell)
 		signal(SIGINT, signal_prompt);
 		builtins_check(shell);
 		shell->user_input = readline(PROMPT_MINISHELL);
+		signal(SIGINT, SIG_IGN);
+		if (g_last_signal == 130)
+		{
+			shell->exit_code = g_last_signal;
+			g_last_signal = -1;
+		}
 		if (shell->user_input == NULL)
 			break ;
 		add_history(shell->user_input);
 		tokens_check(shell);
 		token_lst_clear_safe(&shell->tokens);
-		signal(SIGINT, SIG_IGN);
 		if (shell->tree != NULL)
 		{
-			pid = safe_fork();
-			if (pid == 0)
+			stdin_save = dup(STDIN_FILENO);
+			heredoc_find(shell->tree, envp);
+			safe_dup2(stdin_save, STDIN_FILENO);
+			if (g_last_signal == 130)
 			{
-				// SAFE EXIT
-				exit(heredoc_find(shell->tree, envp));
-			}
-			heredoc_exit = ft_wait(pid);
-			if (heredoc_exit == 130)
-			{
+				shell->exit_code = g_last_signal;
 				if (shell->tree != NULL)
 					btree_clear(&shell->tree);
 				if (shell->tokens != NULL)
@@ -475,6 +479,7 @@ void    minishell_loop(char **envp, t_shell *shell)
 				str_merge_sort(shell->export_vars, &shell->merge_ret);
 				if (shell->merge_ret == -1)
 					return ; // SAFE EXIT
+				g_last_signal = -1;
 				continue ;
 			}
 			//ft_printf("Im continuing\n");

@@ -1,4 +1,5 @@
 #include "parsing.h"
+#include "../binary_tree/binary_tree.h"
 
 static
 bool	is_valid_token(t_token_type previous_token, t_token_type current_token)
@@ -26,28 +27,30 @@ bool	is_valid_token_final(t_token_type final_token)
 	return (true);
 }
 
-int	user_input_parse(char *user_input, t_token_list **tokens)
+int	user_input_parse(t_shell *shell)
 {
-	/* TO CALL THE WHOLE PARSING PROCESS WITHIN THIS FUNCTION
-	   AND CHECK ERRORS ALONG THE WAY */
-
-	(void)			user_input;
 	t_token_type	previous_token;
 	t_token_list	*tokens_iter;
 
-	tokens_iter = *tokens;
+	tokenize_user_input(shell);
+	token_identify(shell->tokens);
+	quotation_check(shell->tokens);
+	token_expand(shell);
+	quote_removal(shell->tokens);
+	tokens_iter = shell->tokens;
 	previous_token = TOKEN_NULL;
-	if (tokens_iter == NULL)
-		return (-1);
 	while (tokens_iter != NULL)
 	{
 		if (is_valid_token(previous_token, tokens_iter->token_type) == false)
-			return (-1);
+			return (ft_printf_fd(2, "minishell: Error: Invalid input\n"), -1);
+		if (tokens_iter->is_open_quoted == true)
+			return (ft_printf_fd(2, "minishell: Error: Invalid input\n"), -1);
 		if (tokens_iter->next == NULL)
 			if (is_valid_token_final(tokens_iter->token_type) == false)
-				return (-1);
+			return (ft_printf_fd(2, "minishell: Error: Invalid input\n"), -1);
 		previous_token = tokens_iter->token_type;
 		tokens_iter = tokens_iter->next;
 	}
+	btree_create(shell);
 	return (0);
 }

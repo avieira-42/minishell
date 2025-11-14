@@ -156,7 +156,6 @@ tokens_check(t_shell *shell)
     t_token_list    *unquoted_tokens;
     t_token_list    *identified_tokens;
     t_token_list    *unidentified_tokens;
-	t_token_list	*tree_tokens;
 	t_btree			*tree;
 	int				node_count;
 	int				cmd_count;
@@ -171,7 +170,6 @@ tokens_check(t_shell *shell)
     unquoted_tokens = shell->tokens;
     identified_tokens = shell->tokens;
     unidentified_tokens = shell->tokens;
-    tree_tokens = shell->tokens;
     while (tokens != NULL)
     {
         printf("[%s] ", tokens->token_string);
@@ -253,9 +251,8 @@ tokens_check(t_shell *shell)
     }
 
 	// check binary_tree
-	if (user_input_parse(NULL, &tree_tokens) == -1)
+	if (user_input_parse(shell) == -1)
 	{
-		printf("invalid_user_input\n");
 		ft_token_lst_clear(&shell->tokens);
 		return ;
 	}
@@ -365,8 +362,8 @@ shell_lvl_incr(t_shell *shell, char **new_var, char *old_var, char **tmp)
 		lvl_int = 1;
 	}
 	*tmp = ft_itoa(lvl_int);
-	if (tmp == NULL)
-		return (-1); // SAFE EXIT
+	if (*tmp == NULL)
+		return (-1);
 	*new_var = ft_strjoin("SHLVL=", *tmp);
 	free (*tmp);
 	return (0);
@@ -377,7 +374,7 @@ void	shell_lvl_create(t_shell *shell, char **dup)
 {
 	dup[shell->env_size] = ft_strdup("SHLVL=1");
 	if (dup[shell->env_size] == NULL)
-		return ; // SAFE EXIT
+		exit_clean(shell, 1, dup);
 }
 
 	static
@@ -388,7 +385,7 @@ char	**minishell_env_dup(t_shell *shell, char *lvl)
 
 	dup = malloc(sizeof(char *) * (shell->env_size + 2));
 	if (dup == NULL)
-		return NULL; // SAFE EXIT
+		return (exit_clean(shell, 1, NULL), NULL);
 	dup[shell->env_size] = NULL;
 	dup[shell->env_size + 1] = NULL;
 	i = 0;
@@ -397,12 +394,13 @@ char	**minishell_env_dup(t_shell *shell, char *lvl)
 		if (ft_bool_strncmp(shell->envp[i], "SHLVL", 5) == true)
 		{
 			if (shell_lvl_incr(shell, &dup[i], shell->envp[i], &lvl) == -1)
-				return (NULL); // SAFE EXIT
+				return (exit_clean(shell, 1, dup), NULL);
 		}
 		else
 			dup[i] = ft_strdup(shell->envp[i]);
 		if (dup[i++] == NULL)
-			return (free_array((void **)dup, -1, true), NULL); // SAFE EXIT
+			return (exit_clean(shell, 1, dup), NULL);
+		dup[i] = NULL;
 	}
 	if (lvl == NULL)
 		shell_lvl_create(shell, dup);
@@ -418,15 +416,17 @@ void	minishell_init(t_shell *shell, int argc, char **argv, char **envp)
 	shell->user_input = NULL;
 	shell->exit_code = 0;
 	shell->merge_ret = 0;
+	shell->export_vars.m_array = NULL;
+	shell->env_vars = NULL;
+	shell->tokens = NULL;
+	shell->tree = NULL;
 	shell->env_size = minishell_envp_size(shell);
 	shell->env_vars = minishell_env_dup(shell, NULL);
 	shell->export_vars.length = shell->env_size;
 	shell->export_vars.m_array = minishell_env_dup(shell, NULL);
 	str_merge_sort(shell->export_vars, &shell->merge_ret);
 	if (shell->merge_ret == -1)
-		return ; // SAFE EXIT
-	shell->tokens = NULL;
-	shell->tree = NULL;
+		exit_clean(shell, 1, NULL);
 }
 
 void	signal_prompt(int signal)
@@ -454,8 +454,11 @@ void    minishell_loop(char **envp, t_shell *shell)
 		if (shell->user_input == NULL)
 			break ;
 		add_history(shell->user_input);
-		tokens_check(shell);
-		token_lst_clear_safe(&shell->tokens);
+		if (user_input_parse(shell) == -1)
+		{
+			ft_token_lst_clear(&shell->tokens);
+			continue;
+		}
 		signal(SIGINT, SIG_IGN);
 		if (shell->tree != NULL)
 		{
@@ -490,7 +493,6 @@ void    minishell_loop(char **envp, t_shell *shell)
 		str_merge_sort(shell->export_vars, &shell->merge_ret);
 		if (shell->merge_ret == -1)
 			return ; // SAFE EXIT
-					 // >> alongside builtins >> (special_user_input_check(user_input)); <<
 	}
 	rl_clear_history();
 	ft_free_matrix(shell->env_vars);

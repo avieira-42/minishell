@@ -50,6 +50,6 @@ void tokenize_squoted_text(t_token_list **tokens, char *user_input, int *i);
 void    quotation_check(t_token_list *tokens);
 
 //token_verification
-int	user_input_parse(char *readline, t_token_list **tokens);
+int	user_input_parse(t_shell *shell);
 
 #endif

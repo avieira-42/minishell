@@ -442,11 +442,11 @@ void	signal_prompt(int signal)
 void    minishell_loop(char **envp, t_shell *shell)
 {
 	int				*stdfd;
-	int				heredoc_exit;
+	//int				heredoc_exit;
 	int				stdin_save;
 	//int				stdout_save;
 
-	heredoc_exit = 0;
+	//heredoc_exit = 0;
 	while (TRUE)
 	{
 		signal(SIGQUIT, SIG_IGN);
@@ -462,7 +462,11 @@ void    minishell_loop(char **envp, t_shell *shell)
 		if (shell->user_input == NULL)
 			break ;
 		add_history(shell->user_input);
-		tokens_check(shell);
+		if (user_input_parse(shell) == -1)
+		{
+			ft_token_lst_clear(&shell->tokens);
+			continue;
+		}
 		token_lst_clear_safe(&shell->tokens);
 		if (shell->tree != NULL)
 		{

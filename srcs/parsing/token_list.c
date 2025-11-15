@@ -30,7 +30,7 @@ void	ft_token_lst_clear(t_token_list **lst)
 	node = *lst;
 	while (node)
 	{
-		tmp = node->next;
+	tmp = node->next;
         if (node->token_string != NULL)
 		{
             free(node->token_string);

@@ -1,16 +1,22 @@
 #include "binary_tree.h"
 #include "../cleaning/cleaning.h"
 
-void	command_exit_clear(t_btree **tree_node, t_command **cmd_node)
+void	command_exit_clear(t_btree **tree_node)
 {
-	if (*cmd_node != NULL)
+	if (tree_node != NULL)
 	{
-		free(*cmd_node);
-		*cmd_node = NULL;
-	}
-	if (*tree_node != NULL)
-	{
-		free(*tree_node);
+		if ((*tree_node)->command != NULL)
+		{
+			if ((*tree_node)->command->argv != NULL)
+			{
+				free((*tree_node)->command->argv);
+				//free_array((void *)(*tree_node)->command->argv, -1, true);
+				//(*tree_node)->command->argv = NULL;
+			}
+			free((*tree_node)->command);
+			(*tree_node)->command = NULL;
+		}
+		btree_clear(tree_node);
 		*tree_node = NULL;
 	}
 }
@@ -42,49 +48,46 @@ int	command_count(t_token_list *tokens)
 static void
 command_init(t_shell *sh, t_command_get *cmd, t_token_list **tok, t_btree **node)
 {
-	(void)sh;
-
 	cmd->i = 0;
 	cmd->toktype = TOKEN_NULL;
 	cmd->count = command_count(*tok);
-	//(*node)->command = malloc(sizeof(t_command));
-	(*node)->command = NULL;
+	(*node)->command = malloc(sizeof(t_command));
 	if ((*node)->command == NULL)
 	{
-		command_exit_clear(node, NULL);
+		command_exit_clear(node);
 		exit_clean(sh, 1, NULL, NULL);
 	}
 	(*node)->command->redirects = NULL;
 	// might need to set command to NULL when no commands
-	//(*node)->command->argv = malloc(sizeof(char *) * (cmd->count + 1));
-	(*node)->command->argv = NULL;
+	(*node)->command->argv = malloc(sizeof(char *) * (cmd->count + 1));
 	if ((*node)->command->argv == NULL)
 	{
-		command_exit_clear(node, &(*node)->command);
+		command_exit_clear(node);
 		exit_clean(sh, 1, NULL, NULL);
 	}
 	(*node)->command->argv[cmd->count] = NULL;
 }
 
-void	command_get(t_shell *sh, t_token_list **toks, t_btree *node)
+void	command_get(t_shell *sh, t_token_list **toks, t_btree **node)
 {
 	t_command_get	cmd;
 
-	command_init(sh, &cmd, toks, &node);
+	command_init(sh, &cmd, toks, node);
 	while (*toks != NULL && (*toks)->token_type != TOKEN_PIPE)
 	{
 		cmd.toktype = (*toks)->token_type;
 		if (cmd.toktype == TOKEN_CMD)
 		{
-			node->command->argv[cmd.i] = (*toks)->token_string;
+			(*node)->command->argv[cmd.i] = (*toks)->token_string;
 			cmd.i++;
 		}
 		else if (is_enum_redirect_token(cmd.toktype) == true)
 		{
 			(*toks) = (*toks)->next;
-			cmd.node_red = redir_add_new(sh, cmd.toktype, (*toks)->token_string);
+			cmd.node_red = redir_add_new(sh, cmd.toktype,
+					(*toks)->token_string, node);
 			cmd.node_red->next = NULL;
-			redirect_add_back(&(node->command->redirects), cmd.node_red);
+			redirect_add_back(&((*node)->command->redirects), cmd.node_red);
 		}
 		(*toks) = (*toks)->next;
 	}

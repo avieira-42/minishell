@@ -13,10 +13,7 @@ redir_add_new(t_shell *sh, t_token_type redir_type, char *file, t_btree **node)
 {
 	t_redirect *node_new;
 
-	if (redir_type == TOKEN_REDIRECT_IN)
-		node_new = NULL;
-	else
-		node_new = malloc(sizeof(t_redirect));
+	node_new = malloc(sizeof(t_redirect));
 	if (node_new == NULL)
 	{
 		command_exit_clear(node);
@@ -53,22 +50,5 @@ void	redirect_add_back(t_redirect **redirs, t_redirect *node_new)
 	{
 		node_last = redirect_last(*redirs);
 		node_last->next = node_new;
-	}
-}
-
-void	redirect_clear(t_redirect *redirs)
-{
-	t_redirect	*tmp;
-
-	tmp = NULL;
-	while (redirs != NULL)
-	{
-		if (redirs->redir_type == TOKEN_HEREDOC)
-			safe_close(&(redirs->fd));
-		if (redirs->filename != NULL)
-			free (redirs->filename);
-		tmp = redirs->next;
-		free(redirs);
-		redirs = tmp;
 	}
 }

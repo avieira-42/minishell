@@ -1,35 +1,6 @@
 #include "binary_tree.h"
 #include "../cleaning/cleaning.h"
 
-void	command_exit_clear(t_btree **tree_node)
-{
-	if (tree_node != NULL)
-	{
-		if ((*tree_node)->command != NULL)
-		{
-			if ((*tree_node)->command->argv != NULL)
-			{
-				free((*tree_node)->command->argv);
-				//free_array((void *)(*tree_node)->command->argv, -1, true);
-				//(*tree_node)->command->argv = NULL;
-			}
-			free((*tree_node)->command);
-			(*tree_node)->command = NULL;
-		}
-		btree_clear(tree_node);
-		*tree_node = NULL;
-	}
-}
-
-void	command_clear(t_command *command)
-{
-	if (command->redirects != NULL)
-		redirect_clear(command->redirects);
-	if (command->argv != NULL)
-		free_array((void **)command->argv, -1, true);
-	free (command);
-}
-
 static
 int	command_count(t_token_list *tokens)
 {

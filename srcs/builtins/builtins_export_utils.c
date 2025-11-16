@@ -1,6 +1,7 @@
 # include "../../libs/libft/include/libft.h"
 # include "../parsing/parsing.h"
 # include "../types.h"
+# include "../cleaning/cleaning.h"
 
 void
 builtins_export_add_to_vars(t_shell *shell, char *var, t_str_array *vars)
@@ -9,7 +10,7 @@ builtins_export_add_to_vars(t_shell *shell, char *var, t_str_array *vars)
 			sizeof(char *) * (vars->length + 2),
 			sizeof(char *) * (shell->export_vars.length + 1));
 	if (vars->m_array == NULL)
-		return (free(var)) ; // SAFE EXIT
+		exit_clean(shell, 1, NULL, var);
 	shell->export_vars.m_array[vars->length] = var;
 	shell->export_vars.m_array[vars->length + 1] = NULL;
 	vars->length++;
@@ -25,8 +26,7 @@ builtins_export_to_vars(t_shell *shell, char *var, char *var_end, size_t len)
 	vars = &shell->export_vars;
 	while (vars->m_array[i] != NULL)
 	{
-		if (ft_bool_strncmp(vars->m_array[i], var, len) == true
-            /*&& vars->m_array[i][len] == '='*/)
+		if (ft_bool_strncmp(vars->m_array[i], var, len) == true)
         {
 			if (*var_end == '=')
 			{
@@ -47,10 +47,10 @@ builtins_export_add_to_env(t_shell *shell, char *var, char **vars)
 			sizeof (char *) * (shell->env_size + 2),
 			sizeof(char *) * (shell->env_size + 1));
 	if (shell->env_vars == NULL)
-		return (free(var)); // SAFE EXIT
+		exit_clean(shell, 1, NULL, var);
 	shell->env_vars[shell->env_size] = ft_strdup(var);
 	if (shell->env_vars[shell->env_size] == NULL)
-		return ; // SAFE EXIT
+		exit_clean(shell, 1, NULL, var);
 	shell->env_vars[shell->env_size + 1] = NULL;
 	shell->env_size++;
 }
@@ -73,6 +73,7 @@ void	builtins_export_to_env(t_shell *shell, char *var, size_t len)
 		}
 		i++;
 	}
+	builtins_export_add_to_env(shell, var, vars);
 }
 
 void

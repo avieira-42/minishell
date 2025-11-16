@@ -1,4 +1,5 @@
 #include "builtins.h"
+#include "../cleaning/cleaning.h"
 
 static	inline
 void	builtins_export_printvar(char **var_value)
@@ -61,7 +62,7 @@ int	builtins_export(t_shell *shell, char **argv)
 	{
 		var = ft_strdup(*argv);
 		if (var == NULL)
-			return (-1) ; // SAFE EXIT
+			exit_clean(shell, 1, NULL, NULL);
 		if (builtins_export_is_valid_var_name(*argv, &var_end) == -1)
 		{
 			ft_printf_fd(2, EXPORT_ERROR, *argv);

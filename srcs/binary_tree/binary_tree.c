@@ -78,4 +78,5 @@ void	btree_create(t_shell *shell)
 		}
 		btree_add_leaf(&shell->tree, node_new);
 	}
+	token_lst_clear_safe(&shell->tokens);
 }

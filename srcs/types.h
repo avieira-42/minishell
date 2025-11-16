@@ -1,7 +1,7 @@
-#include "../libs/libft/include/libft.h"
-
 #ifndef TYPES_H
-#define TYPES_H
+# define TYPES_H
+
+# include "../libs/libft/include/libft.h"
 
 // MACROS
 # define CMD_AUTHORS "authors"
@@ -28,45 +28,45 @@
 # define EXPANSION_EXIT "?"
 # define OPEN_PAREN '('
 # define CLOSE_PAREN ')'
-# define LVLERR "minishell: warning: shell level (%i) too high, resetting to 1\n"
+# define LVLERR "minishell: warning: shell level(%i) too high, resetting to 1\n"
 # define DIR_ERR "minishell: %s: Is a directory\n"
 
 // TOKENS
 typedef enum e_token_type
 {
-    TOKEN_NULL,
-    TOKEN_REDIRECT_IN,
-    TOKEN_REDIRECT_OUT,
-    TOKEN_HEREDOC,
-    TOKEN_APPEND,
-    TOKEN_CMD,
-    TOKEN_FILE,
-    TOKEN_SPACE,
-    TOKEN_COMMAND,
-    TOKEN_PIPE,
-    TOKEN_DQUOTE_LITERAL,
-    TOKEN_SQUOTE_LITERAL,
-    TOKEN_EXPANSION_VARS,
-    TOKEN_EXPANSION_EXIT,
-    TOKEN_LIMITER,
-}   t_token_type;
+	TOKEN_NULL,
+	TOKEN_REDIRECT_IN,
+	TOKEN_REDIRECT_OUT,
+	TOKEN_HEREDOC,
+	TOKEN_APPEND,
+	TOKEN_CMD,
+	TOKEN_FILE,
+	TOKEN_SPACE,
+	TOKEN_COMMAND,
+	TOKEN_PIPE,
+	TOKEN_DQUOTE_LITERAL,
+	TOKEN_SQUOTE_LITERAL,
+	TOKEN_EXPANSION_VARS,
+	TOKEN_EXPANSION_EXIT,
+	TOKEN_LIMITER,
+}	t_token_type;
 
 extern int	g_last_signal;
 
 typedef struct s_token_list
 {
-    t_token_type        token_type;
-    char                *token_string;
-    bool                is_quoted;
-    bool                is_open_quoted;
-    struct s_token_list *next;
-}   t_token_list;
+	t_token_type		token_type;
+	char				*token_string;
+	bool				is_quoted;
+	bool				is_open_quoted;
+	struct s_token_list	*next;
+}	t_token_list;
 
 typedef struct s_iter
 {
-    int     i;
-    int     j;
-}   t_iter;
+	int	i;
+	int	j;
+}	t_iter;
 
 typedef struct s_redirect
 {
@@ -97,7 +97,7 @@ typedef struct s_command_get
 	int				count;
 	t_token_type	toktype;
 	t_redirect		*node_red;
-} t_command_get;
+}	t_command_get;
 
 typedef struct s_shell
 {

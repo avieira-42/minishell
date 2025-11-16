@@ -7,10 +7,10 @@ bool	is_valid_token(t_token_type previous_token, t_token_type current_token)
 	if (previous_token == TOKEN_NULL && current_token == TOKEN_PIPE)
 		return (false);
 	if (is_enum_redirect_token(previous_token) == true
-			&& is_enum_redirect_token(current_token) == true)
+		&& is_enum_redirect_token(current_token) == true)
 		return (false);
 	if (is_enum_redirect_token(previous_token) == true
-			&& current_token == TOKEN_PIPE)
+		&& current_token == TOKEN_PIPE)
 		return (false);
 	if (previous_token == TOKEN_PIPE && current_token == TOKEN_PIPE)
 		return (false);
@@ -47,7 +47,7 @@ int	user_input_parse(t_shell *shell)
 			return (ft_printf_fd(2, "minishell: Error: Invalid input\n"), -1);
 		if (tokens_iter->next == NULL)
 			if (is_valid_token_final(tokens_iter->token_type) == false)
-			return (ft_printf_fd(2, "minishell: Error: Invalid input\n"), -1);
+				return (ft_printf_fd(2, "minishell: Error: Invalid input\n"), -1);
 		previous_token = tokens_iter->token_type;
 		tokens_iter = tokens_iter->next;
 	}

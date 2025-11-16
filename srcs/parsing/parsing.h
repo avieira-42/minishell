@@ -1,47 +1,51 @@
 #ifndef PARSING_H
 # define PARSING_H
 
-#include "../../libs/libft/include/libft.h"
-#include "../error/error.h"
-#include "../types.h"
+# include "../../libs/libft/include/libft.h"
+# include "../error/error.h"
+# include "../types.h"
 
 //BOOLEAN
-bool    is_operator(char *c);
+bool			is_operator(char *c);
 
 // TOKEN_LIST
-void	        ft_token_lst_clear(t_token_list **lst);
+void			ft_token_lst_clear(t_token_list **lst);
 void			token_lst_clear_safe(t_token_list **lst);
-void	        ft_token_lst_add_back(t_token_list **lst, t_token_list *new_node);
+void			ft_token_lst_add_back(t_token_list **lst,
+					t_token_list *new_node);
 t_token_list	*ft_token_lst_new(char *token);
 t_token_list	*ft_token_lst_last(t_token_list *lst);
 
 // TOKENIZE
-void    tokenize_user_input(t_shell *shell);
-void    tokenize_squoted_text(t_token_list **tokens, char *user_input, int *i);
-bool    is_redirect(t_token_list *token);
+void			tokenize_user_input(t_shell *shell);
+void			tokenize_squoted_text(t_token_list **tokens,
+					char *user_input, int *i);
+bool			is_redirect(t_token_list *token);
 
 // QUOTATION
-void    quotation_check(t_token_list *tokens);
-void    quoted_text_check(char c, int *quoted, char quote);
-void    quote_remove(char *token);
-void	quote_removal(t_token_list *tokens);
+void			quotation_check(t_token_list *tokens);
+void			quoted_text_check(char c, int *quoted, char quote);
+void			quote_remove(char *token);
+void			quote_removal(t_token_list *tokens);
 
 // EXPANSION
-void    token_expand(t_shell *shell);
+void			token_expand(t_shell *shell);
 
 // TOKEN_IDENTIFY
-void    token_identify(t_token_list *tokens);
-bool    is_enum_redirect_token(t_token_type token);
+void			token_identify(t_token_list *tokens);
+bool			is_enum_redirect_token(t_token_type token);
 
 //TOKEN_PARSE
-int	user_input_parse(t_shell *shell);
+int				user_input_parse(t_shell *shell);
 
 // ENVIRONMENT_VARIABLES
-char	*environment_variable_get(char **envp, char *variable_name, int *j);
-int     environment_variable_len(char *variable_name);
-bool    is_variable(char *token_string, int i);
+char			*environment_variable_get(char **envp,
+					char *variable_name, int *j);
+int				environment_variable_len(char *variable_name);
+bool			is_variable(char *token_string, int i);
 
 // TOKEN_ERROR
-void	error_exit_tokens(char *user_input, t_token_list *tokens, int error_code);
+void			error_exit_tokens(char *user_input,
+					t_token_list *toks, int error_code);
 
 #endif

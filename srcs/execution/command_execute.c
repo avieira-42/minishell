@@ -20,17 +20,17 @@ int	command_exists(t_command *command, char **command_path, char **envp)
 	if (exit_code == ALLOC_FAILURE)
 	{
 		ft_printf_fd(STDERR_FILENO, ALLOC_ERROR);
-		return(EXIT_FAILURE);
+		return (EXIT_FAILURE);
 	}
 	else if (exit_code == NOT_FOUND_FAILURE)
 	{
 		ft_printf_fd(STDERR_FILENO, NOT_FOUND_ERROR, command->argv[0]);
-		return(EXIT_NOT_FOUND);
+		return (EXIT_NOT_FOUND);
 	}
 	else if (exit_code == NO_FILE_FAILURE)
 	{
 		ft_printf_fd(STDERR_FILENO, NO_FILE_ERROR, command->argv[0]);
-		return(EXIT_NOT_FOUND);
+		return (EXIT_NOT_FOUND);
 	}
 	return (EXIT_SUCCESS);
 }
@@ -122,7 +122,6 @@ int	command_execute(t_command *command, char **envp, t_shell *shell)
 	exit_status = builtins_exec(command->argv, envp, shell);
 	if (exit_status != -1)
 		return (exit_status);
-
 	if (is_directory(command->argv[0]) == TRUE)
 		return (EXIT_FAILURE);
 	exit_status = command_exists(command, &command_path, envp);
@@ -133,13 +132,12 @@ int	command_execute(t_command *command, char **envp, t_shell *shell)
 	{
 		signal(SIGQUIT, SIG_DFL);
 		signal(SIGINT, SIG_DFL);
-		//free_array((void **)shell->env_vars, -1, true);
-		//free_array((void **)shell->export_vars.m_array, -1, true);
 		execve(command_path, command->argv, envp);
-		perror("execve");
-		exit(EXIT_FAILURE);
+		exit_clean(shell, 2, NULL, NULL);
 	}
-	return(ft_wait(pid));
+	if (command->argv[0] != command_path)
+		free(command_path);
+	return (ft_wait(pid));
 }
 
 int	traverse_btree(t_btree *node, t_shell *shell)
@@ -155,5 +153,5 @@ int	traverse_btree(t_btree *node, t_shell *shell)
 		pipe_execute(node, &exit_status, shell);
 	else
 		exit_status = command_execute(node->command, shell->env_vars, shell);
-	return(exit_status);
+	return (exit_status);
 }

@@ -1,26 +1,27 @@
 #include "parsing.h"
 #include "../cleaning/cleaning.h"
 
-void    single_quotation_skip(char *buffer, char *token_string, t_iter *iter)
+static
+void	single_quotation_skip(char *buffer, char *token_str, t_iter *iter)
 {
-    buffer[iter->j] = token_string[iter->i];
-    (iter->i)++;
-    (iter->j)++;
-    while (token_string[iter->i] != SQUOTE_LITERAL && token_string[iter->i] != '\0')
-    {
-        buffer[iter->j] = token_string[iter->i];
-        (iter->i)++;
-        (iter->j)++;
-    }
-    buffer[iter->j] = token_string[iter->i];
-    (iter->i)++;
-    (iter->j)++;
+	buffer[iter->j] = token_str[iter->i];
+	(iter->i)++;
+	(iter->j)++;
+	while (token_str[iter->i] != SQUOTE_LITERAL && token_str[iter->i] != '\0')
+	{
+		buffer[iter->j] = token_str[iter->i];
+		(iter->i)++;
+		(iter->j)++;
+	}
+	buffer[iter->j] = token_str[iter->i];
+	(iter->i)++;
+	(iter->j)++;
 }
 
 void
-expansion_vars_handle(char *buf, char *token, t_iter *iter, t_shell *shell)
+	expansion_vars_handle(char *buf, char *token, t_iter *iter, t_shell *shell)
 {
-    char    *exp;
+	char	*exp;
 
 	if (ft_bool_strncmp(&token[iter->i], "$?", 2) == true)
 	{
@@ -34,13 +35,14 @@ expansion_vars_handle(char *buf, char *token, t_iter *iter, t_shell *shell)
 	}
 	else
 	{
-		exp = environment_variable_get(shell->env_vars, &token[iter->i], &(iter->i));
+		exp = environment_variable_get(shell->env_vars,
+				&token[iter->i], &(iter->i));
 		ft_memcpy(&buf[iter->j], exp, ft_strlen(exp));
 		iter->j += ft_strlen(exp);
 	}
 }
 
-void    token_expansion_init(t_iter *iter, char **buffer, int *double_quoted)
+void	token_expansion_init(t_iter *iter, char **buffer, int *double_quoted)
 {
 	iter->i = 0;
 	iter->j = 0;
@@ -48,7 +50,7 @@ void    token_expansion_init(t_iter *iter, char **buffer, int *double_quoted)
 	*buffer = malloc(107374182);
 }
 
-void    buffer_fill(char *buffer, char *token_string, t_iter *iter)
+void	buffer_fill(char *buffer, char *token_string, t_iter *iter)
 {
 	buffer[iter->j] = token_string[iter->i];
 	iter->i++;
@@ -56,10 +58,10 @@ void    buffer_fill(char *buffer, char *token_string, t_iter *iter)
 }
 
 void	token_expansion_create(char **token_string, t_shell *shell)
-{ 
-	t_iter  iter;
-	char    *buffer;
-	int     is_dquote;
+{
+	t_iter	iter;
+	char	*buffer;
+	int		is_dquote;
 
 	token_expansion_init(&iter, &buffer, &is_dquote);
 	if (buffer == NULL)
@@ -82,7 +84,7 @@ void	token_expansion_create(char **token_string, t_shell *shell)
 	free(buffer);
 }
 
-void    token_expand(t_shell *sh)
+void	token_expand(t_shell *sh)
 {
 	t_token_list	*tokens;
 

@@ -66,7 +66,7 @@ void	btree_create(t_shell *shell)
 		if (node_new == NULL)
 			exit_clean(shell, 1, NULL, NULL);
 		if (tokens->token_type == TOKEN_CMD
-				|| is_enum_redirect_token(tokens->token_type) == true)
+			|| is_enum_redirect_token(tokens->token_type) == true)
 		{
 			node_new->node_type = TOKEN_CMD;
 			command_get(shell, &tokens, &node_new);

@@ -6,7 +6,10 @@ int	program_exists(char *program_path, char **result_path)
 	if (access(program_path, X_OK | F_OK) == 0)
 	{
 		*result_path = program_path;
-		return (1);
+			return (1);
+		/**result_path = ft_strdup(program_path);
+		if (*result_path == NULL)
+			return (-1); // SAFE EXIT*/
 	}
 	return (0);
 }
@@ -42,7 +45,7 @@ int	program_path_find(char *program_name, char **path, char **result)
 	if (ft_strchr(program_name, '/') != NULL)
 	{
 		if (program_exists(program_name, result))
-			return (1);
+			return (3);
 		return (2);
 	}
 	return (program_path_get(program_name, path, result));

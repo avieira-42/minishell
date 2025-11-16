@@ -324,6 +324,7 @@ void	unset_check(t_shell *shell)
 	}
 	exit(0);
 }
+
 void	builtins_check(t_shell *shell)
 {
 	if (shell->argc == 1)
@@ -460,7 +461,7 @@ void	signal_after_readline_setup(t_shell *shell)
 int	preprocess_input(t_shell *shell)
 {
 	add_history(shell->user_input);
-	tokens_check(shell);
+	user_input_parse(shell);
 	token_lst_clear_safe(&shell->tokens);
 	return (shell->tree != NULL);
 }
@@ -491,13 +492,11 @@ void	tree_execute(t_shell *shell)
 	stdfd_restore(stdfd);
 }
 
-void    minishell_loop(char **envp, t_shell *shell)
+void    minishell_loop(t_shell *shell)
 {
-	(void)envp;
 	while (TRUE)
 	{
 		signal_prompt_setup();
-		builtins_check(shell);
 		shell->user_input = readline(PROMPT_MINISHELL);
 		signal_after_readline_setup(shell);
 		if (shell->user_input == NULL)
@@ -522,5 +521,5 @@ int main(int argc, char **argv, char **envp)
 		error_exit_argv(argv[1]);
 	minishell_init(&shell, argc, argv, envp);
 	builtins_logo();
-	minishell_loop(envp, &shell);
+	minishell_loop(&shell);
 }

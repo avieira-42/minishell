@@ -13,9 +13,11 @@ MINISHELL_SRCS = srcs/minishell.c
 
 BINARY_TREE_SRCS = srcs/binary_tree/binary_tree.c \
 				   srcs/binary_tree/binary_tree_error.c \
+				   srcs/binary_tree/binary_tree_clear.c \
 				   srcs/binary_tree/command.c \
-				   srcs/binary_tree/redirects.c \
-				   srcs/binary_tree/binary_tree_clear.c
+				   srcs/binary_tree/command_clear.c \
+				   srcs/binary_tree/redirect.c \
+				   srcs/binary_tree/redirect_clear.c
 
 PARSING_SRCS = srcs/parsing/tokenizer.c \
 				srcs/parsing/token_list.c \
@@ -79,7 +81,7 @@ OBJS = $(SRCS:.c=.o)
 	done; \
 	echo ""; \
 
-all: $(LIBFT) $(NAME) clean
+all: $(LIBFT) $(NAME)
 
 $(NAME): $(LIBFT) $(OBJS)
 	@echo "Building $(NAME) executable"; \

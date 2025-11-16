@@ -1,4 +1,5 @@
 #include "binary_tree.h"
+#include "../cleaning/cleaning.h"
 #include <fcntl.h>
 #include <unistd.h>
 
@@ -63,12 +64,12 @@ void	btree_create(t_shell *shell)
 	{
 		node_new = btree_add_new();
 		if (node_new == NULL)
-			return ; // SAFE EXIT
+			exit_clean(shell, 1, NULL, NULL);
 		if (tokens->token_type == TOKEN_CMD
 				|| is_enum_redirect_token(tokens->token_type) == true)
 		{
 			node_new->node_type = TOKEN_CMD;
-			command_get(shell, &tokens, node_new);
+			command_get(shell, &tokens, &node_new);
 		}
 		else if (tokens->token_type == TOKEN_PIPE)
 		{

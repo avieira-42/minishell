@@ -375,10 +375,10 @@ void	shell_lvl_create(t_shell *shell, char **dup)
 {
 	dup[shell->env_size] = ft_strdup("SHLVL=1");
 	if (dup[shell->env_size] == NULL)
-		exit_clean(shell, 1, dup);
+		exit_clean(shell, 1, dup, NULL);
 }
 
-	static
+static
 char	**minishell_env_dup(t_shell *shell, char *lvl)
 {
 	size_t	i;
@@ -386,7 +386,7 @@ char	**minishell_env_dup(t_shell *shell, char *lvl)
 
 	dup = malloc(sizeof(char *) * (shell->env_size + 2));
 	if (dup == NULL)
-		return (exit_clean(shell, 1, NULL), NULL);
+		return (exit_clean(shell, 1, NULL, NULL), NULL);
 	dup[shell->env_size] = NULL;
 	dup[shell->env_size + 1] = NULL;
 	i = 0;
@@ -395,12 +395,12 @@ char	**minishell_env_dup(t_shell *shell, char *lvl)
 		if (ft_bool_strncmp(shell->envp[i], "SHLVL", 5) == true)
 		{
 			if (shell_lvl_incr(shell, &dup[i], shell->envp[i], &lvl) == -1)
-				return (exit_clean(shell, 1, dup), NULL);
+				return (exit_clean(shell, 1, dup, NULL), NULL);
 		}
 		else
 			dup[i] = ft_strdup(shell->envp[i]);
 		if (dup[i++] == NULL)
-			return (exit_clean(shell, 1, dup), NULL);
+			return (exit_clean(shell, 1, dup, NULL), NULL);
 		dup[i] = NULL;
 	}
 	if (lvl == NULL)
@@ -427,7 +427,7 @@ void	minishell_init(t_shell *shell, int argc, char **argv, char **envp)
 	shell->export_vars.m_array = minishell_env_dup(shell, NULL);
 	str_merge_sort(shell->export_vars, &shell->merge_ret);
 	if (shell->merge_ret == -1)
-		exit_clean(shell, 1, NULL);
+		exit_clean(shell, 1, NULL, NULL);
 }
 
 void	iteration_clear(t_shell *shell)

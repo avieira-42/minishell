@@ -1,43 +1,5 @@
-#BASH BEHAVIOR
-DEFINITIONS:
+ISSUES:
 
-    1. Blank -> space or tab ('\s', '\t')
-
-    2. Word/Token -> a sequence of characters as a single unit
-
-    3. Name/identifier -> a word/token of only alphanumeric chars and
-        underscores and beginning with either one
-
-    4. Metacharacter -> char that separates words when unquoted:
-        | < > ( ) > \s \t \n
-
-    5. Control operator -> a word/token that performs a control function:
-        ( ) | || && <newline>
-
-
-
-CONTROL OPERATOR PRIORITY ORDER:
-    
-    1. from right to left
-    2. 
-
-
-
-BEHAVIORAL DETAILS LEARNED:
-
-1. when using " or ' (open quotes) or ( (open parentesis) or any control
-operator (|| | &&)
-, bash asks for input
-continuation if theyre not closed.
-    1.1 In either operation continuation, when using CTRL+D bash closes and
-    prompts an error> (bash: unexpected EOF while looking for matching `"'\nexit
-    1.2. Open quotes (' or ") promp the input continuation, but open parethesis ( ( ) 
-    only prompt for it if theyre in certain positions like after a control operator
-
-
-
-DICTIONARY:
-
-    1. Quoted -> between '' or ""
-
-
+1. cd with no arguments
+2. scrolling through previous commands (parts of text cant be deleted)
+3. ^L doesn't work sometimes

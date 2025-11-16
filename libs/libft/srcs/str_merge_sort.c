@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 08:58:36 by avieira-          #+#    #+#             */
-/*   Updated: 2025/11/10 10:54:32 by avieira-         ###   ########.fr       */
+/*   Updated: 2025/11/16 18:05:31 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,10 @@ void	str_merge(t_str_array left, t_str_array middle, t_str_array right)
 	while (m < middle.length)
 	{
 		if (l < left.length && r < right.length
-				&& ft_strcmp(left.m_array[l], right.m_array[r]) <= 0)
+			&& ft_strcmp(left.m_array[l], right.m_array[r]) <= 0)
 			middle.m_array[m++] = left.m_array[l++];
 		else if (r < right.length && l < left.length
-				&& ft_strcmp(right.m_array[r], left.m_array[l]) <= 0)
+			&& ft_strcmp(right.m_array[r], left.m_array[l]) <= 0)
 			middle.m_array[m++] = right.m_array[r++];
 		else if (l < left.length && r >= right.length)
 			middle.m_array[m++] = left.m_array[l++];

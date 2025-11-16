@@ -68,7 +68,9 @@ void	builtins_export_to_env(t_shell *shell, char *var, size_t len)
 				&& shell->env_vars[i][len] == '=')
 		{
 			free(vars[i]);
-			vars[i] = var;
+			vars[i] = ft_strdup(var);
+			if (vars[i] == NULL)
+				exit_clean(shell, 1, NULL, var);
 			return ;
 		}
 		i++;

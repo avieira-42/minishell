@@ -378,7 +378,7 @@ void	shell_lvl_create(t_shell *shell, char **dup)
 		exit_clean(shell, 1, dup, NULL);
 }
 
-	static
+static
 char	**minishell_env_dup(t_shell *shell, char *lvl)
 {
 	size_t	i;

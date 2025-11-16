@@ -45,7 +45,8 @@ EXECUTION_SRCS = srcs/execution/program_path_find.c \
 				 srcs/execution/command_execute.c \
 				 srcs/execution/process_control.c \
 				 srcs/execution/heredoc.c \
-				 srcs/execution/execution_utils.c
+				 srcs/execution/execution_utils.c \
+				 srcs/execution/signals.c
 
 CLEANING_SRCS = srcs/cleaning/program_clean.c \
 				srcs/cleaning/exit_clean.c

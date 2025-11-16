@@ -25,13 +25,6 @@ void	heredoc_write_bytes_to_file(char *line, char **envp, int fd)
 	ft_putchar_fd('\n', fd);
 }
 
-void	signal_heredoc(int signal)
-{
-	ft_putchar_fd('\n', 2);
-	close(0);
-	g_last_signal = signal + 128;
-}
-
 static
 void	heredoc_execute(char *limiter, t_redirect *redir, char **envp)
 {

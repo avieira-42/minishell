@@ -29,4 +29,7 @@ void	stdfd_restore(int fd[2]);
 int	ft_wait(int pid);
 char	*env_get(char *var_name, char **envp);
 
+void	signal_prompt(int signal);
+void	signal_heredoc(int signal);
+
 #endif

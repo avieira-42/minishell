@@ -98,25 +98,33 @@ int	ft_wait(int pid)
 	return (exit_code);
 }
 
+int	is_directory(char *cmd_name)
+{
+	struct stat	status;
+
+	status = (struct stat){};
+	lstat(cmd_name, &status);
+	if ((status.st_mode & S_IFMT) == S_IFDIR)
+	{
+		ft_printf_fd(STDERR_FILENO, DIR_ERR, cmd_name);
+		return (TRUE);
+	}
+	return (FALSE);
+}
+
 static
 int	command_execute(t_command *command, char **envp, t_shell *shell)
 {
 	char	*command_path;
 	int		exit_status;
 	int		pid;
-	struct stat	status;
 
-	(void)shell;
 	exit_status = builtins_exec(command->argv, envp, shell);
 	if (exit_status != -1)
 		return (exit_status);
-	status = (struct stat){};
-	lstat(command->argv[0], &status);
-	if ((status.st_mode & S_IFMT) == S_IFDIR)
-	{
-		ft_printf_fd(STDERR_FILENO, DIR_ERR, command->argv[0]);
+
+	if (is_directory(command->argv[0]) == TRUE)
 		return (EXIT_FAILURE);
-	}
 	exit_status = command_exists(command, &command_path, envp);
 	if (exit_status != EXIT_SUCCESS)
 		return (exit_status);

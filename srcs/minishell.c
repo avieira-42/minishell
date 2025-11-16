@@ -430,72 +430,84 @@ void	minishell_init(t_shell *shell, int argc, char **argv, char **envp)
 	shell->tree = NULL;
 }
 
-void	signal_prompt(int signal)
+void	iteration_clear(t_shell *shell)
 {
-	ft_putchar_fd('\n', 2);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-	g_last_signal = signal + 128;
+	if (shell->tree != NULL)
+		btree_clear(&shell->tree);
+	if (shell->tokens != NULL)
+		ft_token_lst_clear(&shell->tokens);
+	str_merge_sort(shell->export_vars, &shell->merge_ret);
+	if (shell->merge_ret == -1)
+		return ; // SAFE EXIT
+}
+
+void	signal_prompt_setup(void)
+{
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, signal_prompt);
+}
+
+void	signal_after_readline_setup(t_shell *shell)
+{
+	signal(SIGINT, SIG_IGN);
+	if (g_last_signal == 130)
+	{
+		shell->exit_code = g_last_signal;
+		g_last_signal = -1;
+	}
+}
+
+int	preprocess_input(t_shell *shell)
+{
+	add_history(shell->user_input);
+	tokens_check(shell);
+	token_lst_clear_safe(&shell->tokens);
+	return (shell->tree != NULL);
+}
+
+int	handle_heredoc(t_shell *shell)
+{
+	int	stdin_save;
+
+	stdin_save = dup(STDIN_FILENO);
+	heredoc_find(shell->tree, shell->env_vars);
+	safe_dup2(stdin_save, STDIN_FILENO);
+	if (g_last_signal == 130)
+	{
+		shell->exit_code = g_last_signal;
+		iteration_clear(shell);
+		g_last_signal = -1;
+		return (0);
+	}
+	return (1);
+}
+
+void	tree_execute(t_shell *shell)
+{
+	int	*stdfd;
+
+	stdfd = stdfd_save();
+	shell->exit_code = traverse_btree(shell->tree, shell);
+	stdfd_restore(stdfd);
 }
 
 void    minishell_loop(char **envp, t_shell *shell)
 {
-	int				*stdfd;
-	int				heredoc_exit;
-	int				stdin_save;
-	//int				stdout_save;
-
-	heredoc_exit = 0;
+	(void)envp;
 	while (TRUE)
 	{
-		signal(SIGQUIT, SIG_IGN);
-		signal(SIGINT, signal_prompt);
+		signal_prompt_setup();
 		builtins_check(shell);
 		shell->user_input = readline(PROMPT_MINISHELL);
-		signal(SIGINT, SIG_IGN);
-		if (g_last_signal == 130)
-		{
-			shell->exit_code = g_last_signal;
-			g_last_signal = -1;
-		}
+		signal_after_readline_setup(shell);
 		if (shell->user_input == NULL)
 			break ;
-		add_history(shell->user_input);
-		tokens_check(shell);
-		token_lst_clear_safe(&shell->tokens);
-		if (shell->tree != NULL)
-		{
-			stdin_save = dup(STDIN_FILENO);
-			heredoc_find(shell->tree, envp);
-			safe_dup2(stdin_save, STDIN_FILENO);
-			if (g_last_signal == 130)
-			{
-				shell->exit_code = g_last_signal;
-				if (shell->tree != NULL)
-					btree_clear(&shell->tree);
-				if (shell->tokens != NULL)
-					ft_token_lst_clear(&shell->tokens);
-				str_merge_sort(shell->export_vars, &shell->merge_ret);
-				if (shell->merge_ret == -1)
-					return ; // SAFE EXIT
-				g_last_signal = -1;
-				continue ;
-			}
-			//ft_printf("Im continuing\n");
-			stdfd = stdfd_save();
-			shell->exit_code = traverse_btree(shell->tree, shell);
-			stdfd_restore(stdfd);
-			//ft_printf("exit status: %d\n", shell->exit_code);
-		}
-		if (shell->tree != NULL)
-			btree_clear(&shell->tree);
-		if (shell->tokens != NULL)
-			ft_token_lst_clear(&shell->tokens);
-		str_merge_sort(shell->export_vars, &shell->merge_ret);
-		if (shell->merge_ret == -1)
-			return ; // SAFE EXIT
-					 // >> alongside builtins >> (special_user_input_check(user_input)); <<
+		if (preprocess_input(shell) == 0)
+			continue ;
+		if (handle_heredoc(shell) == 0)
+			continue ;
+		tree_execute(shell);
+		iteration_clear(shell);
 	}
 	rl_clear_history();
 	ft_free_matrix(shell->env_vars);

@@ -2,6 +2,7 @@
 
 int	builtins_exec(char **argv, char **envp, t_shell *shell)
 {
+	(void)envp;
 	if (argv == NULL)
 		return (-1);
 	if (*argv != NULL && ft_strcmp(argv[0], "echo") == 0)
@@ -9,7 +10,7 @@ int	builtins_exec(char **argv, char **envp, t_shell *shell)
 	else if (*argv != NULL && ft_strcmp(argv[0], "pwd") == 0)
 		return (builtins_pwd());
 	else if (*argv != NULL && ft_strcmp(argv[0], "cd") == 0)
-		return (builtins_cd(&argv[1], envp));
+		return (builtins_cd(&argv[1], shell->env_vars, shell));
 	else if (*argv != NULL && ft_strcmp(argv[0], "export") == 0)
 		return (builtins_export(shell, argv));
 	else if (*argv != NULL && ft_strcmp(argv[0], "unset") == 0)

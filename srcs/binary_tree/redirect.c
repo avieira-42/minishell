@@ -8,10 +8,10 @@ void	redirect_set(t_redirect *node, int fd, int open_flags)
 	node->open_flags = open_flags;
 }
 
-t_redirect	*
-redir_add_new(t_shell *sh, t_token_type redir_type, char *file, t_btree **node)
+t_redirect	*redir_add_new(t_shell *sh, t_token_type redir_type,
+				char *file, t_btree **node)
 {
-	t_redirect *node_new;
+	t_redirect	*node_new;
 
 	node_new = malloc(sizeof(t_redirect));
 	if (node_new == NULL)
@@ -33,7 +33,7 @@ redir_add_new(t_shell *sh, t_token_type redir_type, char *file, t_btree **node)
 	return (node_new);
 }
 
-t_redirect *redirect_last(t_redirect *redirs)
+t_redirect	*redirect_last(t_redirect *redirs)
 {
 	while (redirs->next != NULL)
 		redirs = redirs->next;

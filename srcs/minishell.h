@@ -10,19 +10,18 @@
 # include "../libs/libft/include/libft.h"
 # include "binary_tree/binary_tree.h"
 # include "parsing/parsing.h"
-# include "error/error.h"
 # include "builtins/builtins.h"
 # include "execution/execution.h"
 # include "cleaning/cleaning.h"
 # include "types.h"
 
-# define COLOR_GREEN "\e[0;32m"
-# define COLOR_RESET "\e[0m"
-# define PROMPT_MINISHELL COLOR_GREEN "minishell" COLOR_RESET "$> "
+# define COLOR_GREEN "\001\033[0;32m\002"
+# define COLOR_RESET "\001\033[0m\002"
+# define RESET   "\001\033[0m\002"
+# define PROMPT_MINISHELL COLOR_GREEN "minishell" COLOR_RESET "$> " RESET
 
 // ERROR_H
 void error_exit(char *argv1);
-void error_message_get(int error_code, char **error_message);
 void error_message_put_1(char *error_message, char *argv1);
 
 // PARSE_H

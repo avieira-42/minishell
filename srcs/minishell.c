@@ -517,8 +517,11 @@ int main(int argc, char **argv, char **envp)
 {
 	t_shell	shell;
 
-	if (argc > 20)
-		error_exit_argv(argv[1]);
+	if (argc > 1)
+	{
+		ft_printf_fd(2, "Error: minishell: Usage: ./minishell");
+		return (1);
+	}
 	minishell_init(&shell, argc, argv, envp);
 	builtins_logo();
 	minishell_loop(&shell);

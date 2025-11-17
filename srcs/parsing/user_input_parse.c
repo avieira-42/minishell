@@ -47,7 +47,7 @@ int	user_input_parse(t_shell *shell)
 			return (ft_printf_fd(2, "minishell: Error: Invalid input\n"), -1);
 		if (tokens_iter->next == NULL)
 			if (is_valid_token_final(tokens_iter->token_type) == false)
-				return (ft_printf_fd(2, "minishell: Error: Invalid input\n"), -1);
+				return (ft_printf_fd(2, INPUT_ERR), -1);
 		previous_token = tokens_iter->token_type;
 		tokens_iter = tokens_iter->next;
 	}

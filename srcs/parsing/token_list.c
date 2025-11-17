@@ -50,7 +50,8 @@ void	token_lst_clear_safe(t_token_list **lst)
 	node = *lst;
 	while (node)
 	{
-		if (is_operator(node->token_string))
+		if (is_enum_redirect_token(node->token_type)
+			|| node->token_type == TOKEN_PIPE)
 			free(node->token_string);
 		tmp = node->next;
 		free(node);

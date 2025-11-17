@@ -28,7 +28,7 @@ void
 {
 	t_token_list	*token_node_new;
 
-	if (*c == SPACE)
+	if (ft_isspace(*c))
 	{
 		(*i)++;
 		return ;

@@ -15,4 +15,3 @@ void	signal_heredoc(int signal)
 	close(0);
 	g_last_signal = signal + 128;
 }
-

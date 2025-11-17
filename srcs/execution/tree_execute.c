@@ -2,49 +2,32 @@
 #include "execution.h"
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <errno.h>
 #include <stdlib.h>
 #include <sys/wait.h>
 #include <unistd.h>
 
 static
-int	command_exists(t_command *command, char **command_path, char **envp)
-{
-	char	**path_env;
-	int		exit_code;
-
-	path_env = ft_split(env_get("PATH", envp), ':');
-	*command_path = NULL;
-	exit_code = program_path_find(command->argv[0], path_env, command_path);
-	free_array((void **)path_env, -1, TRUE);
-	if (exit_code == ALLOC_FAILURE)
-	{
-		ft_printf_fd(STDERR_FILENO, ALLOC_ERROR);
-		return (EXIT_FAILURE);
-	}
-	else if (exit_code == NOT_FOUND_FAILURE)
-	{
-		ft_printf_fd(STDERR_FILENO, NOT_FOUND_ERROR, command->argv[0]);
-		return (EXIT_NOT_FOUND);
-	}
-	else if (exit_code == NO_FILE_FAILURE)
-	{
-		ft_printf_fd(STDERR_FILENO, NO_FILE_ERROR, command->argv[0]);
-		return (EXIT_NOT_FOUND);
-	}
-	return (EXIT_SUCCESS);
-}
-
-static
 void	pipe_execute(t_btree *node, int *exit_code, t_shell *shell)
 {
-	int	pipefd[2];
-	int	pid_left;
-	int	pid_right;
+	int			pipefd[2];
+	int			pid_left;
+	int			pid_right;
+	t_pipe_args	left_node;
+	t_pipe_args	right_node;
 
 	safe_pipe(pipefd);
-	pid_left = pipe_child(pipefd, node->left, pipefd[1], STDOUT_FILENO, shell);
-	pid_right = pipe_child(pipefd, node->right, pipefd[0], STDIN_FILENO, shell);
+	left_node.node = node->left;
+	left_node.shell = shell;
+	left_node.fd = pipefd;
+	left_node.oldfd = pipefd[1];
+	left_node.newfd = STDOUT_FILENO;
+	right_node.node = node->right;
+	right_node.shell = shell;
+	right_node.fd = pipefd;
+	right_node.oldfd = pipefd[0];
+	right_node.newfd = STDIN_FILENO;
+	pid_left = pipe_child(&left_node);
+	pid_right = pipe_child(&right_node);
 	pipe_parent(pipefd, exit_code, pid_left, pid_right);
 }
 
@@ -52,64 +35,25 @@ static
 int	redirect_execute(t_btree *node, t_shell *shell)
 {
 	char		*filename;
-	int			fd;
+	int			*fd;
 	int			open_flags;
 	t_redirect	*tmp;
 
 	filename = node->command->redirects->filename;
-	fd = node->command->redirects->fd;
+	fd = &node->command->redirects->fd;
 	open_flags = node->command->redirects->open_flags;
 	if (node->command->redirects->redir_type != TOKEN_HEREDOC)
 	{
-		safe_close(&fd);
-		if (open(filename, open_flags, 0644) < 0)
-		{
-			ft_printf_fd(
-				STDERR_FILENO, "%s: %s\n",
-				filename, strerror(errno));
+		if (redirect_open(fd, open_flags, filename) == EXIT_FAILURE)
 			return (EXIT_FAILURE);
-		}
 	}
 	else
-	{
-		safe_dup2(fd, STDIN_FILENO);
-		safe_close(&fd);
-	}
+		heredoc_open(fd);
 	tmp = node->command->redirects->next;
 	free(node->command->redirects->filename);
 	free(node->command->redirects);
 	node->command->redirects = tmp;
 	return (traverse_btree(node, shell));
-}
-
-int	ft_wait(int pid)
-{
-	int	exit_code;
-
-	waitpid(pid, &exit_code, 0);
-	if (WIFEXITED(exit_code) == TRUE)
-		return (WEXITSTATUS(exit_code));
-	else if (WIFSIGNALED(exit_code) == TRUE)
-		exit_code = WTERMSIG(exit_code) + 128;
-	if (exit_code == 131)
-		ft_printf_fd(2, "quit (core dumped)\n");
-	else if (exit_code == 130)
-		ft_printf_fd(2, "\n");
-	return (exit_code);
-}
-
-int	is_directory(char *cmd_name)
-{
-	struct stat	status;
-
-	status = (struct stat){};
-	lstat(cmd_name, &status);
-	if ((status.st_mode & S_IFMT) == S_IFDIR)
-	{
-		ft_printf_fd(STDERR_FILENO, DIR_ERR, cmd_name);
-		return (TRUE);
-	}
-	return (FALSE);
 }
 
 static

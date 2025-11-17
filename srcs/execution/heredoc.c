@@ -69,7 +69,7 @@ int	heredoc_find(t_btree *node, char **envp)
 	t_redirect	*redir_save;
 
 	if (node == NULL)
-		return -1;
+		return (-1);
 	if (node->node_type == TOKEN_PIPE)
 	{
 		heredoc_find(node->left, envp);

@@ -15,8 +15,8 @@ enum e_path_error
 	NO_FILE_FAILURE = 2,
 };
 
-int		program_path_find(char *program_name, char **path, char **result);
-int		pipe_child(int fd[2], t_btree *node, int oldfd, int newfd, t_shell *shell);
+int		command_exists(t_command *command, char **command_path, char **envp);
+int		pipe_child(t_pipe_args *args);
 int		traverse_btree(t_btree *node, t_shell *shell);
 void	pipe_parent(int fd[2], int *exit_code, int pid_left, int pid_right);
 int		heredoc_find(t_btree *node, char **envp);
@@ -32,5 +32,10 @@ char	*env_get(char *var_name, char **envp);
 
 void	signal_prompt(int signal);
 void	signal_heredoc(int signal);
+
+int		redirect_open(int *fd, int open_flags, char *filename);
+void	heredoc_open(int *ptr_fd);
+int		ft_wait(int pid);
+int		is_directory(char *cmd_name);
 
 #endif

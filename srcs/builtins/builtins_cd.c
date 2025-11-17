@@ -1,4 +1,8 @@
 #include "../minishell.h"
+#include "builtins.h"
+#include <linux/limits.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 static
 int	ft_error(int exit_code, char *error_msg)
@@ -26,20 +30,56 @@ char	*env_get(char *var_name, char **envp)
 	return (NULL);
 }
 
-int	builtins_cd(char **argv, char **envp)
+int	update_envs(char *old_dir, char **argv)
+{
+	int	i;
+	char	current_dir[PATH_MAX];
+
+	i = 0;
+	getcwd(current_dir, PATH_MAX);
+	while (argv[i] != NULL)
+	{
+		if (ft_strncmp("OLDPWD=", argv[i], 7) == 0)
+		{
+			free(argv[i]);
+			argv[i] = ft_strjoin("OLDPWD=", old_dir);
+		}
+		else if (ft_strncmp("PWD=", argv[i], 4) == 0)
+		{
+			free(argv[i]);
+			argv[i] = ft_strjoin("PWD=", current_dir);
+		}
+		if (argv[i] == NULL)
+			return (EXIT_FAILURE);
+		++i;
+	}
+	return (EXIT_SUCCESS);
+}
+
+int	builtins_cd(char **argv, char **envp, t_shell *shell)
 {
 	char	*var_home;
+	char	*path;
+	char	current_dir[PATH_MAX];
 
+	path = NULL;
 	if (*argv == NULL)
 	{
 		var_home = env_get("HOME", envp);
 		if (var_home == NULL)
 			return (ft_error(EXIT_FAILURE, "HOME not set"));
-		*argv = var_home;
+		path = var_home;
 	}
 	else if (argv[1] != NULL)
 		return (ft_error(EXIT_FAILURE, "too many arguments"));
-	if (chdir(*argv) == -1)
+	if (path == NULL)
+		path = *argv;
+	getcwd(current_dir, PATH_MAX);
+	if (chdir(path) == -1)
 		return (ft_error(EXIT_FAILURE, strerror(errno)));
+	if (update_envs(current_dir, shell->env_vars) == EXIT_FAILURE)
+		exit_clean(shell, 1, NULL, NULL);
+	if (update_envs(current_dir, shell->export_vars.m_array) == EXIT_FAILURE)
+		exit_clean(shell, 1, NULL, NULL);
 	return (EXIT_SUCCESS);
 }

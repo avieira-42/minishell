@@ -1,4 +1,4 @@
-#include "../types.h"
+#include "../../libs/libft/include/libft.h"
 
 void	builtins_logo_part_1(void)
 {
@@ -19,8 +19,8 @@ void	builtins_logo_part_2(void)
 {
 	ft_printf("╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═╝╚══════╝╚═╝  ╚═╝╚══════╝");
 	ft_printf("╚══════╝╚══════╝\n\n");
-	ft_printf("A shell project created by Julio Cesar and Alexandre Soeiro at ");
-	ft_printf("42_Porto\n\n");
+	ft_printf("A shell project created by Julio Cesar and Alexandre Soeiro at");
+	ft_printf(" 42_Porto\n\n");
 	ft_printf("Type:  ");
 	ft_printf("\n");
 	ft_printf("       authors   for more info about the awesome ");

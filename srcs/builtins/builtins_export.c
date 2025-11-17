@@ -9,7 +9,7 @@ void	builtins_export_printvar(char **var_value)
 		ft_putchar_fd(**var_value, 1);
 		(*var_value)++;
 		if (*(*var_value - 1) == '=')
-			break;
+			break ;
 	}
 }
 
@@ -48,7 +48,6 @@ int	builtins_export_is_valid_var_name(char *argv, char **var_end)
 	*var_end = argv;
 	return (0);
 }
-
 
 int	builtins_export(t_shell *shell, char **argv)
 {

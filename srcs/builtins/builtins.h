@@ -17,7 +17,8 @@ int		builtins_env(char **argv, char **envp);
 int		builtins_exit(char **argv);
 int		builtins_cd(char **argv, char **envp);
 int		builtins_export(t_shell *shell, char **argv);
-int		builtins_export_addvar(t_shell *shell, char *var, char *argv, char *end);
+int		builtins_export_addvar(t_shell *shell, char *var,
+			char *argv, char *end);
 int		builtins_unset(t_shell *shell, char **vars);
 int		builtins_authors(void);
 int		builtins_logo(void);

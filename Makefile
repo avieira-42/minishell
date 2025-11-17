@@ -44,7 +44,8 @@ BUILTINS_SRCS = srcs/builtins/builtins_echo.c \
 				srcs/builtins/builtins_authors.c
 
 EXECUTION_SRCS = srcs/execution/program_path_find.c \
-				 srcs/execution/command_execute.c \
+				 srcs/execution/tree_execute.c \
+				 srcs/execution/tree_execute_utils.c \
 				 srcs/execution/process_control.c \
 				 srcs/execution/heredoc.c \
 				 srcs/execution/execution_utils.c \

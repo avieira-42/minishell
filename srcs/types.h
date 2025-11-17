@@ -30,6 +30,7 @@
 # define CLOSE_PAREN ')'
 # define LVLERR "minishell: warning: shell level(%i) too high, resetting to 1\n"
 # define DIR_ERR "minishell: %s: Is a directory\n"
+# define INPUT_ERR "minishell: Error: Invalid input\n"
 
 // TOKENS
 typedef enum e_token_type

@@ -17,7 +17,8 @@ int	command_count(t_token_list *tokens)
 }
 
 static void
-command_init(t_shell *sh, t_command_get *cmd, t_token_list **tok, t_btree **node)
+	command_init(t_shell *sh, t_command_get *cmd,
+			t_token_list **tok, t_btree **node)
 {
 	cmd->i = 0;
 	cmd->toktype = TOKEN_NULL;

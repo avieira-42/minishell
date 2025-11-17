@@ -1,43 +1,44 @@
 #include "parsing.h"
 
-bool    is_pipe(t_token_list *token)
+bool	is_pipe(t_token_list *token)
 {
-    if (token->token_string[0] == PIPE) return (true);
-    return (false);
+	if (token->token_string[0] == PIPE)
+		return (true);
+	return (false);
 }
 
-bool    is_enum_redirect_token(t_token_type token)
+bool	is_enum_redirect_token(t_token_type token)
 {
-    if (token >= 1 && token <= 4)
-        return (true);
-    return (false);
+	if (token >= 1 && token <= 4)
+		return (true);
+	return (false);
 }
 
-bool    is_redirect(t_token_list *token)
+bool	is_redirect(t_token_list *token)
 {
-    if (ft_bool_strncmp(token->token_string, HEREDOC, 2) == true
-        || ft_bool_strncmp(token->token_string, APPEND, 2) == true
-        || token->token_string[0] == REDIRECT_IN
-        || token->token_string[0] == REDIRECT_OUT)
-        return (true);
-    return (false);
+	if (ft_bool_strncmp(token->token_string, HEREDOC, 2) == true
+		|| ft_bool_strncmp(token->token_string, APPEND, 2) == true
+		|| token->token_string[0] == REDIRECT_IN
+		|| token->token_string[0] == REDIRECT_OUT)
+		return (true);
+	return (false);
 }
 
-void    token_redirect_identify(t_token_list *token)
+void	token_redirect_identify(t_token_list *token)
 {
-    if (ft_bool_strncmp(token->token_string, HEREDOC, 2) == true)
-        token->token_type = TOKEN_HEREDOC;
-    else if (ft_bool_strncmp(token->token_string, APPEND, 2) == true)
-        token->token_type = TOKEN_APPEND;
-    else if (token->token_string[0] == REDIRECT_IN)
-        token->token_type = TOKEN_REDIRECT_IN;
-    else if (token->token_string[0] == REDIRECT_OUT)
-        token->token_type = TOKEN_REDIRECT_OUT;
+	if (ft_bool_strncmp(token->token_string, HEREDOC, 2) == true)
+		token->token_type = TOKEN_HEREDOC;
+	else if (ft_bool_strncmp(token->token_string, APPEND, 2) == true)
+		token->token_type = TOKEN_APPEND;
+	else if (token->token_string[0] == REDIRECT_IN)
+		token->token_type = TOKEN_REDIRECT_IN;
+	else if (token->token_string[0] == REDIRECT_OUT)
+		token->token_type = TOKEN_REDIRECT_OUT;
 }
 
-void    token_identify(t_token_list *tokens)
+void	token_identify(t_token_list *tokens)
 {
-	t_token_type    previous_token;
+	t_token_type	previous_token;
 
 	previous_token = TOKEN_NULL;
 	while (tokens != NULL)

@@ -5,14 +5,12 @@ ADD_FLAGS=
 CFLAGS = -g -Wall -Wextra -Werror $(ADD_FLAGS)
 FLAG_READLINE = -lreadline
 LDFLAGS = -I/usr/local/opt/readline/include -L/usr/local/op/readline/lib
-
 LIBFT_DIR = libs/libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
 MINISHELL_SRCS = srcs/minishell.c
 
 BINARY_TREE_SRCS = srcs/binary_tree/binary_tree.c \
-				   srcs/binary_tree/binary_tree_error.c \
 				   srcs/binary_tree/binary_tree_clear.c \
 				   srcs/binary_tree/command.c \
 				   srcs/binary_tree/command_clear.c \
@@ -21,15 +19,13 @@ BINARY_TREE_SRCS = srcs/binary_tree/binary_tree.c \
 
 PARSING_SRCS = srcs/parsing/tokenizer.c \
 				srcs/parsing/token_list.c \
+				srcs/parsing/tokenizer_utils.c \
 				srcs/parsing/quotation.c \
 				srcs/parsing/expand.c \
+				srcs/parsing/expand_utils.c \
 				srcs/parsing/environment_variables.c \
 				srcs/parsing/token_identify.c \
 				srcs/parsing/user_input_parse.c \
-				srcs/parsing/token_error.c \
-
-ERROR_SRCS = srcs/error/error.c \
-			 srcs/error/error_message.c
 
 BUILTINS_SRCS = srcs/builtins/builtins_echo.c \
 				srcs/builtins/builtins_exec.c \

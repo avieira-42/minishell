@@ -20,7 +20,7 @@ void	free_null_array(void **array)
 	free(*array);
 }
 
-	static
+static
 void	free_sized_array(void **array, int size)
 {
 	int	i;

@@ -30,13 +30,13 @@ void	ft_token_lst_clear(t_token_list **lst)
 	node = *lst;
 	while (node)
 	{
-	tmp = node->next;
-        if (node->token_string != NULL)
+		tmp = node->next;
+		if (node->token_string != NULL)
 		{
-            free(node->token_string);
+			free(node->token_string);
 			node->token_string = NULL;
 		}
-        free(node);
+		free(node);
 		node = tmp;
 	}
 	*lst = NULL;
@@ -53,7 +53,7 @@ void	token_lst_clear_safe(t_token_list **lst)
 		if (is_operator(node->token_string))
 			free(node->token_string);
 		tmp = node->next;
-        free(node);
+		free(node);
 		node = tmp;
 	}
 	*lst = NULL;
@@ -66,10 +66,10 @@ t_token_list	*ft_token_lst_new(char *token)
 	new_node = (t_token_list *) malloc(sizeof(t_token_list));
 	if (!new_node)
 		return (NULL);
-    new_node->token_type = TOKEN_NULL;
+	new_node->token_type = TOKEN_NULL;
 	new_node->token_string = token;
-    new_node->is_quoted = false;
-    new_node->is_open_quoted = false;
+	new_node->is_quoted = false;
+	new_node->is_open_quoted = false;
 	new_node->next = NULL;
 	return (new_node);
 }

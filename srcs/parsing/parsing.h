@@ -2,7 +2,6 @@
 # define PARSING_H
 
 # include "../../libs/libft/include/libft.h"
-# include "../error/error.h"
 # include "../types.h"
 
 //BOOLEAN
@@ -20,7 +19,13 @@ t_token_list	*ft_token_lst_last(t_token_list *lst);
 void			tokenize_user_input(t_shell *shell);
 void			tokenize_squoted_text(t_token_list **tokens,
 					char *user_input, int *i);
+void			tokenize_dquoted_text(t_token_list **tokens,
+					char *user_input, int *i);
+void			tokenize_squoted_text(t_token_list **tokens,
+					char *user_input, int *i);
 bool			is_redirect(t_token_list *token);
+void			tokenize_operator_set(t_token_list *token_node_new,
+					char *c, int *i);
 
 // QUOTATION
 void			quotation_check(t_token_list *tokens);
@@ -30,6 +35,7 @@ void			quote_removal(t_token_list *tokens);
 
 // EXPANSION
 void			token_expand(t_shell *shell);
+void			token_expansion_create(char **token_string, t_shell *shell);
 
 // TOKEN_IDENTIFY
 void			token_identify(t_token_list *tokens);
@@ -43,9 +49,5 @@ char			*environment_variable_get(char **envp,
 					char *variable_name, int *j);
 int				environment_variable_len(char *variable_name);
 bool			is_variable(char *token_string, int i);
-
-// TOKEN_ERROR
-void			error_exit_tokens(char *user_input,
-					t_token_list *toks, int error_code);
 
 #endif

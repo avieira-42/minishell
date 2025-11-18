@@ -59,6 +59,7 @@ typedef struct s_token_list
 	t_token_type		token_type;
 	char				*token_string;
 	bool				is_quoted;
+	bool				is_var;
 	bool				is_open_quoted;
 	struct s_token_list	*next;
 }	t_token_list;

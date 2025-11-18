@@ -35,7 +35,13 @@ void			quote_removal(t_token_list *tokens);
 
 // EXPANSION
 void			token_expand(t_shell *shell);
-void			token_expansion_create(char **token_string, t_shell *shell);
+void			single_quotation_skip(char *buffer,
+					char *token_str, t_iter *iter);
+void			expansion_vars_handle(char *buf, char *token,
+					t_iter *iter, t_shell *shell);
+void			token_expansion_init(t_iter *iter, char **buffer,
+					int *double_quoted);
+void			buffer_fill(char *buffer, char *token_string, t_iter *iter);
 
 // TOKEN_IDENTIFY
 void			token_identify(t_token_list *tokens);

@@ -1,7 +1,6 @@
 #include "parsing.h"
 #include "../cleaning/cleaning.h"
 
-static
 void	single_quotation_skip(char *buffer, char *token_str, t_iter *iter)
 {
 	buffer[iter->j] = token_str[iter->i];
@@ -18,7 +17,7 @@ void	single_quotation_skip(char *buffer, char *token_str, t_iter *iter)
 	(iter->j)++;
 }
 
-static void
+void
 	expansion_vars_handle(char *buf, char *token, t_iter *iter, t_shell *shell)
 {
 	char	*exp;
@@ -42,7 +41,6 @@ static void
 	}
 }
 
-static
 void	token_expansion_init(t_iter *iter, char **buffer, int *double_quoted)
 {
 	iter->i = 0;
@@ -51,37 +49,9 @@ void	token_expansion_init(t_iter *iter, char **buffer, int *double_quoted)
 	*buffer = malloc(107374182);
 }
 
-static
 void	buffer_fill(char *buffer, char *token_string, t_iter *iter)
 {
 	buffer[iter->j] = token_string[iter->i];
 	iter->i++;
 	iter->j++;
-}
-
-void	token_expansion_create(char **token_string, t_shell *shell)
-{
-	t_iter	iter;
-	char	*buffer;
-	int		is_dquote;
-
-	token_expansion_init(&iter, &buffer, &is_dquote);
-	if (buffer == NULL)
-		exit_clean(shell, 1, NULL, NULL);
-	while ((*token_string)[iter.i] != '\0')
-	{
-		quoted_text_check((*token_string)[iter.i], &is_dquote, DQUOTE_LITERAL);
-		if ((*token_string)[iter.i] == SQUOTE_LITERAL && is_dquote == -1)
-			single_quotation_skip(buffer, *token_string, &iter);
-		else if (is_variable(*token_string, iter.i) == true)
-			expansion_vars_handle(buffer, *token_string, &iter, shell);
-		else
-			buffer_fill(buffer, *token_string, &iter);
-	}
-	buffer[iter.j] = '\0';
-	free(*token_string);
-	*token_string = ft_strdup(buffer);
-	if (*token_string == NULL)
-		exit_clean(shell, 1, NULL, buffer);
-	free(buffer);
 }

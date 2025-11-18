@@ -31,6 +31,7 @@ int	number_get(char *str, int *position, long *result, int sign)
 {
 	int		digit;
 
+	*result = 0;
 	while (ft_isdigit(str[*position]))
 	{
 		digit = str[*position] - '0';
@@ -63,7 +64,7 @@ long	ft_strtol(char *str)
 		++i;
 	}
 	if (ft_isdigit(str[i]) == 0)
-		return (ft_error(EXIT_FAILURE, str, "numeric argument required"));
+		return (ft_error(2, str, "numeric argument required"));
 	if (number_get(str, &i, &result, sign) == EXIT_FAILURE)
 		return (2);
 	while (ft_isspace(str[i]) != 0)
@@ -73,16 +74,15 @@ long	ft_strtol(char *str)
 	return (result);
 }
 
-int	builtins_exit(char **argv)
+int	builtins_exit(char **argv, t_shell *shell)
 {
 	t_byte	exit_status;
 
-	ft_putendl_fd("exit", STDERR_FILENO);
-	if (argv[0] == NULL)
-		exit(EXIT_SUCCESS);
-	else if (argv[1] != NULL)
+	if (argv[1] != NULL)
 		return (ft_error(EXIT_FAILURE, NULL, "too many arguments"));
+	if (argv[0] == NULL)
+		exit_clean(shell, EXIT_SUCCESS, NULL, NULL);
 	exit_status = ft_strtol(argv[0]);
-	ft_printf("exit_status = %d\n", exit_status);
-	exit(exit_status);
+	exit_clean(shell, exit_status, NULL, NULL);
+	return (0);
 }

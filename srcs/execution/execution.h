@@ -36,6 +36,6 @@ void	signal_heredoc(int signal);
 int		redirect_open(int *fd, int open_flags, char *filename);
 void	heredoc_open(int *ptr_fd);
 int		ft_wait(int pid);
-int		is_directory(char *cmd_name);
+int		is_directory(char *cmd_name, int true_dir, int print_error);
 
 #endif

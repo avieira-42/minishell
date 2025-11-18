@@ -523,6 +523,6 @@ int main(int argc, char **argv, char **envp)
 		return (1);
 	}
 	minishell_init(&shell, argc, argv, envp);
-	builtins_logo();
+	//builtins_logo();
 	minishell_loop(&shell);
 }

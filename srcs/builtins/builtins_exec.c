@@ -19,6 +19,8 @@ int	builtins_exec(char **argv, char **envp, t_shell *shell)
 		return (builtins_authors());
 	else if (*argv != NULL && ft_bool_strcmp(argv[0], CMD_LOGO) == TRUE)
 		return (builtins_logo());
+	else if (*argv != NULL && ft_strcmp(argv[0], "exit") == 0)
+		return (builtins_exit(argv + 1, shell));
 	else
 		return (-1);
 }

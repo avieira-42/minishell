@@ -66,8 +66,8 @@ int	command_execute(t_command *command, char **envp, t_shell *shell)
 	exit_status = builtins_exec(command->argv, envp, shell);
 	if (exit_status != -1)
 		return (exit_status);
-	if (is_directory(command->argv[0]) == TRUE)
-		return (EXIT_FAILURE);
+	if (is_directory(command->argv[0], FALSE, TRUE) == TRUE)
+		return (126);
 	exit_status = command_exists(command, &command_path, envp);
 	if (exit_status != EXIT_SUCCESS)
 		return (exit_status);

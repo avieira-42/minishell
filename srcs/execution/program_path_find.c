@@ -1,14 +1,22 @@
 #include "execution.h"
 #include "../cleaning/cleaning.h"
+#include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <errno.h>
 
 static
-int	program_exists(char *program_path, char **result_path)
+int	program_exists(char *program_path, char **result_path, int print_error)
 {
+	(void)print_error;
 	if (access(program_path, X_OK | F_OK) == 0)
 	{
 		*result_path = program_path;
 		return (1);
 	}
+	//if (print_error == TRUE)
+	//	ft_printf_fd(STDERR_FILENO, "minishell: %s: %s\n", program_path, strerror(errno));
 	return (0);
 }
 
@@ -19,6 +27,8 @@ int	program_path_get(const char *program_name, char **path, char **result)
 	char	*tmp;
 	int		i;
 
+	if (*program_name == '\0')
+		return (0);
 	tmp = ft_strjoin("/", program_name);
 	if (tmp == NULL)
 		return (-1);
@@ -28,7 +38,7 @@ int	program_path_get(const char *program_name, char **path, char **result)
 		program_path = ft_strjoin(path[i], tmp);
 		if (program_path == NULL)
 			return (free(tmp), -1);
-		if (program_exists(program_path, result))
+		if (program_exists(program_path, result, FALSE) == TRUE)
 			return (free(tmp), 1);
 		free(program_path);
 		++i;
@@ -39,11 +49,12 @@ int	program_path_get(const char *program_name, char **path, char **result)
 static
 int	program_path_find(char *program_name, char **path, char **result)
 {
+
 	if (program_name == NULL)
 		return (-1);
 	if (ft_strchr(program_name, '/') != NULL)
 	{
-		if (program_exists(program_name, result))
+		if (program_exists(program_name, result, TRUE) == 1)
 			return (3);
 		return (2);
 	}
@@ -73,6 +84,11 @@ int	command_exists(t_command *command, char **command_path, char **envp)
 	{
 		ft_printf_fd(STDERR_FILENO, NO_FILE_ERROR, command->argv[0]);
 		return (EXIT_NOT_FOUND);
+	}
+	else if (exit_code == 4)
+	{
+		ft_printf_fd(STDERR_FILENO, DIR_ERR, command->argv[0]);
+		return (126);
 	}
 	return (EXIT_SUCCESS);
 }

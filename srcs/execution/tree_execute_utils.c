@@ -37,15 +37,23 @@ int	ft_wait(int pid)
 	return (exit_code);
 }
 
-int	is_directory(char *cmd_name)
+int	is_directory(char *cmd_name, int true_dir, int print_error)
 {
 	struct stat	status;
+	int			cmd_len;
 
+	if (true_dir == FALSE)
+	{
+		cmd_len = ft_strlen(cmd_name);
+		if (cmd_name[cmd_len - 1] != '/')
+			return (FALSE);
+	}
 	status = (struct stat){};
 	lstat(cmd_name, &status);
 	if ((status.st_mode & S_IFMT) == S_IFDIR)
 	{
-		ft_printf_fd(STDERR_FILENO, DIR_ERR, cmd_name);
+		if (print_error == TRUE)
+			ft_printf_fd(STDERR_FILENO, DIR_ERR, cmd_name);
 		return (TRUE);
 	}
 	return (FALSE);

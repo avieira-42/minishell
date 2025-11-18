@@ -10,7 +10,16 @@ int	command_count(t_token_list *tokens)
 	while (tokens != NULL && tokens->token_type != TOKEN_PIPE)
 	{
 		if (tokens->token_type == TOKEN_CMD)
-			count++;
+		{
+			if (tokens->is_var == true && tokens->token_string[0] == '\0'
+				&& tokens->is_quoted == false)
+			{
+				tokens = tokens->next;
+				continue;
+			}
+			else
+				count++;
+		}
 		tokens = tokens->next;
 	}
 	return (count);
@@ -40,15 +49,29 @@ static void
 	(*node)->command->argv[cmd->count] = NULL;
 }
 
+static
+bool	command_arg_validate(t_token_list	*token)
+{
+	if (token->token_string[0] == '\0' && token->is_var == true
+		&& token->is_quoted == false)
+	{
+		free(token->token_string);
+		return (true);
+	}
+	return (false);
+}
+
 void	command_get(t_shell *sh, t_token_list **toks, t_btree **node)
 {
 	t_command_get	cmd;
+	bool			should_skip;
 
 	command_init(sh, &cmd, toks, node);
 	while (*toks != NULL && (*toks)->token_type != TOKEN_PIPE)
 	{
 		cmd.toktype = (*toks)->token_type;
-		if (cmd.toktype == TOKEN_CMD)
+		should_skip = command_arg_validate((*toks));
+		if (cmd.toktype == TOKEN_CMD && should_skip == false)
 		{
 			(*node)->command->argv[cmd.i] = (*toks)->token_string;
 			cmd.i++;

@@ -72,5 +72,6 @@ t_token_list	*ft_token_lst_new(char *token)
 	new_node->is_quoted = false;
 	new_node->is_open_quoted = false;
 	new_node->next = NULL;
+	new_node->is_var = false;
 	return (new_node);
 }

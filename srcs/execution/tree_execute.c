@@ -63,6 +63,8 @@ int	command_execute(t_command *command, char **envp, t_shell *shell)
 	int		exit_status;
 	int		pid;
 
+	if (command->argv[0] == NULL)
+		return (EXIT_SUCCESS);
 	exit_status = builtins_exec(command->argv, envp, shell);
 	if (exit_status != -1)
 		return (exit_status);
@@ -76,6 +78,8 @@ int	command_execute(t_command *command, char **envp, t_shell *shell)
 	{
 		signal(SIGQUIT, SIG_DFL);
 		signal(SIGINT, SIG_DFL);
+		close(shell->stdfd[0]);
+		close(shell->stdfd[1]);
 		execve(command_path, command->argv, envp);
 		exit_clean(shell, 2, NULL, NULL);
 	}

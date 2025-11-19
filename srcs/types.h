@@ -111,6 +111,7 @@ typedef struct s_shell
 	int				merge_ret;
 	size_t			env_size;
 	char			**env_vars;
+	int				*stdfd;
 	t_str_array		export_vars;
 	t_token_list	*tokens;
 	t_btree			*tree;
@@ -124,6 +125,7 @@ typedef struct s_pipe_args
 	int		*fd;
 	int		oldfd;
 	int		newfd;
+	int		close_fd;
 }	t_pipe_args;
 
 #endif

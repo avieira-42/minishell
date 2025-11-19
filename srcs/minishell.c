@@ -473,6 +473,7 @@ int	handle_heredoc(t_shell *shell)
 	stdin_save = dup(STDIN_FILENO);
 	heredoc_find(shell->tree, shell->env_vars);
 	safe_dup2(stdin_save, STDIN_FILENO);
+	close(stdin_save);
 	if (g_last_signal == 130)
 	{
 		shell->exit_code = g_last_signal;
@@ -485,11 +486,9 @@ int	handle_heredoc(t_shell *shell)
 
 void	tree_execute(t_shell *shell)
 {
-	int	*stdfd;
-
-	stdfd = stdfd_save();
+	shell->stdfd = stdfd_save();
 	shell->exit_code = traverse_btree(shell->tree, shell);
-	stdfd_restore(stdfd);
+	stdfd_restore(shell->stdfd);
 }
 
 void    minishell_loop(t_shell *shell)
@@ -503,14 +502,15 @@ void    minishell_loop(t_shell *shell)
 			break ;
 		if (preprocess_input(shell) == 0)
 			continue ;
-		if (handle_heredoc(shell) == 0)
-			continue ;
+		//if (handle_heredoc(shell) == 0)
+		//	continue ;
 		tree_execute(shell);
 		iteration_clear(shell);
 	}
 	rl_clear_history();
 	ft_free_matrix(shell->env_vars);
 	ft_free_matrix(shell->export_vars.m_array);
+	close_all_fds(3);
 }
 
 int main(int argc, char **argv, char **envp)

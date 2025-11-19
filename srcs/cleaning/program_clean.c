@@ -51,3 +51,12 @@ void	free_array(void **array, int size, int free_ptr)
 	if (free_ptr != 0)
 		free(array_copy);
 }
+
+void	close_all_fds(int fd_start)
+{
+	while (fd_start < 1024)
+	{
+		close(fd_start);
+		++fd_start;
+	}
+}

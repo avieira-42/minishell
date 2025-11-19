@@ -32,6 +32,7 @@ char	*env_get(char *var_name, char **envp);
 
 void	signal_prompt(int signal);
 void	signal_heredoc(int signal);
+void	signal_broken_pipe(int signal);
 
 int		redirect_open(int *fd, int open_flags, char *filename);
 void	heredoc_open(int *ptr_fd);

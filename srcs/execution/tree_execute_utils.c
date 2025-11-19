@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include "../minishell.h"
@@ -37,21 +38,27 @@ int	ft_wait(int pid)
 	return (exit_code);
 }
 
+static
+int	true_dir_check(int true_dir, char *cmd_name)
+{
+	int	cmd_len;
+
+	cmd_len = ft_strlen(cmd_name);
+	return (true_dir == FALSE
+			&& cmd_name[cmd_len - 1] != '/'
+		 	&& ft_strncmp(cmd_name, "./", 2) != 0);
+}
+
 int	is_directory(char *cmd_name, int true_dir, int print_error)
 {
 	struct stat	status;
-	int			cmd_len;
 
-	if (true_dir == FALSE)
-	{
-		cmd_len = ft_strlen(cmd_name);
-		if (cmd_name[cmd_len - 1] != '/')
-			return (FALSE);
-	}
 	status = (struct stat){};
 	lstat(cmd_name, &status);
 	if ((status.st_mode & S_IFMT) == S_IFDIR)
 	{
+		if (true_dir_check(true_dir, cmd_name) == TRUE)
+			return (FALSE);
 		if (print_error == TRUE)
 			ft_printf_fd(STDERR_FILENO, DIR_ERR, cmd_name);
 		return (TRUE);

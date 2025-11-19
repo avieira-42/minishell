@@ -13,6 +13,8 @@ void	single_quotation_skip(char *buffer, char *token_str, t_iter *iter)
 		(iter->j)++;
 	}
 	buffer[iter->j] = token_str[iter->i];
+	if (token_str[iter->i] == '\0')
+		return ;
 	(iter->i)++;
 	(iter->j)++;
 }

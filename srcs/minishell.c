@@ -461,8 +461,10 @@ void	signal_after_readline_setup(t_shell *shell)
 int	preprocess_input(t_shell *shell)
 {
 	add_history(shell->user_input);
-	user_input_parse(shell);
-	token_lst_clear_safe(&shell->tokens);
+	if (user_input_parse(shell) == -1)
+		ft_token_lst_clear(&shell->tokens);
+	else
+		token_lst_clear_safe(&shell->tokens);
 	return (shell->tree != NULL);
 }
 

@@ -78,6 +78,8 @@ int	builtins_exit(char **argv, t_shell *shell)
 {
 	t_byte	exit_status;
 
+	if (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO))
+		ft_putendl_fd("exit", 2);
 	if (argv[0] == NULL)
 		exit_clean(shell, EXIT_SUCCESS, NULL, NULL);
 	if (argv[1] != NULL)

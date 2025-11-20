@@ -24,6 +24,7 @@ PARSING_SRCS = srcs/parsing/tokenizer.c \
 				srcs/parsing/expand.c \
 				srcs/parsing/expand_utils.c \
 				srcs/parsing/environment_variables.c \
+				srcs/parsing/environment_variables_utils.c \
 				srcs/parsing/token_identify.c \
 				srcs/parsing/user_input_parse.c \
 
@@ -45,10 +46,12 @@ EXECUTION_SRCS = srcs/execution/program_path_find.c \
 				 srcs/execution/process_control.c \
 				 srcs/execution/heredoc.c \
 				 srcs/execution/execution_utils.c \
+				 srcs/execution/execution.c \
 				 srcs/execution/signals.c
 
 CLEANING_SRCS = srcs/cleaning/program_clean.c \
-				srcs/cleaning/exit_clean.c
+				srcs/cleaning/exit_clean.c \
+				srcs/cleaning/cleaning.c
 				
 SRCS = $(MINISHELL_SRCS) \
 		$(ERROR_SRCS) \

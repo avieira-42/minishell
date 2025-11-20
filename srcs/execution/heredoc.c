@@ -4,7 +4,7 @@
 #include "execution.h"
 
 static
-void	heredoc_write_bytes_to_file(char *line, char **envp, int fd)
+void	heredoc_write_bytes_to_file(char *line, char **envp, int fd, bool expnd)
 {
 	int		i;
 	char	*expansion;
@@ -12,7 +12,7 @@ void	heredoc_write_bytes_to_file(char *line, char **envp, int fd)
 	i = 0;
 	while (line[i] != '\0')
 	{
-		if (is_variable(line, i))
+		if (expnd == true && is_variable(line, i))
 		{
 			expansion = environment_variable_get(envp, &line[i], &i);
 			ft_putstr_fd(expansion, fd);
@@ -45,7 +45,9 @@ void	heredoc_execute(char *limiter, t_redirect *redir, t_shell *shell)
 		if (line == NULL || ft_strcmp(line, limiter) == 0)
 			break ;
 		add_history(line);
-		heredoc_write_bytes_to_file(line, shell->env_vars, pipefd[1]);
+		heredoc_write_bytes_to_file(line, shell->env_vars,
+				pipefd[1], redir->expand);
+
 	}
 	safe_close(&pipefd[1]);
 	redir->fd = pipefd[0];

@@ -27,6 +27,7 @@ t_redirect	*redir_add_new(t_shell *sh, t_token_type redir_type,
 		redirect_set(node_new, STDOUT_FILENO, O_WRONLY | O_CREAT | O_APPEND);
 	else if (redir_type == TOKEN_HEREDOC)
 		redirect_set(node_new, -1, 0);
+	node_new->expand = true;
 	node_new->redir_type = redir_type;
 	node_new->filename = file;
 	node_new->next = NULL;

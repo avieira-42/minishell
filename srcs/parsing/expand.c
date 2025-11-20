@@ -45,7 +45,8 @@ void	token_expand(t_shell *sh)
 	tokens = sh->tokens;
 	while (tokens != NULL)
 	{
-		token_expansion_create(tokens, &tokens->token_string, sh);
+		if (tokens->token_type != TOKEN_LIMITER)
+			token_expansion_create(tokens, &tokens->token_string, sh);
 		tokens = tokens->next;
 	}
 }

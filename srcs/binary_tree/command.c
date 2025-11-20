@@ -61,6 +61,22 @@ bool	command_arg_validate(t_token_list	*token)
 	return (false);
 }
 
+static
+void	command_redirect(t_shell *sh, t_token_list **toks,
+			t_command_get cmd, t_btree **node)
+{
+	t_token_type	redir_type;
+
+	redir_type = (*toks)->token_type;
+	(*toks) = (*toks)->next;
+	cmd.node_red = redir_add_new(sh, cmd.toktype,
+			(*toks)->token_string, node);
+	if (redir_type == TOKEN_HEREDOC && (*toks)->is_quoted)
+		cmd.node_red->expand = false;
+	cmd.node_red->next = NULL;
+	redirect_add_back(&((*node)->command->redirects), cmd.node_red);
+}
+
 void	command_get(t_shell *sh, t_token_list **toks, t_btree **node)
 {
 	t_command_get	cmd;
@@ -77,13 +93,7 @@ void	command_get(t_shell *sh, t_token_list **toks, t_btree **node)
 			cmd.i++;
 		}
 		else if (is_enum_redirect_token(cmd.toktype) == true)
-		{
-			(*toks) = (*toks)->next;
-			cmd.node_red = redir_add_new(sh, cmd.toktype,
-					(*toks)->token_string, node);
-			cmd.node_red->next = NULL;
-			redirect_add_back(&((*node)->command->redirects), cmd.node_red);
-		}
+			command_redirect(sh, toks, cmd, node);
 		(*toks) = (*toks)->next;
 	}
 }

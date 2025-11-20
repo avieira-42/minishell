@@ -73,6 +73,7 @@ typedef struct s_iter
 typedef struct s_redirect
 {
 	t_token_type		redir_type;
+	bool				expand;
 	int					fd;
 	int					open_flags;
 	char				*filename;

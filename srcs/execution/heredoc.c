@@ -38,6 +38,7 @@ void	heredoc_execute(char *limiter, t_redirect *redir, t_shell *shell)
 	{
 		if (g_last_signal == 130)
 		{
+			free(line);
 			safe_close(&pipefd[0]);
 			break ;
 		}
@@ -47,6 +48,7 @@ void	heredoc_execute(char *limiter, t_redirect *redir, t_shell *shell)
 		add_history(line);
 		heredoc_write_bytes_to_file(line, shell->env_vars,
 			pipefd[1], redir->expand);
+		free(line);
 	}
 	safe_close(&pipefd[1]);
 	redir->fd = pipefd[0];

@@ -38,7 +38,7 @@ int	program_path_get(const char *program_name, char **path, char **result)
 	char	*tmp;
 	int		i;
 
-	if (*program_name == '\0')
+	if (path == NULL || *program_name == '\0')
 		return (0);
 	tmp = ft_strjoin("/", program_name);
 	if (tmp == NULL)
@@ -56,21 +56,6 @@ int	program_path_get(const char *program_name, char **path, char **result)
 	}
 	return (free(tmp), 0);
 }
-
-//static
-//int	program_path_find(char *program_name, char **path, char **result)
-//{
-//
-//	if (program_name == NULL)
-//		return (-1);
-//	if (ft_strchr(program_name, '/') != NULL)
-//	{
-//		if (program_exists(program_name, result, TRUE) == 1)
-//			return (3);
-//		return (2);
-//	}
-//	return (program_path_get(program_name, path, result));
-//}
 
 int	program_path_find(t_command *command, char **command_path, char **envp)
 {

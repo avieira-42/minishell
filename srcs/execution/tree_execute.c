@@ -99,7 +99,7 @@ int	traverse_btree(t_btree *node, t_shell *shell)
 
 	exit_status = 0;
 	if (node == NULL)
-		exit(exit_status);
+		exit_clean(shell, EXIT_FAILURE, NULL, NULL);
 	if (node->node_type != TOKEN_PIPE && node->command->redirects != NULL)
 		return (redirect_execute(node, shell));
 	if (node->node_type == TOKEN_PIPE)

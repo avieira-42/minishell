@@ -81,7 +81,7 @@ int	builtins_exit(char **argv, t_shell *shell)
 	if (argv[0] == NULL)
 		exit_clean(shell, EXIT_SUCCESS, NULL, NULL);
 	if (argv[1] != NULL)
-		return (ft_error(EXIT_FAILURE, NULL, "too many arguments"));
+		return (ft_error(2, NULL, "too many arguments"));
 	exit_status = ft_strtol(argv[0]);
 	exit_clean(shell, exit_status, NULL, NULL);
 	return (0);

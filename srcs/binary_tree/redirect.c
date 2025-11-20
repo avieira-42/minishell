@@ -17,7 +17,7 @@ t_redirect	*redir_add_new(t_shell *sh, t_token_type redir_type,
 	if (node_new == NULL)
 	{
 		command_exit_clear(node);
-		exit_clean(sh, 1, NULL, NULL);
+		exit_clean(sh, 66, NULL, NULL);
 	}
 	if (redir_type == TOKEN_REDIRECT_IN)
 		redirect_set(node_new, STDIN_FILENO, O_RDONLY);

@@ -46,8 +46,7 @@ void	heredoc_execute(char *limiter, t_redirect *redir, t_shell *shell)
 			break ;
 		add_history(line);
 		heredoc_write_bytes_to_file(line, shell->env_vars,
-				pipefd[1], redir->expand);
-
+			pipefd[1], redir->expand);
 	}
 	safe_close(&pipefd[1]);
 	redir->fd = pipefd[0];

@@ -8,7 +8,7 @@ void	buffer_realloc(t_shell *sh, char *buffer, int j, char **token_string)
 	free(*token_string);
 	*token_string = ft_strdup(buffer);
 	if (*token_string == NULL)
-		exit_clean(sh, 1, NULL, buffer);
+		exit_clean(sh, 66, NULL, buffer);
 	free(buffer);
 }
 
@@ -21,7 +21,7 @@ static inline void
 
 	token_expansion_init(&iter, &buffer, &is_dquote);
 	if (buffer == NULL)
-		exit_clean(sh, 1, NULL, NULL);
+		exit_clean(sh, 66, NULL, NULL);
 	while ((*token_string)[iter.i] != '\0')
 	{
 		quoted_text_check((*token_string)[iter.i], &is_dquote, DQUOTE_LITERAL);

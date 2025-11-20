@@ -35,11 +35,11 @@ void
 	}
 	token_node_new = ft_token_lst_new(NULL);
 	if (token_node_new == NULL)
-		exit_clean(shell, 1, NULL, NULL);
+		exit_clean(shell, 66, NULL, NULL);
 	ft_token_lst_add_back(tokens, token_node_new);
 	tokenize_operator_set(token_node_new, c, i);
 	if (token_node_new->token_string == NULL)
-		exit_clean(shell, 1, NULL, NULL);
+		exit_clean(shell, 66, NULL, NULL);
 	(*i)++;
 }
 
@@ -52,12 +52,12 @@ void	tokenize_word(t_shell *shell, int i, int j)
 		return ;
 	token_new = ft_substr(shell->user_input, j, i - j);
 	if (token_new == NULL)
-		exit_clean(shell, 1, NULL, NULL);
+		exit_clean(shell, 66, NULL, NULL);
 	token_node_new = ft_token_lst_new(token_new);
 	if (token_node_new == NULL)
 	{
 		free(token_new);
-		exit_clean(shell, 1, NULL, NULL);
+		exit_clean(shell, 66, NULL, NULL);
 	}
 	ft_token_lst_add_back(&shell->tokens, token_node_new);
 }

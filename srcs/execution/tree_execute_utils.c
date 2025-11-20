@@ -45,9 +45,9 @@ int	true_dir_check(int true_dir, char *cmd_name)
 
 	cmd_len = ft_strlen(cmd_name);
 	return (true_dir == FALSE
-			&& cmd_name[cmd_len - 1] != '/'
-		 	&& ft_strncmp(cmd_name, "./", 2) != 0
-			&& cmd_name[0] != '/');
+		&& cmd_name[cmd_len - 1] != '/'
+		&& ft_strncmp(cmd_name, "./", 2) != 0
+		&& cmd_name[0] != '/');
 }
 
 int	is_directory(char *cmd_name, int true_dir, int print_error)

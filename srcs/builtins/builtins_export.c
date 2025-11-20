@@ -61,7 +61,7 @@ int	builtins_export(t_shell *shell, char **argv)
 	{
 		var = ft_strdup(*argv);
 		if (var == NULL)
-			exit_clean(shell, 1, NULL, NULL);
+			exit_clean(shell, 66, NULL, NULL);
 		if (builtins_export_is_valid_var_name(*argv, &var_end) == -1)
 		{
 			ft_printf_fd(2, EXPORT_ERROR, *argv);

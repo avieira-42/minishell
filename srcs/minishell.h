@@ -15,40 +15,42 @@
 # include "cleaning/cleaning.h"
 # include "types.h"
 
-# define COLOR_GREEN "\001\033[0;32m\002"
+# define GREEN "\001\033[0;32m\002"
 # define COLOR_RESET "\001\033[0m\002"
 # define RESET   "\001\033[0m\002"
-# define PROMPT_MINISHELL COLOR_GREEN "minishell" COLOR_RESET "$> " RESET
 
 // ERROR_H
-void error_exit(char *argv1);
-void error_message_put_1(char *error_message, char *argv1);
+void			error_exit(char *argv1);
+void			error_message_put_1(char *error_message, char *argv1);
 
 // PARSE_H
-void parse_start(int argc, char *argv1);
+void			parse_start(int argc, char *argv1);
 
 // PARSER
 //  token list
-void ft_token_lst_clear(t_token_list **lst);
-void ft_token_lst_add_back(t_token_list **lst, t_token_list *new_node);
-t_token_list *ft_token_lst_new(char *token);
-t_token_list *ft_token_lst_last(t_token_list *lst);
+void			ft_token_lst_clear(t_token_list **lst);
+void			ft_token_lst_add_back(t_token_list **lst,
+					t_token_list *new_node);
+t_token_list	*ft_token_lst_new(char *token);
+t_token_list	*ft_token_lst_last(t_token_list *lst);
 
 //token_identifiy
-void    token_identify(t_token_list *tokens);
+void			token_identify(t_token_list *tokens);
 
 //environment_variables
-char	*environment_variable_get(char **envp, char *variable_name, int *j);
-int     environment_variable_len(char *variable_name);
+char			*environment_variable_get(char **envp,
+					char *variable_name, int *j);
+int				environment_variable_len(char *variable_name);
 
 // tokenize
-void tokenize_user_input(t_shell *shell);
-void tokenize_squoted_text(t_token_list **tokens, char *user_input, int *i);
+void			tokenize_user_input(t_shell *shell);
+void			tokenize_squoted_text(t_token_list **tokens,
+					char *user_input, int *i);
 
 //quotation
-void    quotation_check(t_token_list *tokens);
+void			quotation_check(t_token_list *tokens);
 
 //token_verification
-int	user_input_parse(t_shell *shell);
+int				user_input_parse(t_shell *shell);
 
 #endif

@@ -28,7 +28,7 @@ void
 	{
 		exp = ft_itoa(shell->exit_code);
 		if (exp == NULL)
-			exit_clean(shell, 1, NULL, buf);
+			exit_clean(shell, 66, NULL, buf);
 		iter->i += 2;
 		ft_memcpy(&buf[iter->j], exp, ft_strlen(exp));
 		iter->j += ft_strlen(exp);

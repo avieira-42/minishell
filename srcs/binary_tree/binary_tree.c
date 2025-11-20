@@ -64,7 +64,7 @@ void	btree_create(t_shell *shell)
 	{
 		node_new = btree_add_new();
 		if (node_new == NULL)
-			exit_clean(shell, 1, NULL, NULL);
+			exit_clean(shell, 66, NULL, NULL);
 		if (tokens->token_type == TOKEN_CMD
 			|| is_enum_redirect_token(tokens->token_type) == true)
 		{

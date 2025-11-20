@@ -22,7 +22,7 @@ void	exit_clean(t_shell *shell, int exit_code, char **array, char *string)
 		free_array((void *)shell->env_vars, -1, true);
 	if (shell->export_vars.m_array != NULL)
 		free_array((void *)shell->export_vars.m_array, -1, true);
-	if (exit_code == 1)
+	if (exit_code == 66)
 		ft_printf_fd(2, "minishell: Error: Could not allocate memory\n");
 	close_all_fds(3, shell->highest_fd);
 	exit(exit_code);

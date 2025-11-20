@@ -15,7 +15,7 @@ int	command_count(t_token_list *tokens)
 				&& tokens->is_quoted == false)
 			{
 				tokens = tokens->next;
-				continue;
+				continue ;
 			}
 			else
 				count++;
@@ -36,7 +36,7 @@ static void
 	if ((*node)->command == NULL)
 	{
 		command_exit_clear(node);
-		exit_clean(sh, 1, NULL, NULL);
+		exit_clean(sh, 66, NULL, NULL);
 	}
 	(*node)->command->redirects = NULL;
 	// might need to set command to NULL when no commands
@@ -44,7 +44,7 @@ static void
 	if ((*node)->command->argv == NULL)
 	{
 		command_exit_clear(node);
-		exit_clean(sh, 1, NULL, NULL);
+		exit_clean(sh, 66, NULL, NULL);
 	}
 	(*node)->command->argv[cmd->count] = NULL;
 }

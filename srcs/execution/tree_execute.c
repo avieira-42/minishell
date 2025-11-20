@@ -57,6 +57,13 @@ int	redirect_execute(t_btree *node, t_shell *shell)
 }
 
 static
+void	command_execute_free_path(t_command *command, char *command_path)
+{
+	if (command->argv[0] != command_path)
+		free(command_path);
+}
+
+static
 int	command_execute(t_command *command, char **envp, t_shell *shell)
 {
 	char	*command_path;
@@ -82,8 +89,7 @@ int	command_execute(t_command *command, char **envp, t_shell *shell)
 		execve(command_path, command->argv, envp);
 		exit_clean(shell, 2, NULL, NULL);
 	}
-	if (command->argv[0] != command_path)
-		free(command_path);
+	command_execute_free_path(command, command_path);
 	return (ft_wait(pid));
 }
 

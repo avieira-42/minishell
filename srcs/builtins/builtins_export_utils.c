@@ -10,7 +10,7 @@ void
 			sizeof(char *) * (vars->length + 2),
 			sizeof(char *) * (shell->export_vars.length + 1));
 	if (vars->m_array == NULL)
-		exit_clean(shell, 1, NULL, var);
+		exit_clean(shell, 66, NULL, var);
 	shell->export_vars.m_array[vars->length] = var;
 	shell->export_vars.m_array[vars->length + 1] = NULL;
 	vars->length++;
@@ -47,10 +47,10 @@ void
 			sizeof (char *) * (shell->env_size + 2),
 			sizeof(char *) * (shell->env_size + 1));
 	if (shell->env_vars == NULL)
-		exit_clean(shell, 1, NULL, var);
+		exit_clean(shell, 66, NULL, var);
 	shell->env_vars[shell->env_size] = ft_strdup(var);
 	if (shell->env_vars[shell->env_size] == NULL)
-		exit_clean(shell, 1, NULL, var);
+		exit_clean(shell, 66, NULL, var);
 	shell->env_vars[shell->env_size + 1] = NULL;
 	shell->env_size++;
 }
@@ -70,7 +70,7 @@ void	builtins_export_to_env(t_shell *shell, char *var, size_t len)
 			free(vars[i]);
 			vars[i] = ft_strdup(var);
 			if (vars[i] == NULL)
-				exit_clean(shell, 1, NULL, var);
+				exit_clean(shell, 66, NULL, var);
 			return ;
 		}
 		i++;

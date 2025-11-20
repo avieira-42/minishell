@@ -25,7 +25,8 @@ int	program_exists(char *program_path, char **result_path, int print_error)
 			exit_code = 126;
 		if (errno == ENOENT)
 			exit_code = 127;
-		ft_printf_fd(STDERR_FILENO, "minishell: %s: %s\n", program_path, strerror(errno));
+		ft_printf_fd(STDERR_FILENO,
+			"minishell: %s: %s\n", program_path, strerror(errno));
 	}
 	return (exit_code);
 }
@@ -109,5 +110,5 @@ int	command_exists(t_command *command, char **command_path, char **envp)
 		return (-1);
 	if (ft_strchr(command->argv[0], '/') != NULL)
 		return (absolute_path_check(command->argv[0], command_path));
-	return(program_path_find(command, command_path, envp));
+	return (program_path_find(command, command_path, envp));
 }

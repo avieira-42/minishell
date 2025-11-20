@@ -23,7 +23,7 @@ char	*env_get(char *var_name, char **envp)
 	while (envp[i] != NULL)
 	{
 		if (ft_strncmp(var_name, envp[i], var_len) == 0
-	  		&& envp[i][var_len] == '=')
+			&& envp[i][var_len] == '=')
 			return (envp[i] + var_len + 1);
 		++i;
 	}
@@ -32,7 +32,7 @@ char	*env_get(char *var_name, char **envp)
 
 int	update_envs(char *old_dir, char **argv)
 {
-	int	i;
+	int		i;
 	char	current_dir[PATH_MAX];
 
 	i = 0;
@@ -78,8 +78,8 @@ int	builtins_cd(char **argv, char **envp, t_shell *shell)
 	if (chdir(path) == -1)
 		return (ft_error(EXIT_FAILURE, strerror(errno)));
 	if (update_envs(current_dir, shell->env_vars) == EXIT_FAILURE)
-		exit_clean(shell, 1, NULL, NULL);
+		exit_clean(shell, 66, NULL, NULL);
 	if (update_envs(current_dir, shell->export_vars.m_array) == EXIT_FAILURE)
-		exit_clean(shell, 1, NULL, NULL);
+		exit_clean(shell, 66, NULL, NULL);
 	return (EXIT_SUCCESS);
 }

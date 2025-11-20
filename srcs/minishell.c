@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 19:38:39 by avieira-          #+#    #+#             */
-/*   Updated: 2025/11/20 20:14:03 by avieira-         ###   ########.fr       */
+/*   Updated: 2025/11/20 21:52:56 by jcesar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	preprocess_input(t_shell *shell)
 }
 
 static
-void    minishell_loop(t_shell *shell)
+void	minishell_loop(t_shell *shell)
 {
 	while (TRUE)
 	{
@@ -74,7 +74,7 @@ void	minishell_init(t_shell *shell, int argc, char **argv, char **envp)
 		exit_clean(shell, 66, NULL, NULL);
 }
 
-int main(int argc, char **argv, char **envp)
+int	main(int argc, char **argv, char **envp)
 {
 	t_shell	shell;
 

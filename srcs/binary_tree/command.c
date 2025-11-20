@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   command.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/20 19:37:05 by avieira-          #+#    #+#             */
+/*   Updated: 2025/11/20 19:39:39 by avieira-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "binary_tree.h"
 #include "../cleaning/cleaning.h"
 
@@ -39,7 +51,6 @@ static void
 		exit_clean(sh, 66, NULL, NULL);
 	}
 	(*node)->command->redirects = NULL;
-	// might need to set command to NULL when no commands
 	(*node)->command->argv = malloc(sizeof(char *) * (cmd->count + 1));
 	if ((*node)->command->argv == NULL)
 	{

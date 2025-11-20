@@ -36,10 +36,14 @@ char	*env_get(char *var_name, char **envp);
 void	signal_prompt(int signal);
 void	signal_heredoc(int signal);
 void	signal_broken_pipe(int signal);
+void	signal_prompt_setup(void);
+void	signal_after_readline_setup(t_shell *shell);
 
 int		redirect_open(int *fd, int open_flags, char *filename);
 void	heredoc_open(int *ptr_fd, t_shell *shell);
 int		ft_wait(int pid);
 int		is_directory(char *cmd_name, int true_dir, int print_error);
+void	tree_execute(t_shell *shell);
+int		handle_heredoc(t_shell *shell);
 
 #endif

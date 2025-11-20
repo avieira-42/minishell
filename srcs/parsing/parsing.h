@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing.h                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/20 19:36:04 by avieira-          #+#    #+#             */
+/*   Updated: 2025/11/20 20:06:55 by avieira-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PARSING_H
 # define PARSING_H
 
@@ -55,5 +67,10 @@ char			*environment_variable_get(char **envp,
 					char *variable_name, int *j);
 int				environment_variable_len(char *variable_name);
 bool			is_variable(char *token_string, int i);
+size_t			minishell_envp_size(t_shell *shell);
+int				shell_lvl_incr(t_shell *shell, char **new_var,
+					char *old_var, char **tmp);
+void			shell_lvl_create(t_shell *shell, char **dup);
+char			**minishell_env_dup(t_shell *shell, char *lvl);
 
 #endif

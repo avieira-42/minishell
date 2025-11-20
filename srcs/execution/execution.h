@@ -19,13 +19,16 @@ int		command_exists(t_command *command, char **command_path, char **envp);
 int		pipe_child(t_pipe_args *args);
 int		traverse_btree(t_btree *node, t_shell *shell);
 void	pipe_parent(int fd[2], int *exit_code, int pid_left, int pid_right);
-int		heredoc_find(t_btree *node, char **envp);
+int		heredoc_find(t_btree *node, t_shell *shell);
 
-int		safe_fork(void);
-void	safe_dup2(int oldfd, int newfd);
-void	safe_pipe(int pipefd[2]);
+int		safe_fork(t_shell *shell);
+void	safe_dup2(int oldfd, int newfd, t_shell *shell);
+void	safe_pipe(int pipefd[2], t_shell *shell);
+void	update_highest_fd(t_shell *shell, int fd);
+void	update_highest_fd_array(t_shell *shell, int *fd_array);
+
 int		*stdfd_save(void);
-void	stdfd_restore(int fd[2]);
+void	stdfd_restore(int fd[2], t_shell *shell);
 
 int		ft_wait(int pid);
 char	*env_get(char *var_name, char **envp);
@@ -35,7 +38,7 @@ void	signal_heredoc(int signal);
 void	signal_broken_pipe(int signal);
 
 int		redirect_open(int *fd, int open_flags, char *filename);
-void	heredoc_open(int *ptr_fd);
+void	heredoc_open(int *ptr_fd, t_shell *shell);
 int		ft_wait(int pid);
 int		is_directory(char *cmd_name, int true_dir, int print_error);
 

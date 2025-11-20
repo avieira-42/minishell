@@ -16,9 +16,9 @@ int	redirect_open(int *fd, int open_flags, char *filename)
 	return (EXIT_SUCCESS);
 }
 
-void	heredoc_open(int *ptr_fd)
+void	heredoc_open(int *ptr_fd, t_shell *shell)
 {
-	safe_dup2(*ptr_fd, STDIN_FILENO);
+	safe_dup2(*ptr_fd, STDIN_FILENO, shell);
 	safe_close(ptr_fd);
 }
 

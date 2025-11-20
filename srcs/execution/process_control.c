@@ -16,15 +16,12 @@ int	pipe_child(t_pipe_args *args)
 	int	pid;
 	int	exit_status;
 
-	pid = safe_fork();
+	pid = safe_fork(args->shell);
 	if (pid == 0)
 	{
 		signal(SIGPIPE, signal_broken_pipe);
-		safe_dup2(args->oldfd, args->newfd);
-		safe_close(&args->fd[1]);
-		safe_close(&args->fd[0]);
-		close(args->shell->stdfd[0]);
-		close(args->shell->stdfd[1]);
+		safe_dup2(args->oldfd, args->newfd, args->shell);
+		close_all_fds(3, args->shell->highest_fd);
 		exit_status = traverse_btree(args->node, args->shell);
 		free_array((void **)args->shell->env_vars, -1, true);
 		free_array((void **)args->shell->export_vars.m_array, -1, true);
@@ -43,10 +40,10 @@ int	*stdfd_save(void)
 	return (fd);
 }
 
-void	stdfd_restore(int fd[2])
+void	stdfd_restore(int fd[2], t_shell *shell)
 {
-	safe_dup2(fd[0], STDIN_FILENO);
-	safe_dup2(fd[1], STDOUT_FILENO);
+	safe_dup2(fd[0], STDIN_FILENO, shell);
+	safe_dup2(fd[1], STDOUT_FILENO, shell);
 	close(fd[0]);
 	close(fd[1]);
 }

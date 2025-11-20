@@ -112,6 +112,7 @@ typedef struct s_shell
 	size_t			env_size;
 	char			**env_vars;
 	int				*stdfd;
+	int				highest_fd;
 	t_str_array		export_vars;
 	t_token_list	*tokens;
 	t_btree			*tree;

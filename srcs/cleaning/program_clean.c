@@ -52,9 +52,9 @@ void	free_array(void **array, int size, int free_ptr)
 		free(array_copy);
 }
 
-void	close_all_fds(int fd_start)
+void	close_all_fds(int fd_start, int fd_end)
 {
-	while (fd_start < 1024)
+	while (fd_start <= fd_end)
 	{
 		close(fd_start);
 		++fd_start;

@@ -15,7 +15,7 @@ void	pipe_execute(t_btree *node, int *exit_code, t_shell *shell)
 	t_pipe_args	left_node;
 	t_pipe_args	right_node;
 
-	safe_pipe(pipefd);
+	safe_pipe(pipefd, shell);
 	left_node.node = node->left;
 	left_node.shell = shell;
 	left_node.fd = pipefd;
@@ -48,7 +48,7 @@ int	redirect_execute(t_btree *node, t_shell *shell)
 			return (EXIT_FAILURE);
 	}
 	else
-		heredoc_open(fd);
+		heredoc_open(fd, shell);
 	tmp = node->command->redirects->next;
 	free(node->command->redirects->filename);
 	free(node->command->redirects);
@@ -73,13 +73,12 @@ int	command_execute(t_command *command, char **envp, t_shell *shell)
 	exit_status = command_exists(command, &command_path, envp);
 	if (exit_status != EXIT_SUCCESS)
 		return (exit_status);
-	pid = safe_fork();
+	pid = safe_fork(shell);
 	if (pid == 0)
 	{
 		signal(SIGQUIT, SIG_DFL);
 		signal(SIGINT, SIG_DFL);
-		close(shell->stdfd[0]);
-		close(shell->stdfd[1]);
+		close_all_fds(3, shell->highest_fd);
 		execve(command_path, command->argv, envp);
 		exit_clean(shell, 2, NULL, NULL);
 	}

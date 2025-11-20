@@ -422,6 +422,7 @@ void	minishell_init(t_shell *shell, int argc, char **argv, char **envp)
 	shell->env_vars = NULL;
 	shell->tokens = NULL;
 	shell->tree = NULL;
+	shell->highest_fd = 2;
 	shell->env_size = minishell_envp_size(shell);
 	shell->env_vars = minishell_env_dup(shell, NULL);
 	shell->export_vars.length = shell->env_size;
@@ -473,8 +474,8 @@ int	handle_heredoc(t_shell *shell)
 	int	stdin_save;
 
 	stdin_save = dup(STDIN_FILENO);
-	heredoc_find(shell->tree, shell->env_vars);
-	safe_dup2(stdin_save, STDIN_FILENO);
+	heredoc_find(shell->tree, shell);
+	safe_dup2(stdin_save, STDIN_FILENO, shell);
 	close(stdin_save);
 	if (g_last_signal == 130)
 	{
@@ -489,8 +490,9 @@ int	handle_heredoc(t_shell *shell)
 void	tree_execute(t_shell *shell)
 {
 	shell->stdfd = stdfd_save();
+	update_highest_fd_array(shell, shell->stdfd);
 	shell->exit_code = traverse_btree(shell->tree, shell);
-	stdfd_restore(shell->stdfd);
+	stdfd_restore(shell->stdfd, shell);
 }
 
 void    minishell_loop(t_shell *shell)
@@ -504,15 +506,15 @@ void    minishell_loop(t_shell *shell)
 			break ;
 		if (preprocess_input(shell) == 0)
 			continue ;
-		//if (handle_heredoc(shell) == 0)
-		//	continue ;
+		if (handle_heredoc(shell) == 0)
+			continue ;
 		tree_execute(shell);
 		iteration_clear(shell);
 	}
 	rl_clear_history();
 	ft_free_matrix(shell->env_vars);
 	ft_free_matrix(shell->export_vars.m_array);
-	close_all_fds(3);
+	close_all_fds(3, shell->highest_fd);
 }
 
 int main(int argc, char **argv, char **envp)

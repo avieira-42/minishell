@@ -21,12 +21,10 @@ int	pipe_child(t_pipe_args *args)
 	{
 		signal(SIGPIPE, signal_broken_pipe);
 		safe_dup2(args->oldfd, args->newfd, args->shell);
-		close_all_fds(3, args->shell->highest_fd);
+		close(args->fd[0]);
+		close(args->fd[1]);
 		exit_status = traverse_btree(args->node, args->shell);
-		free_array((void **)args->shell->env_vars, -1, true);
-		free_array((void **)args->shell->export_vars.m_array, -1, true);
-		btree_clear(&args->shell->tree);
-		exit(exit_status);
+		exit_clean(args->shell, exit_status, NULL, NULL);
 	}
 	return (pid);
 }

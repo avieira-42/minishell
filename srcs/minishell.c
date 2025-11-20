@@ -476,7 +476,6 @@ int	handle_heredoc(t_shell *shell)
 	stdin_save = dup(STDIN_FILENO);
 	heredoc_find(shell->tree, shell);
 	safe_dup2(stdin_save, STDIN_FILENO, shell);
-	close(stdin_save);
 	if (g_last_signal == 130)
 	{
 		shell->exit_code = g_last_signal;

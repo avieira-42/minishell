@@ -105,4 +105,4 @@ valgrind: $(NAME)
 	valgrind --suppressions=readline.supp --show-leak-kinds=all --track-origins=yes --leak-check=full --trace-children=yes --track-fds=all ./$(NAME)
 
 fdvalgrind: $(NAME)
-	valgrind --suppressions=readline.supp --trace-children=yes --track-fds=all ./$(NAME)
+	valgrind --suppressions=readline.supp --trace-children=yes --track-fds=yes ./$(NAME)

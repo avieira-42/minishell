@@ -6,14 +6,13 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 19:36:14 by avieira-          #+#    #+#             */
-/*   Updated: 2025/11/20 19:36:16 by avieira-         ###   ########.fr       */
+/*   Updated: 2025/11/21 18:00:31 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 #include "../cleaning/cleaning.h"
 
-static
 void	buffer_realloc(t_shell *sh, char *buffer, int j, char **token_string)
 {
 	buffer[j] = '\0';

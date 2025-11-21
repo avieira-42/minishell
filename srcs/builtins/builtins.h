@@ -6,7 +6,7 @@
 /*   By: jcesar-s <jcesar-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 21:42:03 by jcesar-s          #+#    #+#             */
-/*   Updated: 2025/11/20 21:42:14 by jcesar-s         ###   ########.fr       */
+/*   Updated: 2025/11/21 17:51:48 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,12 @@ int		builtins_env(char **argv, char **envp);
 int		builtins_exit(char **argv, t_shell *shell);
 int		builtins_cd(char **argv, char **envp, t_shell *shell);
 int		builtins_export(t_shell *shell, char **argv);
-int		builtins_export_addvar(t_shell *shell, char *var,
-			char *argv, char *end);
 int		builtins_unset(t_shell *shell, char **vars);
 int		builtins_authors(void);
 int		builtins_logo(void);
+void	builtins_export_to_vars(t_shell *shell, char *var,
+			char *var_end, size_t len);
+void	builtins_export_to_env(t_shell *shell, char *var, size_t len);
+void	builtins_export_var_setup(t_shell *shell, char **var, char *end);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 19:36:04 by avieira-          #+#    #+#             */
-/*   Updated: 2025/11/20 20:06:55 by avieira-         ###   ########.fr       */
+/*   Updated: 2025/11/21 16:41:28 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ void			expansion_vars_handle(char *buf, char *token,
 void			token_expansion_init(t_iter *iter, char **buffer,
 					int *double_quoted);
 void			buffer_fill(char *buffer, char *token_string, t_iter *iter);
+void			buffer_realloc(t_shell *sh, char *buffer,
+					int j, char **token_string);
 
 // TOKEN_IDENTIFY
 void			token_identify(t_token_list *tokens);

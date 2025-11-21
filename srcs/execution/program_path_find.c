@@ -33,7 +33,7 @@ int	program_exists(char *program_path, char **result_path, int print_error)
 	exit_code = 0;
 	if (print_error == TRUE)
 	{
-		if (errno == EACCES)
+		if (errno == EACCES || errno == ENOTDIR)
 			exit_code = 126;
 		if (errno == ENOENT)
 			exit_code = 127;

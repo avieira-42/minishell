@@ -68,6 +68,26 @@ int	update_envs(char *old_dir, char **argv)
 	return (EXIT_SUCCESS);
 }
 
+void	update_envs_export(t_shell *shell, char *oldpwd)
+{
+	char	*export_args[3];
+	char	current_dir[PATH_MAX];
+
+	export_args[0] = "export"; 
+	export_args[1] = ft_strjoin("OLDPWD=", oldpwd); 
+	if (export_args[1] == NULL)
+		exit_clean(shell, 66, NULL, NULL);
+	export_args[2] = NULL; 
+	builtins_export(shell, export_args);
+	free(export_args[1]);
+	getcwd(current_dir, PATH_MAX);
+	export_args[1] = ft_strjoin("PWD=", current_dir);
+	if (export_args[1] == NULL)
+		exit_clean(shell, 66, NULL, NULL);
+	builtins_export(shell, export_args);
+	free(export_args[1]);
+}
+
 int	builtins_cd(char **argv, char **envp, t_shell *shell)
 {
 	char	*var_home;
@@ -89,9 +109,6 @@ int	builtins_cd(char **argv, char **envp, t_shell *shell)
 	getcwd(current_dir, PATH_MAX);
 	if (chdir(path) == -1)
 		return (ft_error(EXIT_FAILURE, strerror(errno)));
-	if (update_envs(current_dir, shell->env_vars) == EXIT_FAILURE)
-		exit_clean(shell, 66, NULL, NULL);
-	if (update_envs(current_dir, shell->export_vars.m_array) == EXIT_FAILURE)
-		exit_clean(shell, 66, NULL, NULL);
+	update_envs_export(shell, current_dir);
 	return (EXIT_SUCCESS);
 }

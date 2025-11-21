@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 17:51:11 by avieira-          #+#    #+#             */
-/*   Updated: 2025/11/21 17:52:17 by avieira-         ###   ########.fr       */
+/*   Updated: 2025/11/21 18:11:48 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "../parsing/parsing.h"
 
 static void
-builtins_export_addvar(t_shell *shell, char **var, char *argv, char *end)
+	builtins_export_addvar(t_shell *shell, char **var, char *argv, char *end)
 {
 	size_t	var_len;
 
@@ -75,7 +75,7 @@ int	builtins_export_is_valid_var_name(char *argv, char **var_end)
 		if (*argv == '+' && *(argv + 1) == '=')
 		{
 			argv++;
-			continue;
+			continue ;
 		}
 		if (*argv != '_' && ft_isalnum(*argv) == false)
 			return (-1);

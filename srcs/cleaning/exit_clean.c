@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 19:37:38 by avieira-          #+#    #+#             */
-/*   Updated: 2025/11/20 19:45:47 by avieira-         ###   ########.fr       */
+/*   Updated: 2025/11/21 14:40:24 by jcesar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #include "cleaning.h"
 #include "../parsing/parsing.h"
 #include "../binary_tree/binary_tree.h"
+#include "../builtins/builtins.h"
+#include <readline/readline.h>
 
 void	exit_clean(t_shell *shell, int exit_code, char **array, char *string)
 {
@@ -38,4 +40,14 @@ void	exit_clean(t_shell *shell, int exit_code, char **array, char *string)
 		ft_printf_fd(2, "minishell: Error: Could not allocate memory\n");
 	close_all_fds(3, shell->highest_fd);
 	exit(exit_code);
+}
+
+void	ft_exit(t_shell *shell)
+{
+	char	*exit_args[2];
+
+	rl_clear_history();
+	exit_args[0] = "0";
+	exit_args[1] = NULL;
+	builtins_exit(exit_args, shell);
 }

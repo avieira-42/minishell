@@ -6,7 +6,7 @@
 /*   By: jcesar-s <jcesar-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 21:49:18 by jcesar-s          #+#    #+#             */
-/*   Updated: 2025/11/20 21:49:30 by jcesar-s         ###   ########.fr       */
+/*   Updated: 2025/11/21 14:01:53 by jcesar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,9 @@ void	tree_execute(t_shell *shell)
 	shell->stdfd = stdfd_save();
 	update_highest_fd_array(shell, shell->stdfd);
 	shell->exit_code = traverse_btree(shell->tree, shell);
+	if (shell->exit_code == 130)
+		ft_putchar_fd('\n', 2);
+	if (shell->exit_code == 131)
+		ft_putendl_fd("quit (core dumped)", 2);
 	stdfd_restore(shell->stdfd, shell);
 }

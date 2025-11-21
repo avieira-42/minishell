@@ -6,7 +6,7 @@
 /*   By: jcesar-s <jcesar-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 21:43:52 by jcesar-s          #+#    #+#             */
-/*   Updated: 2025/11/20 21:44:22 by jcesar-s         ###   ########.fr       */
+/*   Updated: 2025/11/21 11:43:37 by jcesar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int	builtins_exit(char **argv, t_shell *shell)
 	if (argv[0] == NULL)
 		exit_clean(shell, EXIT_SUCCESS, NULL, NULL);
 	if (argv[1] != NULL)
-		return (ft_error(2, NULL, "too many arguments"));
+		return (ft_error(1, NULL, "too many arguments"));
 	exit_status = ft_strtol(argv[0]);
 	exit_clean(shell, exit_status, NULL, NULL);
 	return (0);

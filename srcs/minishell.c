@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "cleaning/cleaning.h"
 #include "execution/execution.h"
 #include <readline/readline.h>
 #include <unistd.h>
@@ -40,7 +41,7 @@ void	minishell_loop(t_shell *shell)
 		shell->user_input = readline(GREEN "minishell" COLOR_RESET "$> " RESET);
 		signal_after_readline_setup(shell);
 		if (shell->user_input == NULL)
-			break ;
+			ft_exit(shell);
 		if (preprocess_input(shell) == 0)
 			continue ;
 		if (handle_heredoc(shell) == 0)
@@ -48,10 +49,6 @@ void	minishell_loop(t_shell *shell)
 		tree_execute(shell);
 		iteration_clear(shell);
 	}
-	rl_clear_history();
-	ft_free_matrix(shell->env_vars);
-	ft_free_matrix(shell->export_vars.m_array);
-	close_all_fds(3, shell->highest_fd);
 }
 
 void	minishell_init(t_shell *shell, int argc, char **argv, char **envp)

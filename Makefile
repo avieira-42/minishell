@@ -106,7 +106,7 @@ fclean: clean
 re: fclean all
 
 valgrind: $(NAME)
-	valgrind --suppressions=readline.supp --show-leak-kinds=all --leak-check=full --trace-children=yes --track-fds=yes ./$(NAME)
+	valgrind --suppressions=readline.supp --leak-check=full --trace-children=yes --track-fds=yes ./$(NAME)
 
 fdvalgrind: $(NAME)
 	valgrind --suppressions=readline.supp --trace-children=yes --track-fds=yes ./$(NAME)

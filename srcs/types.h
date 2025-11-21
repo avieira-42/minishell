@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 19:38:25 by avieira-          #+#    #+#             */
-/*   Updated: 2025/11/20 19:38:25 by avieira-         ###   ########.fr       */
+/*   Updated: 2025/11/21 14:44:42 by jcesar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # define CMD_LOGO "logo"
 # define CMD "command"
 # define STRING "string"
-# define FILE "file"
+# define _FILE "file"
 # define BACK_SLASH '\\'
 # define SPACE ' '
 # define STRING_SPACE " "

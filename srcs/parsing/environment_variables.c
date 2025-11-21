@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 19:36:10 by avieira-          #+#    #+#             */
-/*   Updated: 2025/11/20 19:36:11 by avieira-         ###   ########.fr       */
+/*   Updated: 2025/11/21 11:15:45 by jcesar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ int	environment_variable_len(char *variable_name)
 	if (ft_isdigit(variable_name[i]))
 		return (1);
 	i++;
-	while (ft_isalnum(variable_name[i]) && variable_name[i] != '\0')
+	while ((ft_isalnum(variable_name[i]) || variable_name[i] == '_')
+		&& variable_name[i] != '\0')
 		i++;
 	return (i);
 }

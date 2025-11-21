@@ -6,7 +6,7 @@
 /*   By: jcesar-s <jcesar-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 21:50:05 by jcesar-s          #+#    #+#             */
-/*   Updated: 2025/11/21 14:00:08 by jcesar-s         ###   ########.fr       */
+/*   Updated: 2025/11/21 16:49:02 by jcesar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,6 @@ int	ft_wait(int pid)
 		return (WEXITSTATUS(exit_code));
 	else if (WIFSIGNALED(exit_code) == TRUE)
 		exit_code = WTERMSIG(exit_code) + 128;
-	//if (exit_code == 131)
-	//	ft_printf_fd(2, "quit (core dumped)\n");
-	//else if (exit_code == 130)
-	//	ft_printf_fd(2, "\n");
 	return (exit_code);
 }
 

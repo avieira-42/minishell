@@ -6,7 +6,7 @@
 /*   By: jcesar-s <jcesar-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 21:43:32 by jcesar-s          #+#    #+#             */
-/*   Updated: 2025/11/20 21:43:33 by jcesar-s         ###   ########.fr       */
+/*   Updated: 2025/11/21 11:14:25 by jcesar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,11 +73,11 @@ void	update_envs_export(t_shell *shell, char *oldpwd)
 	char	*export_args[3];
 	char	current_dir[PATH_MAX];
 
-	export_args[0] = "export"; 
-	export_args[1] = ft_strjoin("OLDPWD=", oldpwd); 
+	export_args[0] = "export";
+	export_args[1] = ft_strjoin("OLDPWD=", oldpwd);
 	if (export_args[1] == NULL)
 		exit_clean(shell, 66, NULL, NULL);
-	export_args[2] = NULL; 
+	export_args[2] = NULL;
 	builtins_export(shell, export_args);
 	free(export_args[1]);
 	getcwd(current_dir, PATH_MAX);

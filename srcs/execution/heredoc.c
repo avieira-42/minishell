@@ -6,7 +6,7 @@
 /*   By: jcesar-s <jcesar-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 21:49:34 by jcesar-s          #+#    #+#             */
-/*   Updated: 2025/11/20 21:49:35 by jcesar-s         ###   ########.fr       */
+/*   Updated: 2025/11/21 13:23:35 by jcesar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,12 @@ void	heredoc_execute(char *limiter, t_redirect *redir, t_shell *shell)
 	{
 		if (g_last_signal == 130)
 		{
-			free(line);
 			safe_close(&pipefd[0]);
 			break ;
 		}
 		line = readline("> ");
 		if (line == NULL || ft_strcmp(line, limiter) == 0)
 			break ;
-		add_history(line);
 		heredoc_write_bytes_to_file(line, shell->env_vars,
 			pipefd[1], redir->expand);
 		free(line);

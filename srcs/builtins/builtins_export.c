@@ -5,13 +5,32 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/20 19:38:04 by avieira-          #+#    #+#             */
-/*   Updated: 2025/11/20 21:43:59 by jcesar-s         ###   ########.fr       */
+/*   Created: 2025/11/21 17:51:11 by avieira-          #+#    #+#             */
+/*   Updated: 2025/11/21 17:52:17 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <string.h>
 #include "builtins.h"
 #include "../cleaning/cleaning.h"
+#include "../parsing/parsing.h"
+
+static void
+builtins_export_addvar(t_shell *shell, char **var, char *argv, char *end)
+{
+	size_t	var_len;
+
+	var_len = environment_variable_len(*var);
+	if (*argv == '_' && end == argv + 1)
+		return (free(*var));
+	if (*end == '=')
+	{
+		if (*(end - 1) == '+')
+			builtins_export_var_setup(shell, var, end);
+		builtins_export_to_env(shell, *var, var_len);
+	}
+	builtins_export_to_vars(shell, *var, end, var_len);
+}
 
 static	inline
 void	builtins_export_printvar(char **var_value)
@@ -53,6 +72,11 @@ int	builtins_export_is_valid_var_name(char *argv, char **var_end)
 		return (-1);
 	while (*argv != '=' && *argv != '\0')
 	{
+		if (*argv == '+' && *(argv + 1) == '=')
+		{
+			argv++;
+			continue;
+		}
 		if (*argv != '_' && ft_isalnum(*argv) == false)
 			return (-1);
 		argv++;
@@ -81,7 +105,7 @@ int	builtins_export(t_shell *shell, char **argv)
 			free (var);
 		}
 		else
-			builtins_export_addvar(shell, var, *argv, var_end);
+			builtins_export_addvar(shell, &var, *argv, var_end);
 		argv++;
 	}
 	return (shell->exit_code);

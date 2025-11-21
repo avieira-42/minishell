@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 19:38:39 by avieira-          #+#    #+#             */
-/*   Updated: 2025/11/21 14:39:30 by jcesar-s         ###   ########.fr       */
+/*   Updated: 2025/11/21 18:02:12 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,10 @@ int	preprocess_input(t_shell *shell)
 {
 	add_history(shell->user_input);
 	if (user_input_parse(shell) == -1)
+	{
+		shell->exit_code = 2;
 		ft_token_lst_clear(&shell->tokens);
+	}
 	else
 		token_lst_clear_safe(&shell->tokens);
 	return (shell->tree != NULL);

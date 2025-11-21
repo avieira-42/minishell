@@ -6,16 +6,15 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 19:38:13 by avieira-          #+#    #+#             */
-/*   Updated: 2025/11/20 21:44:19 by jcesar-s         ###   ########.fr       */
+/*   Updated: 2025/11/21 15:29:57 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../libs/libft/include/libft.h"
-#include "../parsing/parsing.h"
 #include "../types.h"
 #include "../cleaning/cleaning.h"
 
-void
+static void
 	builtins_export_add_to_vars(t_shell *shell, char *var, t_str_array *vars)
 {
 	vars->m_array = ft_realloc(vars->m_array,
@@ -52,7 +51,7 @@ void	builtins_export_to_vars(t_shell *shell, char *var,
 	builtins_export_add_to_vars(shell, var, vars);
 }
 
-void
+static void
 	builtins_export_add_to_env(t_shell *shell, char *var, char **vars)
 {
 	shell->env_vars = ft_realloc(vars,
@@ -88,17 +87,4 @@ void	builtins_export_to_env(t_shell *shell, char *var, size_t len)
 		i++;
 	}
 	builtins_export_add_to_env(shell, var, vars);
-}
-
-void
-	builtins_export_addvar(t_shell *shell, char *var, char *argv, char *end)
-{
-	size_t	var_len;
-
-	var_len = environment_variable_len(var);
-	if (*argv == '_' && end == argv + 1)
-		return (free(var));
-	if (*end == '=')
-		builtins_export_to_env(shell, var, var_len);
-	builtins_export_to_vars(shell, var, end, var_len);
 }

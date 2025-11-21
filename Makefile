@@ -36,6 +36,7 @@ BUILTINS_SRCS = srcs/builtins/builtins_echo.c \
 				srcs/builtins/builtins_env.c \
 				srcs/builtins/builtins_export.c \
 				srcs/builtins/builtins_export_utils.c \
+				srcs/builtins/builtins_export_plus_equal_handle.c \
 				srcs/builtins/builtins_unset.c \
 				srcs/builtins/builtins_logo.c \
 				srcs/builtins/builtins_authors.c

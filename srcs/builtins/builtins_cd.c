@@ -102,6 +102,8 @@ int	builtins_cd(char **argv, char **envp, t_shell *shell)
 			return (ft_error(EXIT_FAILURE, "HOME not set"));
 		path = var_home;
 	}
+	if (**argv == '\0')
+		return (EXIT_SUCCESS);
 	else if (argv[1] != NULL)
 		return (ft_error(EXIT_FAILURE, "too many arguments"));
 	if (path == NULL)

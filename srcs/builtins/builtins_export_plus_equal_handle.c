@@ -40,6 +40,7 @@ void	builtins_export_var_expand(t_shell *shell, char **var,
 		buf[iter.j++] = var_value[iter.i++];
 	var_tmp = *var;
 	buffer_realloc(shell, buf, iter.j, var);
+	(void)var_tmp;
 }
 
 void	builtins_export_var_setup(t_shell *shell, char **var, char *end)

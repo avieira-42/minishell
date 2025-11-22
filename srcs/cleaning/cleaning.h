@@ -13,6 +13,7 @@
 #ifndef CLEANING_H
 # define CLEANING_H
 
+# include <readline/readline.h>
 # include "../types.h"
 
 void	free_array(void **array, int size, int free_ptr);

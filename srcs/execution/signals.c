@@ -10,7 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "execution.h"
+#include "../../libs/libft/include/libft.h"
 
 void	signal_prompt(int signal)
 {

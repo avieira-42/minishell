@@ -10,13 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../builtins/builtins.h"
+#include "../cleaning/cleaning.h"
 #include "execution.h"
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <stdlib.h>
-#include <sys/wait.h>
-#include <unistd.h>
 
 static
 void	pipe_execute(t_btree *node, int *exit_code, t_shell *shell)

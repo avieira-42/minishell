@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../cleaning/cleaning.h"
 #include "execution.h"
 
 void	pipe_parent(int fd[2], int *exit_code, int pid_left, int pid_right)

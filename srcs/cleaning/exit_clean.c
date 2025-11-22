@@ -15,7 +15,6 @@
 #include "../parsing/parsing.h"
 #include "../binary_tree/binary_tree.h"
 #include "../builtins/builtins.h"
-#include <readline/readline.h>
 
 void	exit_clean(t_shell *shell, int exit_code, char **array, char *string)
 {

@@ -15,7 +15,6 @@
 #include "../parsing/parsing.h"
 #include "../binary_tree/binary_tree.h"
 #include "../builtins/builtins.h"
-#include <readline/readline.h>
 
 void	exit_clean(t_shell *shell, int exit_code, char **array, char *string)
 {
@@ -44,10 +43,9 @@ void	exit_clean(t_shell *shell, int exit_code, char **array, char *string)
 
 void	ft_exit(t_shell *shell)
 {
-	char	*exit_args[2];
+	char	*exit_args[1];
 
 	rl_clear_history();
-	exit_args[0] = "0";
-	exit_args[1] = NULL;
+	exit_args[0] = NULL;
 	builtins_exit(exit_args, shell);
 }

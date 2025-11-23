@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "cleaning.h"
 
 void	safe_close(int *fd_ptr)
 {

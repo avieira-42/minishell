@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../minishell.h"
-#include <readline/history.h>
 #include "../types.h"
 #include "execution.h"
 

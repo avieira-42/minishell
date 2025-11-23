@@ -18,6 +18,12 @@
 # define NO_FILE_ERROR "minishell: %s: No such file or directory\n"
 # define EXIT_NOT_FOUND 127
 
+# include <sys/wait.h>
+# include <errno.h>
+# include <string.h>
+# include <readline/readline.h>
+# include <sys/types.h>
+# include <sys/stat.h>
 # include "../types.h"
 
 enum e_path_error

@@ -10,8 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
-#include <stdlib.h>
+#include "execution.h"
+#include "../types.h"
+#include "../cleaning/cleaning.h"
 
 int	safe_fork(t_shell *shell)
 {

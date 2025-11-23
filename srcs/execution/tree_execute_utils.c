@@ -10,10 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdbool.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include "../minishell.h"
+#include "execution.h"
+#include "../cleaning/cleaning.h"
 
 int	redirect_open(int *fd, int open_flags, char *filename)
 {

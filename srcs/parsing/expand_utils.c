@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 19:36:21 by avieira-          #+#    #+#             */
-/*   Updated: 2025/11/20 19:36:22 by avieira-         ###   ########.fr       */
+/*   Updated: 2025/11/23 17:38:38 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,22 +31,35 @@ void	single_quotation_skip(char *buffer, char *token_str, t_iter *iter)
 	(iter->j)++;
 }
 
+int	expansion_vars_handle_special(char *buf, char *token,
+			t_iter *iter, t_shell *shell)
+{
+	char	*exp;
+
+	exp = NULL;
+	if (ft_bool_strncmp(&token[iter->i], "$?", 2) == true)
+		exp = ft_itoa(shell->exit_code);
+	else if (ft_bool_strncmp(&token[iter->i], "$$", 2) == true)
+		exp = ft_itoa(get_my_pid());
+	else if (ft_bool_strncmp(&token[iter->j], "$0", 2) == true)
+		exp = ft_strdup("minishell");
+	else
+		return (-1);
+	if (exp == NULL)
+		exit_clean(shell, 66, NULL, buf);
+	iter->i += 2;
+	ft_memcpy(&buf[iter->j], exp, ft_strlen(exp));
+	iter->j += ft_strlen(exp);
+	free(exp);
+	return (0);
+}
+
 void
 	expansion_vars_handle(char *buf, char *token, t_iter *iter, t_shell *shell)
 {
 	char	*exp;
 
-	if (ft_bool_strncmp(&token[iter->i], "$?", 2) == true)
-	{
-		exp = ft_itoa(shell->exit_code);
-		if (exp == NULL)
-			exit_clean(shell, 66, NULL, buf);
-		iter->i += 2;
-		ft_memcpy(&buf[iter->j], exp, ft_strlen(exp));
-		iter->j += ft_strlen(exp);
-		free(exp);
-	}
-	else
+	if (expansion_vars_handle_special(buf, token, iter, shell) == -1)
 	{
 		exp = environment_variable_get(shell->env_vars,
 				&token[iter->i], &(iter->i));

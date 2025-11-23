@@ -1,5 +1,3 @@
-ISSUES:
+TODO:
 
-1. cd with no arguments
-2. scrolling through previous commands (parts of text cant be deleted)
-3. ^L doesn't work sometimes
+print $0 and $_ variables

@@ -6,7 +6,7 @@
 /*   By: jcesar-s <jcesar-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 21:43:32 by jcesar-s          #+#    #+#             */
-/*   Updated: 2025/11/21 11:14:25 by jcesar-s         ###   ########.fr       */
+/*   Updated: 2025/11/23 15:36:34 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ int	builtins_cd(char **argv, char **envp, t_shell *shell)
 			return (ft_error(EXIT_FAILURE, "HOME not set"));
 		path = var_home;
 	}
-	if (**argv == '\0')
+	else if (**argv == '\0')
 		return (EXIT_SUCCESS);
 	else if (argv[1] != NULL)
 		return (ft_error(EXIT_FAILURE, "too many arguments"));

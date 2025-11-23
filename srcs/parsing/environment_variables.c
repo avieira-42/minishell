@@ -6,11 +6,28 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 19:36:10 by avieira-          #+#    #+#             */
-/*   Updated: 2025/11/21 11:15:45 by jcesar-s         ###   ########.fr       */
+/*   Updated: 2025/11/23 17:41:25 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parsing/parsing.h"
+
+int	get_my_pid(void)
+{
+	int		fd;
+	int		len;
+	char	buf[256];
+
+	fd = open("/proc/self/stat", O_RDONLY);
+	if (fd < 0)
+		return (-1);
+	len = read(fd, buf, sizeof(buf) - 1);
+	close(fd);
+	if (len <= 0)
+		return (-1);
+	buf[len] = '\0';
+	return (atoi(buf));
+}
 
 bool	is_variable(char *token_string, int i)
 {
@@ -20,7 +37,7 @@ bool	is_variable(char *token_string, int i)
 	if (token_string[i] == '?')
 		return (true);
 	if (token_string[i] == EXPANSION_VARS)
-		return (false);
+		return (true);
 	if (token_string[i] == DQUOTE_LITERAL || token_string[i] == '\0'
 		|| ft_isspace(token_string[i]))
 		return (false);
@@ -29,7 +46,6 @@ bool	is_variable(char *token_string, int i)
 	return (false);
 }
 
-inline
 int	environment_variable_len(char *variable_name)
 {
 	int	i;

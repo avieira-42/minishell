@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 19:36:04 by avieira-          #+#    #+#             */
-/*   Updated: 2025/11/21 16:41:28 by avieira-         ###   ########.fr       */
+/*   Updated: 2025/11/23 17:24:00 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,5 +74,7 @@ int				shell_lvl_incr(t_shell *shell, char **new_var,
 					char *old_var, char **tmp);
 void			shell_lvl_create(t_shell *shell, char **dup);
 char			**minishell_env_dup(t_shell *shell, char *lvl);
+int				environment_variable_len(char *variable_name);
+int				get_my_pid(void);
 
 #endif

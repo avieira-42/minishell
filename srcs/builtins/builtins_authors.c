@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 21:42:22 by jcesar-s          #+#    #+#             */
-/*   Updated: 2025/11/20 21:42:40 by jcesar-s         ###   ########.fr       */
+/*   Updated: 2025/11/23 18:02:28 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,17 @@ void	builtins_authors_part_1(void)
 	ft_printf("╔═══ MINISHELL ");
 	ft_printf("════════════════════");
 	ft_printf("════════════════════");
-	ft_printf("══════════╗\n");
+	ft_printf("═══════════════╗\n");
 	ft_printf("║");
 	ft_printf("                                             ");
-	ft_printf("     ║\n");
-	ft_printf("║    Made by:");
+	ft_printf("                        ║\n");
+	ft_printf("║    Made by:                 ");
 	ft_printf("                                   ");
 	ft_printf("     ║\n");
 	ft_printf("║");
 	ft_printf("                                             ");
-	ft_printf("     ║\n");
-	ft_printf("║    Julio Cesar");
+	ft_printf("                        ║\n");
+	ft_printf("║    Julio Cesar              ");
 	ft_printf("                 ██████     ");
 	ft_printf("████████    ║\n");
 	ft_printf("║    <jcesar-s@student.");
@@ -41,7 +41,7 @@ void	builtins_authors_part_1(void)
 
 void	builtins_authors_part_2(void)
 {
-	ft_printf("║");
+	ft_printf("║                    ");
 	ft_printf("                    ██    ███      ");
 	ft_printf("    ███       ║\n");
 	ft_printf("║    Alexandre ");
@@ -55,10 +55,10 @@ void	builtins_authors_part_2(void)
 	ft_printf("████████████      ║\n");
 	ft_printf("║");
 	ft_printf("                                             ");
-	ft_printf("     ║\n");
+	ft_printf("                        ║\n");
 	ft_printf("╚════════════════════");
 	ft_printf("════════════════════");
-	ft_printf("══════════ Porto ╝\n");
+	ft_printf("══════════ Porto ════════════╝\n");
 	ft_printf("\n\n\n\n\n");
 }
 

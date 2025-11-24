@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 19:36:21 by avieira-          #+#    #+#             */
-/*   Updated: 2025/11/23 17:38:38 by avieira-         ###   ########.fr       */
+/*   Updated: 2025/11/24 13:48:14 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	expansion_vars_handle_special(char *buf, char *token,
 		exp = ft_itoa(shell->exit_code);
 	else if (ft_bool_strncmp(&token[iter->i], "$$", 2) == true)
 		exp = ft_itoa(get_my_pid());
-	else if (ft_bool_strncmp(&token[iter->j], "$0", 2) == true)
+	else if (ft_bool_strncmp(&token[iter->i], "$0", 2) == true)
 		exp = ft_strdup("minishell");
 	else
 		return (-1);

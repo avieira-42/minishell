@@ -1,3 +1,0 @@
-TODO:
-
-print $0 and $_ variables

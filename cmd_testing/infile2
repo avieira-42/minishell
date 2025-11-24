@@ -1,9 +1,0 @@
-total 20
-drwxrwxr-x 2 avieira-42 avieira-42 4096 Oct 23 16:41 .
-drwxrwxr-x 7 avieira-42 avieira-42 4096 Oct 23 16:42 ..
--rw-rw-r-- 1 avieira-42 avieira-42    0 Oct 23 16:41 <
--rw-rw-r-- 1 avieira-42 avieira-42   16 Oct 23 16:41 file
--rw-rw-r-- 1 avieira-42 avieira-42   16 Oct 23 16:41 file1
--rw-rw-r-- 1 avieira-42 avieira-42    0 Oct 23 16:59 infile1
--rw-rw-r-- 1 avieira-42 avieira-42    0 Oct 23 16:59 infile2
--rw-rw-r-- 1 avieira-42 avieira-42    4 Oct 23 03:20 outfile

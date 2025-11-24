@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 21:42:47 by jcesar-s          #+#    #+#             */
-/*   Updated: 2025/11/20 21:44:16 by jcesar-s         ###   ########.fr       */
+/*   Updated: 2025/11/24 13:55:38 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,20 +39,6 @@ void	builtins_logo_part_2(void)
 	ft_printf("creators\n\n");
 	ft_printf("       logo      to see this cool ");
 	ft_printf("logo again\n\n");
-	ft_printf("       help      to get some ");
-	ft_printf("help\n\n");
-}
-
-void	builtins_logo_part_3(void)
-{
-	ft_printf("       man       to understand how to navigate this awesome ");
-	ft_printf("shell\n\n");
-	ft_printf("       credits   to get a definitely not boring text ");
-	ft_printf("screen\n\n");
-	ft_printf("       ???       the special command we created that is");
-	ft_printf("\n");
-	ft_printf("                 definitely not hidden for you to ");
-	ft_printf("guess\n");
 	ft_printf("\n\n\n\n\n");
 }
 
@@ -60,6 +46,5 @@ int	builtins_logo(void)
 {
 	builtins_logo_part_1();
 	builtins_logo_part_2();
-	builtins_logo_part_3();
 	return (0);
 }

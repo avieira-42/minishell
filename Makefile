@@ -38,7 +38,6 @@ BUILTINS_SRCS = srcs/builtins/builtins_echo.c \
 				srcs/builtins/builtins_export_utils.c \
 				srcs/builtins/builtins_export_plus_equal_handle.c \
 				srcs/builtins/builtins_unset.c \
-				srcs/builtins/builtins_logo.c \
 				srcs/builtins/builtins_authors.c
 
 EXECUTION_SRCS = srcs/execution/program_path_find.c \
@@ -62,10 +61,11 @@ SRCS = $(MINISHELL_SRCS) \
 		$(PARSING_SRCS) \
 		$(BINARY_TREE_SRCS)
 
-
 OBJS = $(SRCS:.c=.o)
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re logo
+
+all: $(LIBFT) $(NAME) logo
 
 %.o: %.c
 	@total=$(words $(SRCS)); \
@@ -80,13 +80,11 @@ OBJS = $(SRCS:.c=.o)
 		printf "Compiling minishell binaries [%s] %3d%%\r" "$$bar" $$percent; \
 		$(CC) $(CFLAGS) -c $$f -o $${f%.c}.o; \
 	done; \
-	echo ""; \
-
-all: $(LIBFT) $(NAME)
+	echo "";
 
 $(NAME): $(LIBFT) $(OBJS)
-	@echo "Building $(NAME) executable"; \
-	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJS) $(LIBFT) -o $(NAME) $(FLAG_READLINE); \
+	@echo "Building $(NAME) executable"
+	@$(CC) $(CFLAGS) $(LDFLAGS) $(OBJS) $(LIBFT) -o $(NAME) $(FLAG_READLINE)
 
 $(LIBFT):
 	@make -C $(LIBFT_DIR) --no-print-directory
@@ -110,3 +108,15 @@ valgrind: $(NAME)
 
 fdvalgrind: $(NAME)
 	valgrind --suppressions=readline.supp --trace-children=yes --track-fds=yes ./$(NAME)
+
+logo:
+	@printf "\033[35m"
+	@printf "   _____  .__       .__       .__           .__  .__   \n"
+	@printf "  /     \\ |__| ____ |__| _____|  |__   ____ |  | |  |  \n"
+	@printf " /  \\ /  \\|  |/    \\|  |/  ___/  |  \\_/ __ \\|  | |  |  \n"
+	@printf "/    Y    \\  |   |  \\  |\\___ \\|   Y  \\  ___/|  |_|  |__\n"
+	@printf "\\____|__  /__|___|  /__/____  >___|  /\\___  >____/____/\n"
+	@printf "        \\/        \\/        \\/     \\/     \\/           \n"
+	@printf "\033[0m"
+
+

@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 21:42:22 by jcesar-s          #+#    #+#             */
-/*   Updated: 2025/11/23 18:02:28 by avieira-         ###   ########.fr       */
+/*   Updated: 2025/11/28 15:04:30 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	builtins_authors_part_1(void)
 {
-	ft_printf("\n\n\n\n\n");
+	ft_printf("\n\n\n\n\n\033[35m");
 	ft_printf("╔═══ MINISHELL ");
 	ft_printf("════════════════════");
 	ft_printf("════════════════════");
@@ -59,7 +59,7 @@ void	builtins_authors_part_2(void)
 	ft_printf("╚════════════════════");
 	ft_printf("════════════════════");
 	ft_printf("══════════ Porto ════════════╝\n");
-	ft_printf("\n\n\n\n\n");
+	ft_printf("\n\n\n\n\n\033[35m");
 }
 
 int	builtins_authors(void)

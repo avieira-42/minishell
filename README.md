@@ -1,4 +1,3 @@
-After 2 months of hardwork, I finished Minishell with my colleague and dear friend Júlio Souza (https://www.linkedin.com/in/juliosouzadev/).
 Minishell is a project that revolves on recreating a Unix command interpreter such as the bash.
 This project is all about constructing a lexer, an algorithm that interprets, divides and categorizes the user input in words or tokens and then building a data structure that holds that parsed data.
 This structure allows the separation of different commands and its arguments and also pipes for the execution of those to be smooth and manageable.
@@ -9,4 +8,3 @@ To give a clearer picture of the technical depth involved in building a project 
 • Shell prompt loop (REPL design)
 • C
 • Makefile
-

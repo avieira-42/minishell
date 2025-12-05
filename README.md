@@ -9,7 +9,7 @@ To give a clearer picture of the technical depth involved in building a project 
 • C
 • Makefile
 
-![minishelkl](https://github.com/user-attachments/assets/cc2a74ff-5d9d-4575-a867-874f0f068423)
+![minishell](https://github.com/user-attachments/assets/74b13aee-8453-473e-9a1e-b40d30cf2f85)
 
 Compile the code:
 ```bash

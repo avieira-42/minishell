@@ -8,3 +8,15 @@ To give a clearer picture of the technical depth involved in building a project 
 • Shell prompt loop (REPL design)
 • C
 • Makefile
+
+![minishelkl](https://github.com/user-attachments/assets/cc2a74ff-5d9d-4575-a867-874f0f068423)
+
+Compile the code:
+```bash
+make
+```
+
+Run the program:
+```bash
+./minishell
+```
